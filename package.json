@@ -1,0 +1,33 @@
+{
+  "name": "smart-server",
+  "version": "1.0.0",
+  "description": "API-only server to interact with services, client server, and DB",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "test": "mocha",
+    "init-db": "node ./db/init.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BrennerSpear/sMart-server.git"
+  },
+  "author": "Brenner, Greg, Daniel, Mark",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BrennerSpear/sMart-server/issues"
+  },
+  "homepage": "https://github.com/BrennerSpear/sMart-server#readme",
+  "dependencies": {
+    "body-parser": "^1.16.1",
+    "cookie-parser": "^1.4.3",
+    "dotenv": "^4.0.0",
+    "express": "^4.14.1",
+    "knex": "^0.12.7",
+    "morgan": "^1.8.1",
+    "pg": "^6.1.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  }
+}
