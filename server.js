@@ -1,18 +1,20 @@
 require('dotenv').config();
-var express = require('express');
-var db = require('./db/db')
+const express = require('express');
+const db = require('./db/db');
+const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+
 // var router = require('./routes');
 // var passport = require('./server/passport');
 
 //use .env for port number
-var port = 4040;
+const port = process.env.port || 4040;
+const app = express();
 
-var app = express();
-
-
-app.use(require('morgan')('combined'));
-app.use(require('cookie-parser')());
-app.use(require('body-parser').urlencoded({ extended: true }));
+app.use(morgan('combined'));
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(require('express-session')({ secret: 'so smart of you', resave: true, saveUninitialized: true }));
 
 // app.use(passport.initialize());
@@ -21,7 +23,7 @@ app.use(require('body-parser').urlencoded({ extended: true }));
 // app.use('', router);
 
 app.listen(port, () => {
-  console.log('listening on port ', port);
+  console.log('listening on port ' + port);
 });
 
 module.exports = app;
