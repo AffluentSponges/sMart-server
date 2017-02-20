@@ -1,9 +1,11 @@
+require('dotenv').config();
 var express = require('express');
+var db = require('./db/db')
 // var router = require('./routes');
 // var passport = require('./server/passport');
 
 //use .env for port number
-var port = 8080;
+var port = 4040;
 
 var app = express();
 

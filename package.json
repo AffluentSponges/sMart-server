@@ -6,7 +6,8 @@
   "scripts": {
     "start": "nodemon server.js",
     "test": "mocha",
-    "init-db": "node ./db/init.js"
+    "init-db": "node ./db/init.js",
+    "seed-db": "node ./db/seed.js"
   },
   "repository": {
     "type": "git",
@@ -19,7 +20,10 @@
   },
   "homepage": "https://github.com/BrennerSpear/sMart-server#readme",
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.16.1",
+    "bookshelf": "^0.10.3",
+    "bookshelf-modelbase": "^2.10.3",
     "cookie-parser": "^1.4.3",
     "dotenv": "^4.0.0",
     "express": "^4.14.1",

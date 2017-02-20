@@ -15,6 +15,7 @@ into the .env file. replace ```USERNAME``` with the name that appears before the
 save and close the ```.env``` file
 
 ```npm install```
+
 ```npm db-init``` to construct the database schema. this will most likely clear any data in it.
 
 ```npm start```
