@@ -91,7 +91,6 @@ controller.login.post = function(req, res) {
 		        if (err) {
 		          console.log('Error in comparison', err);
 		        }
-
 		        // Passwords match; create session
 		        if (comparison === true) {
 		          util.createSession(req, res, users[0]);
@@ -106,7 +105,9 @@ controller.login.post = function(req, res) {
 };
 
 controller.logout.post = function(req, res) {
-
+    req.session.destroy(function() {
+    	res.sendStatus(200);
+    });
 };
 
 controller.session.get = function(req, res) {
