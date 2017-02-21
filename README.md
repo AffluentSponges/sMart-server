@@ -11,7 +11,7 @@ create database smart_server_dev;
 
 open .env
 ```
-copy&paste this -> ```PG_CONNECTION_STRING=postgres://USERNAME:@localhost:5432/smart_server_dev```
+copy&paste this -> ```DATABASE_URL=postgres://USERNAME:@localhost:5432/smart_server_dev```
 into the .env file. replace ```USERNAME``` with the name that appears before the ```=#``` when you do ```psql```
 
 add these two lines too: 
