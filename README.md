@@ -17,6 +17,7 @@ save and close the ```.env``` file
 ```npm install```
 
 ```npm run init-db``` to construct the database schema. this will most likely clear any data in it.
+
 ```npm run seed-db``` to seed the database with some dummy data
 
 ```npm start```
