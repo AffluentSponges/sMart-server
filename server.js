@@ -1,15 +1,16 @@
 require('dotenv').config();
 const express = require('express');
-const db = require('./db/db');
+const db = require('./server/db/db');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const passport = require('passport');
-var router = require('./routes');
+const path = require('path');
+var router = require('./server/routes');
 
 //use .env for port number
-const port = process.env.PORT || 4040;
+const port = process.env.PORT || 3000;
 const app = express();
 
 app.use(morgan('combined'));
@@ -23,6 +24,10 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+
+
+app.use(express.static(__dirname + '/client/public'));
+
 app.use('', router);
 
 app.listen(port, () => {

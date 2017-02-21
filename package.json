@@ -2,9 +2,10 @@
   "name": "smart-server",
   "version": "1.0.0",
   "description": "API-only server to interact with services, client server, and DB",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "node server.js",
+    "dev": "webpack --config webpack.config.js --watch | nodemon server.js",
     "test": "mocha",
     "init-db": "node ./db/init.js",
     "seed-db": "node ./db/seed.js"
@@ -36,6 +37,20 @@
     "uber-rush": "^0.4.1"
   },
   "devDependencies": {
-    "nodemon": "^1.11.0"
+    "babel": "^6.5.2",
+    "babel-core": "^6.22.1",
+    "babel-loader": "^6.2.10",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-react": "^6.22.0",
+    "babel-preset-stage-0": "^6.22.0",
+    "faker": "^3.1.0",
+    "lodash": "^4.17.4",
+    "nodemon": "^1.11.0",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-places-autocomplete": "^3.0.0",
+    "react-router": "^3.0.2",
+    "semantic-ui-react": "^0.65.0",
+    "webpack": "^1.14.0"
   }
 }
