@@ -1,4 +1,6 @@
 const db = require('../db/db');
+const bcrypt = require('bcrypt');
+const passport = require('passport');
 
 var controller = {};
 
@@ -69,6 +71,50 @@ controller.register.post = function(req, res) {
 		});
 	}
 };
+
+controller.login.post = function(req, res) {
+	var username = req.body.username;
+    var password = req.body.password;
+
+    // Check database for username
+    db.User.findAll({
+    	where: { username: username }
+    })
+    .then(function(users) {
+	    // If username is not in database, send back 401 code
+	    if (users.length === 0) {
+	      res.sendStatus(401);
+
+	    // If username is in database, compare supplied password with stored password
+	    } else {
+	    	bcrypt.compare(password, users[0].dataValues.password, function(err, comparison) {
+		        if (err) {
+		          console.log('Error in comparison', err);
+		        }
+
+		        // Passwords match; create session
+		        if (comparison === true) {
+		          util.createSession(req, res, users[0]);
+
+		        // Passwords don't match; send 401: Unauthorized status
+		        } else {
+		          res.sendStatus(401);
+		        }
+	     	});
+	    }
+    });
+};
+
+controller.logout.post = function(req, res) {
+
+};
+
+controller.session.get = function(req, res) {
+
+};
+
+
+
 
 module.exports = controller;
 
