@@ -21,6 +21,7 @@
   "homepage": "https://github.com/BrennerSpear/sMart-server#readme",
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.16.1",
     "bookshelf": "^0.10.3",
     "bookshelf-modelbase": "^2.10.3",
