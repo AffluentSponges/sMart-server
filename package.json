@@ -32,7 +32,8 @@
     "knex": "^0.12.7",
     "morgan": "^1.8.1",
     "passport": "^0.3.2",
-    "pg": "^6.1.2"
+    "pg": "^6.1.2",
+    "uber-rush": "^0.4.1"
   },
   "devDependencies": {
     "nodemon": "^1.11.0"
