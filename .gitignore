@@ -38,3 +38,4 @@ jspm_packages
 
 
 .env
+client/public/bundle.js
