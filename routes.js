@@ -1,5 +1,6 @@
 var router = require('express').Router()
 var categoryController = require('./controllers/category')
+var productController = require('./controllers/product')
 var auth = require('./auth/helpers')
 
 /** SIGN UP, SIGN IN, SIGN OUT **/
@@ -17,7 +18,9 @@ var auth = require('./auth/helpers')
 
 
 router.get('/api/v1/categories', categoryController.getAll)
+// router.get('/api/v1/test', categoryController.test)
 
-// router.get('api/v1/products', productController.getAll)
+router.get('/api/v1/products', productController.getAll)
+// router.get('/api/v1/test', productController.test)
 
 module.exports = router

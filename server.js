@@ -21,9 +21,9 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }));
-app.use('', router);
 app.use(passport.initialize());
 app.use(passport.session());
+app.use('', router);
 
 app.listen(port, () => {
   console.log('listening on port ' + port);
