@@ -3,7 +3,11 @@ const path = require('path');
 const passport = require('passport');
 var categoryController = require('./controllers/category')
 var productController = require('./controllers/product')
-var uberRUSHController = require('./controllers/uberRUSH');
+var uberRUSHController = require('./controllers/uberRUSH')
+var auth = require('./auth/helpers')
+var upload = require('./s3/upload')
+var s3Handler = require('./s3/s3Handler')
+
 
 
 // Routes for login and logout
@@ -54,6 +58,8 @@ router.get('/api/v1/products', productController.getAll) //?category_id=3 defaul
 
 
 router.post('/uber_webhook', uberRUSHController.webhook)
+
+router.post('/upload', upload, s3Handler)
 
 router.get('*', (req, res, next) => {
   if(req.path.split('/')[1] === 'static') return next();
