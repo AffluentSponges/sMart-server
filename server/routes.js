@@ -16,6 +16,9 @@ var auth = require('./auth/helpers')
 
 // router.get('/session', userController.session.get);
 
+router.post('./postitem', (req, res) => {
+  
+})
 
 router.get('/api/v1/categories', categoryController.getAll)
 // router.get('/api/v1/test', categoryController.test)
