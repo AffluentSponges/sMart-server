@@ -7,7 +7,6 @@ var knex = require('knex')({
 
 console.log('Connecting to ' + process.env.DATABASE_URL)
 
-
 // console.log('Attempting to create User Table ', userTableExists)
 // console.log('Attemping to create Product Table')
 knex.schema.hasTable('transactions')
