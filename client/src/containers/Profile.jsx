@@ -16,6 +16,7 @@ class MenuExampleSecondaryPointing extends React.Component {
           <Menu.Item name='delivery' active={activeItem === 'delivery'} onClick={this.handleItemClick} />
           <Menu.Item name='selling' active={activeItem === 'selling'} onClick={this.handleItemClick} />
           <Menu.Item name='sold' active={activeItem === 'sold'} onClick={this.handleItemClick} />
+          <Menu.Item name='bought' active={activeItem === 'bought'} onClick={this.handleItemClick} />
         </Menu>
 
         <Segment>
