@@ -50,7 +50,7 @@ router.post('/api/v1/buy', productController.buy, uberRUSHController.buy)
 
 router.post('/uber_webhook', uberRUSHController.webhook)
 
-router.get('/', (req, res, next) => {
+router.get('*', (req, res, next) => {
   if(req.path.split('/')[1] === 'static') return next();
   res.sendFile(path.resolve(__dirname, '../client/public/index.html'));
 });
