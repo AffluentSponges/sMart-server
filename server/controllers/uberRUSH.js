@@ -121,9 +121,12 @@ controller.webhook = function(req, res) {
       actual_delivery_time_and_date
       est_deliver_time_and_date
   
-    update bid/transaction
-      charge buyer
-      pay seller
+    update associated product
+      sold => true
+
+    charge buyer
+    pay seller
+
 
     //notify seller
 
