@@ -37,7 +37,7 @@ jspm_packages
 .node_repl_history
 
 # google api key
-config
+server/auth/config
 
 
 .env
