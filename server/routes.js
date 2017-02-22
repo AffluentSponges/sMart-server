@@ -23,7 +23,7 @@ router.get('/api/v1/categories', categoryController.getAll)
 router.get('/api/v1/products', productController.getAll)
 // router.get('/api/v1/test', productController.test)
 
-router.get('/api/v1/buy', uberRUSHController.getQuote)
+router.get('/api/v1/get_quote', /*productController.getPickupAndDeliverInfo,*/ uberRUSHController.getQuote)
 
 router.post('/uber_webhook', uberRUSHController.webhook)
 
