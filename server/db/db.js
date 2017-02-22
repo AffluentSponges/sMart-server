@@ -67,6 +67,18 @@ var Bid = ModelBase.extend({
 
   user: function() {
     return this.belongsTo(User)
+  },
+
+  transaction: function() {
+    return this.hasOne(Transaction)
+  }
+})
+
+var Transaction = ModelBase.extend({
+  tableName: 'transactions',
+
+  Bid: function() {
+    return this.belongsTo(Bid)
   }
 })
 
@@ -74,6 +86,7 @@ db.User = User
 db.Product = Product
 db.Category = Category
 db.Bid = Bid
+db.Transaction = Transaction
 
 db.knex = knex
 

@@ -33,7 +33,7 @@ router.get('/api/v1/products', productController.getAll) //?category_id=3 defaul
 // router.get('/api/v1/product/get_quote', /*productController.getPickupAndDeliverInfo,*/ uberRUSHController.getQuote)
 // ?product_id=3& buyer_id=4 
 
-// router.post('/api/v1/buy', /**/)
+router.post('/api/v1/buy', productController.buy, uberRUSHController.buy)
 // ?product_id=3 & buyer_id=4
 
 

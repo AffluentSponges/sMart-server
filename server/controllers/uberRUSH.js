@@ -1,4 +1,5 @@
 const db = require('../db/db')
+const transactionController = require('./transaction')
 const UberRUSH = require('uber-rush')
 const UberRUSHClient = UberRUSH.createClient({
     client_secret: process.env.UBER_RUSH_SECRET,
@@ -69,6 +70,20 @@ controller.getQuote = function(req, res) {
   })
 }
 
+controller.buy = function(req, res) {
+    console.log('buy uberRUSH')
+
+  var product_id = req.body.product_id
+  var buyer_id = req.body.buyer_id
+
+  db.Product.where({id: product_id}).fetch({withRelated: ['bid']})
+  .then(product => {
+    console.log(product)
+    res.send(product)
+  })
+}
+
+
 controller.confirmDelivery = function(req, res) {
   //   .then (() => {
   //   return delivery.confirm()
@@ -82,13 +97,8 @@ controller.webhook = function(req, res) {
   console.log('received uber webhook')
 
   var status = req.body.meta.status
+  var delivery_id = req.body.meta.resource_id
 
-  if(status === 'processing') {
-    console.log('status: ', status)
-  }
-  if(status === 'no_couriers_available') {
-    
-  }
   if(status === 'en_route_to_pickup') {
     /*
     update associated transaction
@@ -132,6 +142,12 @@ controller.webhook = function(req, res) {
 
     */
   }
+  if(status === 'processing') {
+    console.log('status: ', status)
+  }
+  if(status === 'no_couriers_available') {
+    console.log('status: ', status) 
+  }
   if(status === 'scheduled') {
     console.log('status: ', status)
   }
@@ -154,13 +170,5 @@ controller.webhook = function(req, res) {
     console.log('status: ', status)
   }
 }
-
-
-
-
-
-
-
-
 
 module.exports = controller
