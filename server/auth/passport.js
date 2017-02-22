@@ -1,8 +1,6 @@
 require('dotenv').config();
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const db = require('../db/db');
-const config = require('./config').authConfig;
-const checkUser = require('./config').checkConfig;
 const passport = require('passport');
 
 module.exports = (passport) => {
