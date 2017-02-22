@@ -17,24 +17,24 @@ var auth = require('./auth/helpers')
 // router.get('/session', userController.session.get);
 
 
-router.get('/api/v1/categories', categoryController.getAll)
-router.get('/api/v1/products', productController.getAll) //?category_id=3
+router.get('/api/v1/categories', categoryController.getAll) 
+router.get('/api/v1/products', productController.getAll) //?category_id=3 default sold=false
 // router.get('/api/v1/product') //?id=3
 
 // router.get('/api/v1/user') //?id=3
-// router.post('/api/v1/user/update') {location, phone_number, etc}
+// router.post('/api/v1/user') {location, phone_number, etc}
 
 // router.post('/api/v1/product') {location, item info, image_urls, etc}
 
-// router.get('/api/v1/user/products_for_sale')?id=3&sold=true or sold=false
-// router.get('/api/v1/user/products_bought')?id=3&sold=true or sold=false
+// router.get('/api/v1/products')?user_id=3&sold=true or sold=false
+// router.get('/api/v1/products')?user_id=3&sold=true or sold=false
 
 
 // router.get('/api/v1/product/get_quote', /*productController.getPickupAndDeliverInfo,*/ uberRUSHController.getQuote)
 // ?product_id=3& buyer_id=4 
 
 // router.post('/api/v1/buy', /**/)
-// ?product_id=3 $ buyer_id=4
+// ?product_id=3 & buyer_id=4
 
 
 
