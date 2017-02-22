@@ -1,20 +1,26 @@
-var router = require('express').Router()
+const router = require('express').Router()
 const path = require('path');
+const passport = require('passport');
 var categoryController = require('./controllers/category')
 var productController = require('./controllers/product')
-var uberRUSHController = require('./controllers/uberRUSH')
+var uberRUSHController = require('./controllers/uberRUSH');
 
 
-// Routes for signup, signin, and signout
+// Routes for login and logout
 
-// router.post('/signup', userController.signup.post);
+router.get('/login', passport.authenticate('google', { scope : ['profile', 'email'] }));
+router.get('/auth/google/callback',
+	passport.authenticate('google', {
+    	successRedirect : '/',
+    	failureRedirect : '/login'
+	})
+);
 
-// router.post('/signin', userController.signin.post);
-
-// router.post('/signout', userController.signout.post);
-
-// router.get('/session', userController.session.get);
-
+router.get('/logout', function(req, res) {
+  req.logout();
+  req.session.destroy();
+  res.redirect('/');
+});
 
 router.get('/api/v1/categories', categoryController.getAll)
 // router.get('/api/v1/test', categoryController.test)
@@ -30,10 +36,5 @@ router.get('/', (req, res, next) => {
   if(req.path.split('/')[1] === 'static') return next();
   res.sendFile(path.resolve(__dirname, '../client/public/index.html'));
 });
-
-// router.get('*', (req, res, next) => {
-//   if(req.path.split('/')[1] === 'static') return next();
-//   res.sendFile(path.resolve(__dirname, '../client/public/index.html'));
-// });
 
 module.exports = router
