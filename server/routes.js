@@ -5,18 +5,16 @@ var productController = require('./controllers/product')
 var uberRUSHController = require('./controllers/uberRUSH')
 var auth = require('./auth/helpers')
 
-/** SIGN UP, SIGN IN, SIGN OUT **/
 
 // Routes for signup, signin, and signout
 
-/** FOR DANIEL TO FILL IN **/
-// router.post('/api/v1/signup', userController.signup.post);
+// router.post('/signup', userController.signup.post);
 
-// router.post('/api/v1/signin', userController.signin.post);
+// router.post('/signin', userController.signin.post);
 
-// router.post('/api/v1/signout', userController.signout.post);
+// router.post('/signout', userController.signout.post);
 
-// router.get('/api/v1/session', userController.session.get);
+// router.get('/session', userController.session.get);
 
 
 router.get('/api/v1/categories', categoryController.getAll)

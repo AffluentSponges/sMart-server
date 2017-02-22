@@ -36,6 +36,9 @@ jspm_packages
 # Optional REPL history
 .node_repl_history
 
+# google api key
+config
+
 
 .env
 client/public/bundle.js
