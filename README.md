@@ -28,7 +28,7 @@ save and close the ```.env``` file
 
 ```npm run seed-db``` to seed the database with some dummy data
 
-```npm start```
+```npm run dev``` to run on a dev environment
 
 
 

@@ -3,7 +3,7 @@ import { Header, Icon, Image, Button, Container, Menu, Segment } from 'semantic-
 
 
 class MenuExampleSecondaryPointing extends React.Component {
-  state = { activeItem: 'home' }
+  state = { activeItem: 'selling' }
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 
@@ -13,9 +13,9 @@ class MenuExampleSecondaryPointing extends React.Component {
     return (
       <div>
         <Menu pointing secondary>
-          <Menu.Item name='home' active={activeItem === 'home'} onClick={this.handleItemClick} />
-          <Menu.Item name='messages' active={activeItem === 'messages'} onClick={this.handleItemClick} />
-          <Menu.Item name='friends' active={activeItem === 'friends'} onClick={this.handleItemClick} />
+          <Menu.Item name='delivery' active={activeItem === 'delivery'} onClick={this.handleItemClick} />
+          <Menu.Item name='selling' active={activeItem === 'selling'} onClick={this.handleItemClick} />
+          <Menu.Item name='sold' active={activeItem === 'sold'} onClick={this.handleItemClick} />
         </Menu>
 
         <Segment>
@@ -25,9 +25,6 @@ class MenuExampleSecondaryPointing extends React.Component {
     )
   }
 }
-
-
-
 
 class Profile extends React.Component {
   constructor(props) {
