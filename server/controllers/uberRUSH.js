@@ -7,12 +7,7 @@ const UberRUSHClient = UberRUSH.createClient({
 })
 
 
-var controller = {}
-
-controller.getQuote = function(req, res) {
-  console.log('getting Quote')
-
-  var delivery = UberRUSHClient.createDelivery({
+var delivery = UberRUSHClient.createDelivery({
       item: {
           title: 'Chocolate bar',
           quantity: 1,
@@ -20,40 +15,47 @@ controller.getQuote = function(req, res) {
       },
       pickup: {
           contact: {
-              first_name: 'Ryan',
-              last_name: 'Cheney',
+              first_name: 'Brenner',
+              last_name: 'Spear',
               phone: {
                 number: "+14152229670"
               }
           },
           location: {
-              address: '64 Seabring St',
-              city: 'Brooklyn',
-              state: 'NY',
-              postal_code: '11231',
+              address: '420 baker st',
+              city: 'San Francisco',
+              state: 'CA',
+              postal_code: '94117',
               country: 'US'
           }
       },
       dropoff: {
           contact: {
-              first_name: 'Karen',
-              last_name: 'Holmes',
+              first_name: 'Derek',
+              last_name: 'Young',
               phone: {
                 number: "+14152229670"
               }
           },
           location: {
-              address: '80 Willoughby St',
-              city: 'Brooklyn',
-              state: 'NY',
-              postal_code: '11201',
+              address: '944 Market St',
+              city: 'San Francisco',
+              state: 'CA',
+              postal_code: '94102',
               country: 'US'
           }
       }
   });
 
+var controller = {}
+
+controller.getQuote = function(req, res) {
+  console.log('getting Quote')
+
+  //create quote from req
   delivery.quote()
   .then(quotes => {
+    //send back delivery fee, est ETA, delivery
     return res.json(quotes)
   })
   .then (() => {
@@ -63,31 +65,91 @@ controller.getQuote = function(req, res) {
     console.log(confirmation)
   })
   .catch(err => {
-    res.json(err)
+    // res.json(err)
   })
+}
 
-  delivery.on('status', status => {
-    console.log('Delivery status: ', status)
-  })
-
-  delivery.on('dropoff_eta', eta => {
-    console.log('The dropoff time is now estimated to be in ' + eta + ' minutes')
-  })
-
-  delivery.on('pickup_eta', eta => {
-    console.log('Your item will be picked up in approximately ' + eta + ' minutes')
-  })
-
-  delivery.on('location', location => {
-    console.log('Courier location: ', location); 
-  })
-
+controller.confirmDelivery = function(req, res) {
+  //   .then (() => {
+  //   return delivery.confirm()
+  // })
+  // .then(confirmation => {
+  //   console.log(confirmation)
+  // })
 }
 
 controller.webhook = function(req, res) {
   console.log('received uber webhook')
 
-  console.log('status: ', req.body.meta.status)
+  var status = req.body.meta.status
+
+  if(status === 'processing') {
+    console.log('status: ', status)
+  }
+  if(status === 'no_couriers_available') {
+    
+  }
+  if(status === 'en_route_to_pickup') {
+    /*
+    update associated transaction
+      est_pickup_time_and_date
+      est_deliver_time_and_date
+
+    notify seller
+
+    notify buyer
+    */
+  }
+  if(status === 'at_pickup') {
+    //notify seller
+  }
+  if(status === 'en_route_to_dropoff') {
+    /*
+    update associated transaction
+      actual_pickup_time_and_date
+      est_deliver_time_and_date
+
+    notify buyer
+    */
+  }
+  if(status === 'at_dropoff') {
+    //notify buyer
+  }
+  if(status === 'completed') {
+    /*
+    update associated transaction
+      actual_delivery_time_and_date
+      est_deliver_time_and_date
+  
+    update bid/transaction
+      charge buyer
+      pay seller
+
+    //notify seller
+
+    */
+  }
+  if(status === 'scheduled') {
+    console.log('status: ', status)
+  }
+  if(status === 'client_canceled') {
+    console.log('status: ', status)
+  }
+  if(status === 'returning') {
+    console.log('status: ', status)
+  }
+  if(status === 'returned') {
+    console.log('status: ', status)
+  }
+  if(status === 'unable_to_return') {
+    console.log('status: ', status)
+  }
+  if(status === 'unable_to_deliver') {
+    console.log('status: ', status)
+  }
+  if(status === 'unknown') {
+    console.log('status: ', status)
+  }
 }
 
 
