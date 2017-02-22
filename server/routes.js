@@ -3,7 +3,6 @@ const path = require('path');
 var categoryController = require('./controllers/category')
 var productController = require('./controllers/product')
 var uberRUSHController = require('./controllers/uberRUSH')
-var auth = require('./auth/helpers')
 
 
 // Routes for signup, signin, and signout
