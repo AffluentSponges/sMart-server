@@ -17,16 +17,32 @@ app.use(morgan('combined'));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+require('./config/passport')(passport);
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(session({
   secret: process.env.SESSION_SECRET_KEY,
   resave: false,
   saveUninitialized: true
 }));
-app.use(passport.initialize());
-app.use(passport.session());
-
 
 app.use(express.static(__dirname + '/client/public'));
+
+app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
+app.get('/auth/google/callback',
+	passport.authenticate('google', {
+    	successRedirect : '/',
+    	failureRedirect : '/login'
+	})
+);
+
+app.get('/logout', function(req, res) {
+  req.logout();
+  req.session.destroy();
+  res.redirect('/');
+});
+
+
 
 app.use('', router);
 
