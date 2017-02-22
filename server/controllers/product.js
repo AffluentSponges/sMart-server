@@ -10,4 +10,13 @@ controller.getAll = function (req, res) {
   })
 }
 
+// controller.test = function(req, res) {
+//   console.log('in test request')
+//   var name = req.query.name
+//   db.Category.where(options).fetch({withRelated: ['products']})
+//   .then( category => {
+//     res.json(category)
+//   })
+// }
+
 module.exports = controller
