@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const passport = require('passport');
 const path = require('path');
+const passportAuth = require('./server/auth/passport');
 var router = require('./server/routes');
 
 //use .env for port number
@@ -17,7 +18,7 @@ app.use(morgan('combined'));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-require('./config/passport')(passport);
+passportAuth(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(session({
