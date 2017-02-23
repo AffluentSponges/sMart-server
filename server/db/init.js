@@ -14,13 +14,13 @@ knex.schema.hasTable('transactions')
   console.log('dropping transactions table if it exists')
   return exists ? knex.schema.dropTable('transactions') : null
 })
-.then(() => {
-  return knex.schema.hasTable('bids')
-}) 
-.then(exists => {
-  console.log('dropping bids table if it exists')
-  return exists ? knex.schema.dropTable('bids') : null
-})
+// .then(() => {
+//   return knex.schema.hasTable('bids')
+// }) 
+// .then(exists => {
+//   console.log('dropping bids table if it exists')
+//   return exists ? knex.schema.dropTable('bids') : null
+// })
 .then(() => {
   return knex.schema.hasTable('products')
 })
@@ -102,25 +102,26 @@ knex.schema.hasTable('transactions')
   //no native knex way to add this
   return knex.raw('ALTER TABLE products ADD COLUMN image_links text[]')
 })
-.then(() => {
-  console.log('creating bids table')
-  return knex.schema.createTable('bids', b => {
-          b.increments()
-          b.integer('user_id').references('id').inTable('users').notNullable()
-          b.integer('product_id').references('id').inTable('products')
-          b.decimal('offer_price')
-          b.timestamp('created_at').notNullable().defaultTo(knex.raw('now()'))
-          b.timestamp('updated_at').notNullable().defaultTo(knex.raw('now()'))
-          // b.string('message', 1023)
-          // b.boolean('accepted')
-          // b.dateTime('preferred_time')
-        })
-})
+// .then(() => {
+//   console.log('creating bids table')
+//   return knex.schema.createTable('bids', b => {
+//           b.increments()
+//           b.integer('user_id').references('id').inTable('users').notNullable()
+//           b.integer('product_id').references('id').inTable('products')
+//           b.decimal('offer_price')
+//           b.timestamp('created_at').notNullable().defaultTo(knex.raw('now()'))
+//           b.timestamp('updated_at').notNullable().defaultTo(knex.raw('now()'))
+//           // b.string('message', 1023)
+//           // b.boolean('accepted')
+//           // b.dateTime('preferred_time')
+//         })
+// })
 .then(() => {
   console.log('created transactions table')
   return knex.schema.createTable('transactions', t => {
           t.increments()
-          t.integer('bid_id').references('id').inTable('bids').notNullable()
+          t.integer('user_id').references('id').inTable('users').notNullable() //buyer
+          t.integer('product_id').references('id').inTable('products').notNullable()
           t.decimal('sale_price')
           t.string('status') //buyed_paid, product_in_transit, seller_paid_out (should be enum but oh well)
           t.string('uber_delivery_id').unique()

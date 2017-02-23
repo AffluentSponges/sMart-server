@@ -9,6 +9,9 @@ seedData.usersArray = [
   password: bcrypt.hashSync('testpassword'),
   wallet_address: 'none',
   address: '400 baker st',
+  city: 'San Francisco',
+  state: 'CA',
+  country: 'US',
   postal_code: '94117',
   phone_number: '111-222-3333',
   preferred_time: '16:30:00 PST'
@@ -20,6 +23,9 @@ seedData.usersArray = [
   password: bcrypt.hashSync('testpassword'),
   wallet_address: 'none',
   address: '944 market st',
+  city: 'San Francisco',
+  state: 'CA',
+  country: 'US',
   postal_code: '94117',
   phone_number: '111-222-4444',
   preferred_time: '11:30:00 PST'
@@ -31,6 +37,9 @@ seedData.usersArray = [
   password: bcrypt.hashSync('testpassword'),
   wallet_address: 'none',
   address: '556 mission st',
+  city: 'San Francisco',
+  state: 'CA',
+  country: 'US',
   postal_code: '94117',
   phone_number: '111-222-4444',
   preferred_time: '9:30:00 PST'
@@ -42,6 +51,9 @@ seedData.usersArray = [
   password: bcrypt.hashSync('testpassword'),
   wallet_address: 'none',
   address: '200 Valencia st',
+  city: 'San Francisco',
+  state: 'CA',
+  country: 'US',
   postal_code: '94117',
   phone_number: '111-222-4444',
   preferred_time: '20:30:00 PST'

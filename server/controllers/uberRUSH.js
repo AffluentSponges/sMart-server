@@ -8,45 +8,53 @@ const UberRUSHClient = UberRUSH.createClient({
 })
 
 
-var delivery = UberRUSHClient.createDelivery({
-      item: {
-          title: 'Chocolate bar',
-          quantity: 1,
-          is_fragile: true
+var createDeliveryObj = function(productWithRelatedData) {
+  p = productWithRelatedData
+  // console.log(p)
+  const deliveryObj = {
+    order_reference_id: p.id.toString(),
+    item: {
+      title: p.attributes.title,
+      quantity: p.attributes.quantity,
+      is_fragile: false
+    },
+    pickup: {
+      contact: {
+        first_name: p.relations.seller.attributes.first_name,
+        last_name: p.relations.seller.attributes.last_name,
+        phone: {
+          number: p.relations.seller.attributes.phone_number
+        }
       },
-      pickup: {
-          contact: {
-              first_name: 'Brenner',
-              last_name: 'Spear',
-              phone: {
-                number: "+14152229670"
-              }
-          },
-          location: {
-              address: '420 baker st',
-              city: 'San Francisco',
-              state: 'CA',
-              postal_code: '94117',
-              country: 'US'
-          }
-      },
-      dropoff: {
-          contact: {
-              first_name: 'Derek',
-              last_name: 'Young',
-              phone: {
-                number: "+14152229670"
-              }
-          },
-          location: {
-              address: '944 Market St',
-              city: 'San Francisco',
-              state: 'CA',
-              postal_code: '94102',
-              country: 'US'
-          }
+      location: {
+        address: p.relations.seller.attributes.address,
+        address_2: p.relations.seller.attributes.address_2,
+        city: p.relations.seller.attributes.city,
+        state: p.relations.seller.attributes.state,
+        postal_code: p.relations.seller.attributes.postal_code,
+        country: p.relations.seller.attributes.country
       }
-  });
+    },
+    dropoff: {
+      contact: {
+        first_name: p.relations.buyer.attributes.first_name,
+        last_name: p.relations.buyer.attributes.last_name,
+        phone: {
+          number: p.relations.buyer.attributes.phone_number
+        }
+      },
+      location: {
+        address: p.relations.buyer.attributes.address,
+        address_2: p.relations.buyer.attributes.address_2,
+        city: p.relations.buyer.attributes.city,
+        state: p.relations.buyer.attributes.state,
+        postal_code: p.relations.buyer.attributes.postal_code,
+        country: p.relations.buyer.attributes.country
+      }
+    }
+  }
+  return UberRUSHClient.createDelivery(deliveryObj)
+}
 
 var controller = {}
 
@@ -70,19 +78,18 @@ controller.getQuote = function(req, res) {
   })
 }
 
-controller.buy = function(req, res) {
-    console.log('buy uberRUSH')
+controller.requestDelivery = function(req, res) {
+  console.log('buy uberRUSH')
 
   var product_id = req.body.product_id
-  var buyer_id = req.body.buyer_id
 
-  db.Product.where({id: product_id}).fetch({withRelated: ['bids']})
-  .then(product => {
-    console.log(product)
-    res.send(product)
+  db.Product.where({id: product_id}).fetch({withRelated: ['transaction', 'seller', 'buyer']})
+  .then(productWithRelatedData => {
+    var delivery = createDeliveryObj(productWithRelatedData)
+    delivery.confirm()
+    res.send(delivery)
   })
 }
-
 
 controller.confirmDelivery = function(req, res) {
   //   .then (() => {
@@ -143,7 +150,7 @@ controller.webhook = function(req, res) {
     */
   }
   if(status === 'processing') {
-    console.log('status: ', status)
+    console.log('status: ', req.body)
   }
   if(status === 'no_couriers_available') {
     console.log('status: ', status) 
@@ -172,3 +179,43 @@ controller.webhook = function(req, res) {
 }
 
 module.exports = controller
+
+// var delivery = UberRUSHClient.createDelivery({
+//       item: {
+//           title: 'Chocolate bar',
+//           quantity: 1,
+//           is_fragile: true
+//       },
+//       pickup: {
+//           contact: {
+//               first_name: 'Brenner',
+//               last_name: 'Spear',
+//               phone: {
+//                 number: "+14152229670"
+//               }
+//           },
+//           location: {
+//               address: '420 baker st',
+//               city: 'San Francisco',
+//               state: 'CA',
+//               postal_code: '94117',
+//               country: 'US'
+//           }
+//       },
+//       dropoff: {
+//           contact: {
+//               first_name: 'Derek',
+//               last_name: 'Young',
+//               phone: {
+//                 number: "+14152229670"
+//               }
+//           },
+//           location: {
+//               address: '944 Market St',
+//               city: 'San Francisco',
+//               state: 'CA',
+//               postal_code: '94102',
+//               country: 'US'
+//           }
+//       }
+//   });

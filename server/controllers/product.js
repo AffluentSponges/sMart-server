@@ -24,19 +24,12 @@ controller.buy = function(req, res, next) {
     return product.set({buyer_id: buyer_id, sold: true}).save()
   })
   .then(product => {
-    console.log('product: ', product)
-    return db.Bid.upsert({
-      user_id: product.attributes.buyer_id,
-      product_id: product.id,
-      offer_price: product.attributes.asking_price
-    })
-  })
-  .then(bid => {
     var date = new Date()
     date = date.toUTCString()
-    return db.Transaction.upsert({bid_id: bid.id},
+    return db.Transaction.upsert({product_id: product.id},
       {
-      sale_price: bid.attributes.offer_price,
+      user_id: product.attributes.buyer_id,
+      sale_price: product.attributes.asking_price,
       status: 'processing_buyer_payment',
       sale_time_and_date: date
     })

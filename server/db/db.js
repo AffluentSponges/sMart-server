@@ -21,24 +21,28 @@ var User = ModelBase.extend({
     return this.hasMany(Product)
   },
 
-  bids: function() {
-    return this.hasMany(Bid)
+  transactions: function() {
+    return this.hasMany(Transaction)
   }
 })
 
 var Product = ModelBase.extend({
   tableName: 'products',
 
-  user: function() {
+  seller: function() {
     return this.belongsTo(User)
+  },
+
+  buyer: function() {
+    return this.belongsTo(User, 'buyer_id')
   },
 
   category: function() {
     return this.belongsTo(Category)
   },
   
-  bids: function() {
-    return this.hasMany(Bid)
+  transaction: function() {
+    return this.hasOne(Transaction)
   }
 })
 
@@ -58,34 +62,38 @@ var Category = ModelBase.extend({
   }
 })
 
-var Bid = ModelBase.extend({
-  tableName: 'bids',
+// var Bid = ModelBase.extend({
+//   tableName: 'bids',
 
-  product: function() {
-    return this.belongsTo(Product)
-  },
+//   product: function() {
+//     return this.belongsTo(Product)
+//   },
+
+//   user: function() {
+//     return this.belongsTo(User)
+//   },
+
+//   transaction: function() {
+//     return this.hasOne(Transaction)
+//   }
+// })
+
+var Transaction = ModelBase.extend({
+  tableName: 'transactions',
 
   user: function() {
     return this.belongsTo(User)
   },
 
-  transaction: function() {
-    return this.hasOne(Transaction)
-  }
-})
-
-var Transaction = ModelBase.extend({
-  tableName: 'transactions',
-
-  bid: function() {
-    return this.belongsTo(Bid)
+  product: function() {
+    return this.belongsTo(Product)
   }
 })
 
 db.User = User
 db.Product = Product
 db.Category = Category
-db.Bid = Bid
+// db.Bid = Bid
 db.Transaction = Transaction
 
 db.knex = knex
