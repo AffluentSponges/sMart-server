@@ -5,7 +5,7 @@ var knex = require('knex')({
   connection: process.env.DATABASE_URL,
 })
 
-console.log('Connecting to ' + process.env.PG_CONNECTION_STRING)
+console.log('Connecting to ' + process.env.DATABASE_URL)
 
 // console.log('Attempting to create User Table ', userTableExists)
 // console.log('Attemping to create Product Table')
@@ -122,11 +122,6 @@ console.log('dropping transactions table if it exists')
           p.timestamp('created_at').notNullable().defaultTo(knex.raw('now()'))
           p.timestamp('updated_at').notNullable().defaultTo(knex.raw('now()'))
           // p.dateTime('preferred_time_and_date')
-<<<<<<< HEAD
->>>>>>> 061edb87fee7bb9103c216d7854fc33c89f75d14
-=======
-
->>>>>>> 924e9ec6caff8e94315882d71c8a24f11e71fe60
         })
 })
 .then(() => {
@@ -177,26 +172,4 @@ console.log('dropping transactions table if it exists')
   knex.destroy()
   process.exit()
 })
-
-<<<<<<< HEAD
-
-<<<<<<< HEAD
-  // console.log('No Product Table created')
-=======
-
-
-
-
-
-
-
-
-
-
-
-
-
-
->>>>>>> 061edb87fee7bb9103c216d7854fc33c89f75d14
-=======
->>>>>>> 924e9ec6caff8e94315882d71c8a24f11e71fe60
+})

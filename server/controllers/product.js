@@ -10,6 +10,11 @@ controller.getAll = function (req, res) {
   })
 }
 
+<<<<<<< HEAD
+=======
+//seller_id & category_id need to be not hardcoded
+//can delete preferred_time_and_date
+>>>>>>> 6bba7721dab7c3f884e2762472e85ee9b4fb01ef
 controller.post = function(req, res) {
   db.Product.create(  {
   seller_id: 1,
@@ -36,5 +41,9 @@ controller.post = function(req, res) {
 //   })
 // }
 
+<<<<<<< HEAD
 
 module.exports = controller
+=======
+module.exports = controller
+>>>>>>> 6bba7721dab7c3f884e2762472e85ee9b4fb01ef
