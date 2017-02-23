@@ -64,7 +64,7 @@ router.post('/uber_webhook', uberRUSHController.webhook)
 router.post('/upload', upload, s3Handler)
 
 router.get('*', (req, res, next) => {
-  if(req.path.split('/')[1] === 'static') return next();
+  // if(req.path.split('/')[1] === 'static') return next();
   res.sendFile(path.resolve(__dirname, '../client/public/index.html'));
 });
 
