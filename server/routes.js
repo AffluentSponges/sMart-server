@@ -1,20 +1,32 @@
-var router = require('express').Router()
+const router = require('express').Router()
 const path = require('path');
+const passport = require('passport');
 var categoryController = require('./controllers/category')
 var productController = require('./controllers/product')
 var uberRUSHController = require('./controllers/uberRUSH')
+var upload = require('./s3/upload')
+var s3Handler = require('./s3/s3Handler')
+
+// Routes for login and logout
+
+router.get('/login', passport.authenticate('google', { scope : ['profile', 'email'] }));
+router.get('/auth/google/callback',
+	passport.authenticate('google', {
+    	successRedirect : '/',
+    	failureRedirect : '/login'
+	})
+);
 
 
-// Routes for signup, signin, and signout
+router.post('/postitem', (req, res) => {
+  productController.post(req, res)
+})
 
-// router.post('/signup', userController.signup.post);
-
-// router.post('/signin', userController.signin.post);
-
-// router.post('/signout', userController.signout.post);
-
-// router.get('/session', userController.session.get);
-
+router.get('/logout', function(req, res) {
+  req.logout();
+  req.session.destroy();
+  res.redirect('/');
+});
 
 router.get('/api/v1/categories', categoryController.getAll) 
 router.get('/api/v1/products', productController.getAll) //?category_id=3 default sold=false
@@ -32,7 +44,7 @@ router.get('/api/v1/products', productController.getAll) //?category_id=3 defaul
 // router.get('/api/v1/product/get_quote', /*productController.getPickupAndDeliverInfo,*/ uberRUSHController.getQuote)
 // ?product_id=3& buyer_id=4 
 
-// router.post('/api/v1/buy', /**/)
+router.post('/api/v1/buy', productController.buy, uberRUSHController.requestDelivery)
 // ?product_id=3 & buyer_id=4
 
 
@@ -49,10 +61,11 @@ router.get('/api/v1/products', productController.getAll) //?category_id=3 defaul
 
 router.post('/uber_webhook', uberRUSHController.webhook)
 
+router.post('/upload', upload, s3Handler)
+
 router.get('*', (req, res, next) => {
   if(req.path.split('/')[1] === 'static') return next();
   res.sendFile(path.resolve(__dirname, '../client/public/index.html'));
 });
-
 
 module.exports = router
