@@ -71,7 +71,6 @@ console.log('dropping transactions table if it exists')
 })
 .then(() => {
   console.log('creating products table')
-<<<<<<< HEAD
   return knex.schema.createTable('products', product => {
           product.increments()
           product.integer('seller_id').references('id').inTable('users').notNullable()
@@ -103,7 +102,7 @@ console.log('dropping transactions table if it exists')
           product.dateTime('actual_delivery_time_and_date')
           product.timestamp('created_at').notNullable().defaultTo(knex.raw('now()'))
           product.timestamp('updated_at').notNullable().defaultTo(knex.raw('now()'))
-=======
+
   return knex.schema.createTable('products', p => {
           p.increments()
           p.integer('seller_id').references('id').inTable('users').notNullable()
@@ -123,7 +122,11 @@ console.log('dropping transactions table if it exists')
           p.timestamp('created_at').notNullable().defaultTo(knex.raw('now()'))
           p.timestamp('updated_at').notNullable().defaultTo(knex.raw('now()'))
           // p.dateTime('preferred_time_and_date')
+<<<<<<< HEAD
 >>>>>>> 061edb87fee7bb9103c216d7854fc33c89f75d14
+=======
+
+>>>>>>> 924e9ec6caff8e94315882d71c8a24f11e71fe60
         })
 })
 .then(() => {
@@ -175,6 +178,7 @@ console.log('dropping transactions table if it exists')
   process.exit()
 })
 
+<<<<<<< HEAD
 
 <<<<<<< HEAD
   // console.log('No Product Table created')
@@ -194,3 +198,5 @@ console.log('dropping transactions table if it exists')
 
 
 >>>>>>> 061edb87fee7bb9103c216d7854fc33c89f75d14
+=======
+>>>>>>> 924e9ec6caff8e94315882d71c8a24f11e71fe60

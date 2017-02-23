@@ -10,7 +10,6 @@ controller.getAll = function (req, res) {
   })
 }
 
-<<<<<<< HEAD
 controller.post = function(req, res) {
   db.Product.create(  {
   seller_id: 1,
@@ -27,7 +26,7 @@ controller.post = function(req, res) {
   })
   res.end('all good homies')
 }
-=======
+
 // controller.test = function(req, res) {
 //   console.log('in test request')
 //   var name = req.query.name
@@ -36,6 +35,6 @@ controller.post = function(req, res) {
 //     res.json(category)
 //   })
 // }
->>>>>>> 061edb87fee7bb9103c216d7854fc33c89f75d14
+
 
 module.exports = controller
