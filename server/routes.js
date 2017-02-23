@@ -37,8 +37,8 @@ router.get('/api/v1/products', productController.getAll) //?category_id=3 defaul
 
 // router.post('/api/v1/product') {location, item info, image_urls, etc}
 
-// router.get('/api/v1/products')?user_id=3&sold=true or sold=false
-// router.get('/api/v1/products')?user_id=3&sold=true or sold=false
+// router.get('/api/v1/products')?user_id=3&sold=true
+// router.get('/api/v1/products')?user_id=3&sold=false
 
 
 // router.get('/api/v1/product/get_quote', /*productController.getPickupAndDeliverInfo,*/ uberRUSHController.getQuote)
@@ -64,7 +64,7 @@ router.post('/uber_webhook', uberRUSHController.webhook)
 router.post('/upload', upload, s3Handler)
 
 router.get('*', (req, res, next) => {
-  if(req.path.split('/')[1] === 'static') return next();
+  // if(req.path.split('/')[1] === 'static') return next();
   res.sendFile(path.resolve(__dirname, '../client/public/index.html'));
 });
 
