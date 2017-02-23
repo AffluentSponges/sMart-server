@@ -14,8 +14,6 @@ const categories = [
   'Other'
 ];
 
-//{ key: 'hat', text: 'Hat', value: 'hat' }
-
 const products = categories.map(function(category) {
   return { key: category, text: category, value: category };
 });
@@ -35,7 +33,7 @@ class PostItem extends Component {
 
   handleSubmit(e, { formData }) {
     e.preventDefault()
-    // this.setState({ formData })
+    this.setState({ formData })
     console.log(this.state.formData)
     axios.post('/postitem', (req, res) => {
       req.title = formData.title
@@ -102,12 +100,4 @@ class PostItem extends Component {
 }
 
 export default PostItem;
-
-
-
-//  <Form.Group widths='equal'>
-//    <Form.Input label='Address1' name='address1' placeholder='Address1' />
-//    <Form.Input label='Address2' name='address2' placeholder='Address2' />
-//    <Form.Input label='Zip code' name='zipcode' placeholder='Zip code' />
-//  </Form.Group>
 

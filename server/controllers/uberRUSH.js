@@ -1,10 +1,10 @@
 const db = require('../db/db')
 const UberRUSH = require('uber-rush')
-// const UberRUSHClient = UberRUSH.createClient({
-//     client_secret: process.env.UBER_RUSH_SECRET,
-//     client_id: process.env.UBER_RUSH_ID,
-//     sandbox: true // No couriers will actually be called if set
-// })
+const UberRUSHClient = UberRUSH.createClient({
+    client_secret: process.env.UBER_RUSH_SECRET,
+    client_id: process.env.UBER_RUSH_ID,
+    sandbox: true // No couriers will actually be called if set
+})
 
 
 var controller = {}
