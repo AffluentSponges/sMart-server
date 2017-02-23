@@ -3,17 +3,28 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const db = require('../db/db');
 const passport = require('passport');
 
+// module.exports = (passport) => {
+// 	passport.serializeUser((user, done) => {
+// 		done(null, user.id);
+// 	});
+// 	passport.deserializeUser((id, done) => {
+// 		db.User.findOne({
+// 			where: { id: user.id }
+// 		})
+// 		.then((user) => { done(null, user); })
+// 		.catch((err) => { done(err,null); });
+// 	});
+// };
+
 module.exports = (passport) => {
-	passport.serializeUser((user, done) => {
-		done(null, user.id);
-	});
-	passport.deserializeUser((id, done) => {
-		db.User.findOne({
-			where: { id: user.id }
-		})
-		.then((user) => { done(null, user); })
-		.catch((err) => { done(err,null); });
-	});
+    passport.serializeUser((user, done) => {
+        done(null, user.id);
+    });
+    passport.deserializeUser((id, done) => {
+        db.User.where({ id: user.id }).fetch()
+        .then((user) => { done(null, user); })
+        .catch((err) => { done(err,null); });
+    });
 };
 
 const GoogleConfig = {

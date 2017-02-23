@@ -24,8 +24,8 @@ module.exports = {
 
   logout(cb) {
     delete localStorage.token
-    if (cb) cb()
-    this.onChange(false)
+    // if (cb) cb()
+    // this.onChange(false)
   },
 
   loggedIn() {

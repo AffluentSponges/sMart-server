@@ -16,20 +16,27 @@ import CategoriesNav from './components/CategoriesNav.jsx';
 import ItemElement from './components/ItemElement.jsx';
 import ItemList from './components/ItemList.jsx';
 import data from './data.jsx'
+import auth from './auth/auth.js'
+import axios from 'axios';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      loggedIn: false,
       categories: [],
       currentCategory:'',
       items: []
     }
     this.currentCategoryHandler = this.currentCategoryHandler.bind(this);
+    this.logout = this.logout.bind(this);
+    this.axiosSignin = this.axiosSignin.bind(this);
   }
 
   componentDidMount() {
     this.setState({items: data.home});
+    this.setState({loggedIn: auth.loggedIn()});
+    console.log('loggedIn?: ', this.state.loggedIn);
   }
 
   currentCategoryHandler(category) {
@@ -38,10 +45,23 @@ class App extends React.Component {
     console.log('currentCategory is changed to ', category)
   }
 
+  logout() {
+    auth.logout()
+    this.props.router.replace('/')
+  }
+
+  axiosSignin() {
+    axios.get('/login')
+    .then(function(res) {
+      console.log(res.token)
+    })
+    .catch(this.setError);
+  }
+
   render() {
     return (
       <div>
-        <Header items={this.state.items}/>
+        <Header items={this.state.items} loggedIn={this.state.loggedIn} logout={this.logout} axiosSignin={this.axiosSignin}/>
         {React.cloneElement(this.props.children, {
           items: this.state.items,
           currentCategoryHandler: this.currentCategoryHandler
