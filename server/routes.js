@@ -15,25 +15,6 @@ var auth = require('./auth/helpers')
 
 // router.get('/session', userController.session.get);
 
-// formData = {
-//  title: "asdfasdf",
-//  address: "922 Folsom Street, San Francisco, CA, United States",
-//  imageUrl: "https://s3-us-west-1.amazonaws.com/affluentsponges/product_image/2116898781080181.jpg",
-//  details: "sdajglkadsflkasdjflkasdjflasjldfjalsdfasdf",
-//  category: "Fashion and Accessories"
-// }
-
-
-// {
-// "title":"dsafasdf",
-// "address1":"922 folsom",
-// "address2":"#521"
-// "zip":"723"
-// "imageUrl":"https://s3-us-west-1.amazonaws.com/affluentsponges/product_image/899091525183126.jpg",
-// "details":"fdasfasdgdasfdsfdsf",
-// "category":"Home and Garden"
-// }
-
 router.post('/postitem', (req, res) => {
   productController.post(req, res)
 })

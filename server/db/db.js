@@ -76,7 +76,7 @@ db.Category = Category
 db.Bid = Bid
 
 db.knex = knex
-// 
+
 module.exports = db
 
 
