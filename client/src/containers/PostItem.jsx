@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Button, Checkbox, Form, Input, Message, Radio, Select, TextArea, Grid } from 'semantic-ui-react'
-
+import axios from 'axios'
 import Autocomplete from '../components/Autocomplete.jsx'
 
 const categories = [
@@ -13,8 +13,6 @@ const categories = [
   'Movies, Books and Music',
   'Other'
 ];
-
-//{ key: 'hat', text: 'Hat', value: 'hat' }
 
 const products = categories.map(function(category) {
   return { key: category, text: category, value: category };
@@ -36,6 +34,13 @@ class PostItem extends Component {
   handleSubmit(e, { formData }) {
     e.preventDefault()
     this.setState({ formData })
+    console.log(this.state.formData)
+    axios.post('/postitem', (req, res) => {
+      req.title = formData.title
+    })
+      .then( (result) => {
+        console.log(result)
+      })
   }
 
   componentDidMount() {
@@ -96,10 +101,3 @@ class PostItem extends Component {
 
 export default PostItem;
 
-
-
-          //  <Form.Group widths='equal'>
-          //    <Form.Input label='Address1' name='address1' placeholder='Address1' />
-          //    <Form.Input label='Address2' name='address2' placeholder='Address2' />
-          //    <Form.Input label='Zip code' name='zipcode' placeholder='Zip code' />
-          //  </Form.Group>

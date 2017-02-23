@@ -29,16 +29,16 @@ var User = ModelBase.extend({
 var Product = ModelBase.extend({
   tableName: 'products',
 
-  user: function() {
-    return this.belongsTo(User)
-  },
-
   category: function() {
     return this.belongsTo(Category)
   },
   
   bids: function() {
     return this.hasMany(Bid)
+  },
+
+  user: function() {
+    return this.belongsTo(User)
   }
 })
 
@@ -76,7 +76,7 @@ db.Category = Category
 db.Bid = Bid
 
 db.knex = knex
-
+// 
 module.exports = db
 
 
