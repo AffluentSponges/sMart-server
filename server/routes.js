@@ -37,8 +37,8 @@ router.get('/api/v1/products', productController.getAll) //?category_id=3 defaul
 
 // router.post('/api/v1/product') {location, item info, image_urls, etc}
 
-// router.get('/api/v1/products')?user_id=3&sold=true or sold=false
-// router.get('/api/v1/products')?user_id=3&sold=true or sold=false
+// router.get('/api/v1/products')?user_id=3&sold=true
+// router.get('/api/v1/products')?user_id=3&sold=false
 
 
 // router.get('/api/v1/product/get_quote', /*productController.getPickupAndDeliverInfo,*/ uberRUSHController.getQuote)
