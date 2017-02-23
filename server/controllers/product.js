@@ -10,6 +10,7 @@ controller.getAll = function (req, res) {
   })
 }
 
+
 controller.post = function(req, res) {
   db.Product.create(  {
   seller_id: 1,
@@ -26,5 +27,14 @@ controller.post = function(req, res) {
   })
   res.end('all good homies')
 }
+
+// controller.test = function(req, res) {
+//   console.log('in test request')
+//   var name = req.query.name
+//   db.Category.where(options).fetch({withRelated: ['products']})
+//   .then( category => {
+//     res.json(category)
+//   })
+// }
 
 module.exports = controller
