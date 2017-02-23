@@ -15,6 +15,8 @@ class Header extends React.Component {
 
   render() {
     const { activeItem } = this.state
+    console.log('this.props.loggedIn', this.props.loggedIn);
+
     return (
       <Menu>
         <Menu.Item as={Link} to='/'name='smart' active={activeItem === 'smart'} onClick={this.handleItemClick}>SMart</Menu.Item>
@@ -22,15 +24,23 @@ class Header extends React.Component {
           <Search items={this.props.items}/>
         </Menu.Item>
         <Menu.Menu position='right'>
-          <Dropdown item text='Hi Mark!'>
-            <Dropdown.Menu>
-              <Dropdown.Item as={Link} to='/u/1234123'>My Profile</Dropdown.Item>
-              <Divider />
-              <Dropdown.Item>Log Out</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-          <Menu.Item as={Link} to='/login' name='Log in' active={activeItem === 'Log in'} onClick={this.handleItemClick} >
-            <Button basic color='red'>
+          {this.props.loggedIn ? (
+            <Dropdown item text='Hello!'>
+              <Dropdown.Menu>
+                <Dropdown.Item as={Link} to='/u/1234123'>My Profile</Dropdown.Item>
+                <Divider />
+                <Dropdown.Item onClick={this.props.logout}>Log Out</Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          ) : (
+            <Menu.Item as={Link} to='/login' name='Log in' active={activeItem === 'Log in'} onClick={this.handleItemClick} onClick={this.props.axiosSignin}>
+              <Button basic color='red' >
+                Log in
+              </Button>
+            </Menu.Item>
+          )}
+          <Menu.Item name='Log in' onClick={this.props.axiosSignin}>
+            <Button basic color='red' >
               Log in
             </Button>
           </Menu.Item>
