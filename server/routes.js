@@ -4,7 +4,6 @@ const passport = require('passport');
 var categoryController = require('./controllers/category')
 var productController = require('./controllers/product')
 var uberRUSHController = require('./controllers/uberRUSH')
-var auth = require('./auth/helpers')
 var upload = require('./s3/upload')
 var s3Handler = require('./s3/s3Handler')
 
