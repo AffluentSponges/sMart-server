@@ -35,9 +35,6 @@ class ItemDetail extends React.Component {
                 <h1>$180</h1>
               </Grid.Row>
               <Grid.Row>
-                <h1>urber rush fee</h1>
-              </Grid.Row>
-              <Grid.Row>
                 <h2>{itemObj.title}</h2>
               </Grid.Row>
               <Divider section />
