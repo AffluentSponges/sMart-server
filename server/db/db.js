@@ -30,7 +30,7 @@ var Product = ModelBase.extend({
   tableName: 'products',
 
   seller: function() {
-    return this.belongsTo(User)
+    return this.belongsTo(User, 'seller_id')
   },
 
   buyer: function() {
@@ -99,24 +99,3 @@ db.Transaction = Transaction
 db.knex = knex
 
 module.exports = db
-
-
-//examples
-// User.create({ firstName: 'Grayson' })
-// .then(function () {
-//   return User.findOne({ firstName: 'Grayson' }, { require: true });
-// })
-// .then(function (grayson) {
-//   // passes patch: true to .save() by default
-//   return User.update({ firstName: 'Basil' }, { id: grayson.id });
-// })
-// .then(function (basil) {
-//   return User.destroy({ id: basil.id });
-// })
-// .then(function () {
-//   return User.findAll();
-// })
-// .then(function (collection) {
-//   console.log(collection.models.length); // => 0
-// })
-

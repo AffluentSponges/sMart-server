@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { Button, Checkbox, Form, Input, Message, Radio, Select, TextArea, Grid } from 'semantic-ui-react'
+import axios from 'axios'
 
 import Autocomplete from '../components/Autocomplete.jsx'
-
+import FileUpload from '../components/FileUpload.jsx'
 const categories = [
   'Fashion and Accessories',
   'Home and Garden',
@@ -14,8 +15,6 @@ const categories = [
   'Other'
 ];
 
-//{ key: 'hat', text: 'Hat', value: 'hat' }
-
 const products = categories.map(function(category) {
   return { key: category, text: category, value: category };
 });
@@ -23,10 +22,14 @@ const products = categories.map(function(category) {
 class PostItem extends Component {
   constructor(props) {
     super(props)
-    this.state = { formData: {} }
+    this.state = { 
+      formData: {},
+      imageUrl: ''
+    }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onFocus = this.onFocus.bind(this);
+    this.handleImageUrl = this.handleImageUrl.bind(this);
   }
 
   handleChange(e, { value }) {
@@ -36,6 +39,13 @@ class PostItem extends Component {
   handleSubmit(e, { formData }) {
     e.preventDefault()
     this.setState({ formData })
+    console.log(this.state.formData)
+    axios.post('/postitem', (req, res) => {
+      req.title = formData.title
+    })
+      .then( (result) => {
+        console.log(result)
+      })
   }
 
   componentDidMount() {
@@ -61,32 +71,44 @@ class PostItem extends Component {
   }
 
   onFocus() {
-
       console.log('hoho')
-
   }
 
 
   render() {
     const { formData, value } = this.state
+    let image = null;
+    let src = 'http://react.semantic-ui.com/assets/images/wireframe/image.png'
+    if (this.state.imageUrl) {
+      src = this.state.imageUrl;
+    }
     return (
       <Grid centered>
-        <Grid.Column width={10}>
+        <Grid.Row>
+          <FileUpload handleImageUrl={this.handleImageUrl}/>  
+        </Grid.Row>
+        <Grid.Row>
+          <Image.Group size='small'>
+            <Image src={src} />
+            <Image src={src} />
+            <Image src={src} />
+            <Image src={src} />
+          </Image.Group>         
+        </Grid.Row>
+        <Grid.Column width={11}>
           <Form onSubmit={this.handleSubmit}>
             <Form.Group widths='equal'>
               <Form.Input label='Title' name='title' placeholder='Title' />
             </Form.Group>
-            <Form.Field>
-              <label>Autocomplete Address</label>
-              <Autocomplete name='autocomplete'/>
-            </Form.Field>
+            <Form.Group widths='equal'>
+              <Form.Input label='Address 1' name='address1' placeholder='922 folsom' />
+              <Form.Input label='Address2' name='address2' placeholder='#153' />
+              <Form.Input label='Zip' name='zip' placeholder='zip' />
+            </Form.Group>
             <Form.Select label='Category' name='category' options={products} placeholder='Choose category...' search />
             <Form.TextArea name='details' label='Details' placeholder='Anything else we should know?(optinal)' rows='3' />
             <Button primary type='submit'>Show me the money!</Button>
 
-            <Message>
-              <pre>formData: {JSON.stringify(formData, null, 2)}</pre>
-            </Message>
           </Form>
         </Grid.Column>
       </Grid>
@@ -96,7 +118,15 @@ class PostItem extends Component {
 
 export default PostItem;
 
+            // <Message>
+              // <pre>formData: {JSON.stringify(this.state, null, 2)}</pre>
+            // </Message>
 
+
+            //<Form.Field>
+            //  <label>Autocomplete Address</label>
+            //  <Autocomplete name='autocomplete'/>
+            //</Form.Field>
 
           //  <Form.Group widths='equal'>
           //    <Form.Input label='Address1' name='address1' placeholder='Address1' />

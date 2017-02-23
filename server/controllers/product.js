@@ -10,7 +10,6 @@ controller.getAll = function (req, res) {
   })
 }
 
-
 controller.buy = function(req, res, next) {
   console.log('buy Product')
 
@@ -41,15 +40,23 @@ controller.buy = function(req, res, next) {
     console.log('PRODUCT CONTROLLER BUY ERROR')
     console.log(err)
   })
-}
 
-// controller.test = function(req, res) {
-//   console.log('in test request')
-//   var name = req.query.name
-//   db.Category.where(options).fetch({withRelated: ['products']})
-//   .then( category => {
-//     res.json(category)
-//   })
-// }
+//seller_id & category_id need to be not hardcoded
+//can delete preferred_time_and_date
+controller.post = function(req, res) {
+  db.Product.create(  {
+  seller_id: 1,
+  address: req.body.address,
+  address_2: req.body.address_2,
+  postal_code: req.body.zip,
+  buyer_id: null,
+  category_id: 1,
+  title: req.body.title,
+  description: req.body.details,
+  asking_price: req.body.price,
+  image_links: [req.body.imageUrl],
+  })
+  res.end('all good homies')
+}
 
 module.exports = controller

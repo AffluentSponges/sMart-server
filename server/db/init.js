@@ -7,8 +7,6 @@ var knex = require('knex')({
 
 console.log('Connecting to ' + process.env.DATABASE_URL)
 
-// console.log('Attempting to create User Table ', userTableExists)
-// console.log('Attemping to create Product Table')
 knex.schema.hasTable('transactions')
 .then(exists => {
   console.log('dropping transactions table if it exists')
@@ -78,7 +76,7 @@ knex.schema.hasTable('transactions')
   console.log('creating products table')
   return knex.schema.createTable('products', p => {
           p.increments()
-          p.integer('user_id').references('id').inTable('users').notNullable()
+          p.integer('seller_id').references('id').inTable('users').notNullable()
           p.integer('buyer_id').references('id').inTable('users')
           p.integer('category_id').references('id').inTable('categories').notNullable()
           p.string('title')
@@ -146,19 +144,3 @@ knex.schema.hasTable('transactions')
   knex.destroy()
   process.exit()
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
