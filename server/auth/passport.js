@@ -23,19 +23,14 @@ const GoogleConfig = {
 };
 
 passport.use(new GoogleStrategy(GoogleConfig, function(token, refreshToken, profile, done) {
-	console.log('PROFILE', profile);
-
     process.nextTick(function() {
 
         db.User.where({ 'email' : profile.emails[0].value })
         .fetch()
         .then(function(user) {
-          	console.log('USER', user)
             if (user) {
-            	console.log('USER FOUND');
                 return done(null, user);
             } else {
-            	console.log('USER NOT FOUND: CREATING');
                 new db.User({
                 	username: profile.emails[0].value.split('@')[0],
                 	first_name: profile.displayName.split(' ')[0],

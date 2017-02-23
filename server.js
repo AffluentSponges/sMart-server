@@ -28,22 +28,6 @@ app.use(session({
 
 app.use(express.static(__dirname + '/client/public'));
 
-app.get('/login', passport.authenticate('google', { scope : ['profile', 'email'] }));
-app.get('/auth/google/callback',
-	passport.authenticate('google', {
-    	successRedirect : '/',
-    	failureRedirect : '/login'
-	})
-);
-
-app.get('/logout', function(req, res) {
-  req.logout();
-  req.session.destroy();
-  res.redirect('/');
-});
-
-
-
 app.use('', router);
 
 app.listen(port, () => {
