@@ -76,7 +76,7 @@ controller.buy = function(req, res) {
   var product_id = req.body.product_id
   var buyer_id = req.body.buyer_id
 
-  db.Product.where({id: product_id}).fetch({withRelated: ['bid']})
+  db.Product.where({id: product_id}).fetch({withRelated: ['bids']})
   .then(product => {
     console.log(product)
     res.send(product)

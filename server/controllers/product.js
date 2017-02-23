@@ -11,7 +11,7 @@ controller.getAll = function (req, res) {
 }
 
 
-controller.buy = function(req, res) {
+controller.buy = function(req, res, next) {
   console.log('buy Product')
 
   var product_id = req.body.product_id
@@ -25,18 +25,20 @@ controller.buy = function(req, res) {
   })
   .then(product => {
     console.log('product: ', product)
-    return db.Bid.create({
+    return db.Bid.upsert({
       user_id: product.attributes.buyer_id,
       product_id: product.id,
       offer_price: product.attributes.asking_price
     })
   })
   .then(bid => {
-    return db.Transaction.create({
-      bid_id: bid.id,
+    var date = new Date()
+    date = date.toUTCString()
+    return db.Transaction.upsert({bid_id: bid.id},
+      {
       sale_price: bid.attributes.offer_price,
       status: 'processing_buyer_payment',
-      sale_time_and_date: Date()
+      sale_time_and_date: date
     })
   })
   .then(transaction => {

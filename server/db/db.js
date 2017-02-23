@@ -77,7 +77,7 @@ var Bid = ModelBase.extend({
 var Transaction = ModelBase.extend({
   tableName: 'transactions',
 
-  Bid: function() {
+  bid: function() {
     return this.belongsTo(Bid)
   }
 })

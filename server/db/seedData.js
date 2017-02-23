@@ -8,7 +8,8 @@ seedData.usersArray = [
   last_name: 'spear',
   password: bcrypt.hashSync('testpassword'),
   wallet_address: 'none',
-  physical_address: '400 baker st SF, CA 94117',
+  address: '400 baker st',
+  postal_code: '94117',
   phone_number: '111-222-3333',
   preferred_time: '16:30:00 PST'
   },
@@ -18,7 +19,8 @@ seedData.usersArray = [
   last_name: 'voigt',
   password: bcrypt.hashSync('testpassword'),
   wallet_address: 'none',
-  physical_address: '944 market st SF, CA 94117',
+  address: '944 market st',
+  postal_code: '94117',
   phone_number: '111-222-4444',
   preferred_time: '11:30:00 PST'
   },
@@ -28,7 +30,8 @@ seedData.usersArray = [
   last_name: 'Prouty',
   password: bcrypt.hashSync('testpassword'),
   wallet_address: 'none',
-  physical_address: '556 mission st SF, CA 94117',
+  address: '556 mission st',
+  postal_code: '94117',
   phone_number: '111-222-4444',
   preferred_time: '9:30:00 PST'
   },
@@ -38,7 +41,8 @@ seedData.usersArray = [
   last_name: 'Jung',
   password: bcrypt.hashSync('testpassword'),
   wallet_address: 'none',
-  physical_address: '200 Valencia st SF, CA 94117',
+  address: '200 Valencia st',
+  postal_code: '94117',
   phone_number: '111-222-4444',
   preferred_time: '20:30:00 PST'
   }
@@ -79,6 +83,8 @@ seedData.productArray = [
   title: 'macbook pro',
   description: 'very old. still works though',
   asking_price: 200.343,
+  address: '400 baker st',
+  postal_code: '94117',
   // preferred_time_and_date: 'February 22 12:30:00 2017 PST',
   image_links: [
     "https://images.craigslist.org/00505_7pnZpZ8Vnp2_600x450.jpg",
@@ -93,6 +99,8 @@ seedData.productArray = [
   title: 'Apple iPad Black',
   description: 'dark as night. turns on fine',
   asking_price: 100,
+  address: '400 baker st',
+  postal_code: '94117',
   // preferred_time_and_date: 'February 21 11:30:00 2017 PST',
   image_links: [
     "https://images.craigslist.org/00U0U_2Yb8OBggWpS_600x450.jpg",
@@ -107,6 +115,8 @@ seedData.productArray = [
   title: 'long sleeve shirt',
   description: 'blue and green stripes',
   asking_price: 12.50,
+  address: '400 baker st',
+  postal_code: '94117',
   // preferred_time_and_date: 'February 26 20:30:00 2017 PST',
   image_links: [
     "https://images.craigslist.org/00q0q_lrtlvRAGXm7_600x450.jpg",
@@ -120,6 +130,8 @@ seedData.productArray = [
   title: 'beanie',
   description: 'keeps ur noggin quite warm',
   asking_price: 7,
+  address: '944 market st',
+  postal_code: '94117',
   // preferred_time_and_date: 'February 28 9:30:30 2017 PST',
   image_links: [
     "https://images.craigslist.org/00c0c_lBDttuJqkIu_600x450.jpg",
