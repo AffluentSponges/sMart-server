@@ -71,6 +71,38 @@ console.log('dropping transactions table if it exists')
 })
 .then(() => {
   console.log('creating products table')
+  return knex.schema.createTable('products', product => {
+          product.increments()
+          product.integer('seller_id').references('id').inTable('users').notNullable()
+          product.integer('buyer_id').references('id').inTable('users')
+          product.integer('category_id').references('id').inTable('categories').notNullable()
+          product.string('title')
+          product.string('category')
+          product.text('description')
+          product.integer('quantity').defaultTo(1)
+          // product.integer('width')
+          // product.integer('height')
+          // product.integer('length')
+          // product.integer('weight')
+          product.string('img_url')
+          product.string('address')
+          product.string('address_2')
+          product.string('postal_code')
+          product.string('city').defaultTo('San Francisco')
+          product.string('state').defaultTo('CA')
+          product.string('country').defaultTo('US')
+          product.decimal('asking_price')
+          product.boolean('sold').defaultTo('false')
+          product.decimal('sale_price')
+          product.dateTime('preferred_time_and_date')
+          product.dateTime('sale_time_and_date')
+          product.dateTime('est_pickup_time_and_date')
+          product.dateTime('actual_pickup_time_and_date')
+          product.dateTime('est_deliver_time_and_date')
+          product.dateTime('actual_delivery_time_and_date')
+          product.timestamp('created_at').notNullable().defaultTo(knex.raw('now()'))
+          product.timestamp('updated_at').notNullable().defaultTo(knex.raw('now()'))
+
   return knex.schema.createTable('products', p => {
           p.increments()
           p.integer('seller_id').references('id').inTable('users').notNullable()
@@ -140,19 +172,4 @@ console.log('dropping transactions table if it exists')
   knex.destroy()
   process.exit()
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+})

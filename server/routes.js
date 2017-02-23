@@ -7,8 +7,6 @@ var uberRUSHController = require('./controllers/uberRUSH')
 var upload = require('./s3/upload')
 var s3Handler = require('./s3/s3Handler')
 
-
-
 // Routes for login and logout
 
 router.get('/login', passport.authenticate('google', { scope : ['profile', 'email'] }));
@@ -18,6 +16,11 @@ router.get('/auth/google/callback',
     	failureRedirect : '/login'
 	})
 );
+
+
+router.post('/postitem', (req, res) => {
+  productController.post(req, res)
+})
 
 router.get('/logout', function(req, res) {
   req.logout();

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Button, Checkbox, Form, Input, Message, Radio, Select, TextArea, Grid, Image } from 'semantic-ui-react'
+import { Button, Checkbox, Form, Input, Message, Radio, Select, TextArea, Grid } from 'semantic-ui-react'
+import axios from 'axios'
 
 import Autocomplete from '../components/Autocomplete.jsx'
 import FileUpload from '../components/FileUpload.jsx'
@@ -13,8 +14,6 @@ const categories = [
   'Movies, Books and Music',
   'Other'
 ];
-
-//{ key: 'hat', text: 'Hat', value: 'hat' }
 
 const products = categories.map(function(category) {
   return { key: category, text: category, value: category };
@@ -39,20 +38,14 @@ class PostItem extends Component {
 
   handleSubmit(e, { formData }) {
     e.preventDefault()
-    //this.setState({ formData })
-    var data = {};
-    data.title = formData.title;
-    data.imageUrl = this.state.imageUrl;
-    data.details = formData.details;
-    data.category = formData.category;
-    data.address1 = formData.address1;
-    data.address2 = formData.address2;
-    data.zip = formData.zip;
-    console.log(data);
-  }
-
-  handleImageUrl(url){
-    this.setState({imageUrl: url});
+    this.setState({ formData })
+    console.log(this.state.formData)
+    axios.post('/postitem', (req, res) => {
+      req.title = formData.title
+    })
+      .then( (result) => {
+        console.log(result)
+      })
   }
 
   componentDidMount() {
