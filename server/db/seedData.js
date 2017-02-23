@@ -89,7 +89,7 @@ seedData.categoryArray = [
 
 seedData.productArray = [
   {
-  user_id: 1,
+  seller_id: 1,
   buyer_id: null,
   category_id: 1,
   title: 'macbook pro',
@@ -105,7 +105,7 @@ seedData.productArray = [
     ]
   },
   {
-  user_id: 1,
+  seller_id: 1,
   buyer_id: null,
   category_id: 1,
   title: 'Apple iPad Black',
@@ -121,7 +121,7 @@ seedData.productArray = [
     ]
   },
   {
-  user_id: 1,
+  seller_id: 1,
   buyer_id: null,
   category_id: 2,
   title: 'long sleeve shirt',
@@ -136,7 +136,7 @@ seedData.productArray = [
     ]
   },
   {
-  user_id: 2,
+  seller_id: 2,
   buyer_id: null,
   category_id: 2,
   title: 'beanie',
