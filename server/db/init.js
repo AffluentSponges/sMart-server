@@ -7,18 +7,20 @@ var knex = require('knex')({
 
 console.log('Connecting to ' + process.env.DATABASE_URL)
 
+// console.log('Attempting to create User Table ', userTableExists)
+// console.log('Attemping to create Product Table')
 knex.schema.hasTable('transactions')
+console.log('dropping transactions table if it exists')
 .then(exists => {
-  console.log('dropping transactions table if it exists')
   return exists ? knex.schema.dropTable('transactions') : null
 })
-// .then(() => {
-//   return knex.schema.hasTable('bids')
-// }) 
-// .then(exists => {
-//   console.log('dropping bids table if it exists')
-//   return exists ? knex.schema.dropTable('bids') : null
-// })
+.then(() => {
+  return knex.schema.hasTable('bids')
+}) 
+.then(exists => {
+  console.log('dropping bids table if it exists')
+  return exists ? knex.schema.dropTable('bids') : null
+})
 .then(() => {
   return knex.schema.hasTable('products')
 })
@@ -44,18 +46,13 @@ knex.schema.hasTable('transactions')
   console.log('creating users table')
   return knex.schema.createTable('users', u => {
           u.increments()
-          u.string('username')
+          u.string('uname')
           u.string('first_name')
           u.string('last_name')
           u.string('email').unique()
           u.string('password')
           u.string('wallet_address')
-          u.string('address')
-          u.string('address_2')
-          u.string('postal_code')
-          u.string('city')
-          u.string('state') 
-          u.string('country')
+          u.string('physical_address')
           u.string('phone_number')
           u.time('preferred_time')
           u.timestamp('created_at').notNullable().defaultTo(knex.raw('now()'))
@@ -100,30 +97,29 @@ knex.schema.hasTable('transactions')
   //no native knex way to add this
   return knex.raw('ALTER TABLE products ADD COLUMN image_links text[]')
 })
-// .then(() => {
-//   console.log('creating bids table')
-//   return knex.schema.createTable('bids', b => {
-//           b.increments()
-//           b.integer('user_id').references('id').inTable('users').notNullable()
-//           b.integer('product_id').references('id').inTable('products')
-//           b.decimal('offer_price')
-//           b.timestamp('created_at').notNullable().defaultTo(knex.raw('now()'))
-//           b.timestamp('updated_at').notNullable().defaultTo(knex.raw('now()'))
-//           // b.string('message', 1023)
-//           // b.boolean('accepted')
-//           // b.dateTime('preferred_time')
-//         })
-// })
+.then(() => {
+  console.log('creating bids table')
+  return knex.schema.createTable('bids', b => {
+          b.increments()
+          b.integer('buyer_id').references('id').inTable('users').notNullable()
+          b.integer('product_id').references('id').inTable('products')
+          b.decimal('offer_price')
+          b.timestamp('created_at').notNullable().defaultTo(knex.raw('now()'))
+          b.timestamp('updated_at').notNullable().defaultTo(knex.raw('now()'))
+          // b.string('message', 1023)
+          // b.boolean('accepted')
+          // b.dateTime('preferred_time')
+        })
+})
 .then(() => {
   console.log('created transactions table')
   return knex.schema.createTable('transactions', t => {
           t.increments()
-          t.integer('user_id').references('id').inTable('users').notNullable() //buyer
-          t.integer('product_id').references('id').inTable('products').notNullable()
+          t.integer('bid_id').references('id').inTable('bids').notNullable()
           t.decimal('sale_price')
           t.string('status') //buyed_paid, product_in_transit, seller_paid_out (should be enum but oh well)
           t.string('uber_delivery_id').unique()
-          // t.decimal('uber_delivery_quote')
+          t.decimal('uber_delivery_quote')
           t.decimal('uber_delivery_price')
           t.dateTime('sale_time_and_date')
           t.dateTime('est_pickup_time_and_date')
@@ -144,3 +140,19 @@ knex.schema.hasTable('transactions')
   knex.destroy()
   process.exit()
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

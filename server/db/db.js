@@ -21,28 +21,24 @@ var User = ModelBase.extend({
     return this.hasMany(Product)
   },
 
-  transactions: function() {
-    return this.hasMany(Transaction)
+  bids: function() {
+    return this.hasMany(Bid)
   }
 })
 
 var Product = ModelBase.extend({
   tableName: 'products',
 
-  seller: function() {
-    return this.belongsTo(User, 'seller_id')
-  },
-
-  buyer: function() {
-    return this.belongsTo(User, 'buyer_id')
+  user: function() {
+    return this.belongsTo(User)
   },
 
   category: function() {
     return this.belongsTo(Category)
   },
   
-  transaction: function() {
-    return this.hasOne(Transaction)
+  bids: function() {
+    return this.hasMany(Bid)
   }
 })
 
@@ -62,40 +58,44 @@ var Category = ModelBase.extend({
   }
 })
 
-// var Bid = ModelBase.extend({
-//   tableName: 'bids',
-
-//   product: function() {
-//     return this.belongsTo(Product)
-//   },
-
-//   user: function() {
-//     return this.belongsTo(User)
-//   },
-
-//   transaction: function() {
-//     return this.hasOne(Transaction)
-//   }
-// })
-
-var Transaction = ModelBase.extend({
-  tableName: 'transactions',
-
-  user: function() {
-    return this.belongsTo(User)
-  },
+var Bid = ModelBase.extend({
+  tableName: 'bids',
 
   product: function() {
     return this.belongsTo(Product)
+  },
+
+  user: function() {
+    return this.belongsTo(User)
   }
 })
 
 db.User = User
 db.Product = Product
 db.Category = Category
-// db.Bid = Bid
-db.Transaction = Transaction
+db.Bid = Bid
 
 db.knex = knex
 
 module.exports = db
+
+
+//examples
+// User.create({ firstName: 'Grayson' })
+// .then(function () {
+//   return User.findOne({ firstName: 'Grayson' }, { require: true });
+// })
+// .then(function (grayson) {
+//   // passes patch: true to .save() by default
+//   return User.update({ firstName: 'Basil' }, { id: grayson.id });
+// })
+// .then(function (basil) {
+//   return User.destroy({ id: basil.id });
+// })
+// .then(function () {
+//   return User.findAll();
+// })
+// .then(function (collection) {
+//   console.log(collection.models.length); // => 0
+// })
+
