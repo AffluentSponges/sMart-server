@@ -40,11 +40,11 @@ controller.buy = function(req, res, next) {
     console.log('PRODUCT CONTROLLER BUY ERROR')
     console.log(err)
   })
-
+}
 //seller_id & category_id need to be not hardcoded
 //can delete preferred_time_and_date
 controller.post = function(req, res) {
-  db.Product.create(  {
+  db.Product.create({
   seller_id: 1,
   address: req.body.address,
   address_2: req.body.address_2,
