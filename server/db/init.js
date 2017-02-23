@@ -10,8 +10,8 @@ console.log('Connecting to ' + process.env.DATABASE_URL)
 // console.log('Attempting to create User Table ', userTableExists)
 // console.log('Attemping to create Product Table')
 knex.schema.hasTable('transactions')
-console.log('dropping transactions table if it exists')
 .then(exists => {
+console.log('dropping transactions table if it exists')
   return exists ? knex.schema.dropTable('transactions') : null
 })
 .then(() => {
@@ -46,7 +46,7 @@ console.log('dropping transactions table if it exists')
   console.log('creating users table')
   return knex.schema.createTable('users', u => {
           u.increments()
-          u.string('uname')
+          u.string('username')
           u.string('first_name')
           u.string('last_name')
           u.string('email').unique()
