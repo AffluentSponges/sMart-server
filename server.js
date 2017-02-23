@@ -28,7 +28,7 @@ app.use(session({
 
 app.use(express.static(__dirname + '/client/public'));
 
-app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
+app.get('/login', passport.authenticate('google', { scope : ['profile', 'email'] }));
 app.get('/auth/google/callback',
 	passport.authenticate('google', {
     	successRedirect : '/',
