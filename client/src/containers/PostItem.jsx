@@ -37,7 +37,12 @@ class PostItem extends Component {
     e.preventDefault()
     // this.setState({ formData })
     console.log(this.state.formData)
-    axios.post('/postitem')
+    axios.post('/postitem', (req, res) => {
+      req.title = formData.title
+    })
+      .then( (result) => {
+        console.log(result)
+      })
   }
 
   componentDidMount() {

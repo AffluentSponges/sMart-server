@@ -9,7 +9,6 @@ const passport = require('passport');
 const path = require('path');
 const passportAuth = require('./server/auth/passport');
 var router = require('./server/routes');
-
 //use .env for port number
 const port = process.env.PORT || 3000;
 const app = express();

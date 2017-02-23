@@ -5,7 +5,6 @@ var productController = require('./controllers/product')
 var uberRUSHController = require('./controllers/uberRUSH')
 var auth = require('./auth/helpers')
 
-
 // Routes for signup, signin, and signout
 
 // router.post('/signup', userController.signup.post);
@@ -36,7 +35,7 @@ var auth = require('./auth/helpers')
 // }
 
 router.post('/postitem', (req, res) => {
-  console.log(req);
+  productController.post(req, res)
 })
 
 router.get('/api/v1/categories', categoryController.getAll)

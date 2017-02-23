@@ -5,7 +5,7 @@ var knex = require('knex')({
   connection: process.env.DATABASE_URL,
 })
 
-console.log('Connecting to ' + process.env.DATABASE_URL)
+console.log('Connecting to ' + process.env.PG_CONNECTION_STRING)
 
 
 // console.log('Attempting to create User Table ', userTableExists)
@@ -71,12 +71,14 @@ knex.schema.hasTable('bids')
           product.integer('buyer_id').references('id').inTable('users')
           product.integer('category_id').references('id').inTable('categories').notNullable()
           product.string('title')
+          product.string('category')
           product.text('description')
           product.integer('quantity').defaultTo(1)
           // product.integer('width')
           // product.integer('height')
           // product.integer('length')
           // product.integer('weight')
+          product.string('img_url')
           product.string('address')
           product.string('address_2')
           product.string('postal_code')
