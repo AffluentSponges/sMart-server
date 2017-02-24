@@ -15,9 +15,7 @@ const router = require('./server/routes');
 const port = process.env.PORT || 3000;
 const app = express();
 
-
 passportAuth(passport);
-// app.use(morgan('combined'));
 
 if (process.env.NODE_ENV !== 'test') {
     app.use(morgan('combined'));
