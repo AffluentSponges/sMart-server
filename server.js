@@ -19,6 +19,7 @@ passportAuth(passport);
 
 if (process.env.NODE_ENV !== 'test') {
   app.use(morgan('combined'));
+}
 
 app.use(cookieParser());
 app.use(bodyParser.json());
