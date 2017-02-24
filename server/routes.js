@@ -8,25 +8,27 @@ var upload = require('./s3/upload')
 var s3Handler = require('./s3/s3Handler')
 var userController = require('./controllers/users')
 // Routes for login and logout
-router.get('/auth/google/success', function(req, res) {
-  console.log('SUCCESS', req.session);
-  res.redirect('/');
-  // res.send(req.session);
-})
+// router.get('/auth/google/success', function(req, res) {
+//   console.log('SUCCESS', req.session);
+//   res.redirect('/');
+//   // res.send(req.session);
+// })
 
-router.get('/auth/google/failure', function(req, res) {
-  console.log('LOGIN FAILURE');
-  res.redirect('/login');
-});
+// router.get('/auth/google/failure', function(req, res) {
+//   console.log('LOGIN FAILURE');
+//   res.redirect('/login');
+// });
 
 router.get('/login', 
   passport.authenticate('google', { scope : ['profile', 'email'] }));
+
 router.get('/auth/google/callback',
   passport.authenticate('google', {
-      successRedirect : '/auth/google/success',
+      successRedirect : '/',
       failureRedirect : '/auth/google/failure'
 }));
 
+<<<<<<< HEAD
 //example req.body:
 // {
 //   "seller_id": 2,
@@ -40,6 +42,12 @@ router.get('/auth/google/callback',
 //   "asking_price": "100.11",
 //   "imageUrl": ["asdgasfhfshashf"]
 // }
+=======
+router.get('/users/auth', function(req, res) {
+  res.send(req.session);
+})
+
+>>>>>>> 9dde8f0f2988a4425f6ea1207fdb1b9f34f0b1b9
 router.post('/api/v1/postitem', (req, res) => {
   productController.post(req, res)
 })
