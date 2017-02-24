@@ -65,7 +65,6 @@ controller.post = function(req, res) {
   })
 }
 
-
 controller.getUserProducts = function(req, res) {
   db.Product.where({seller_id: req.query.user_id}).fetchAll()
   .then(products => {
