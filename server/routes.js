@@ -24,22 +24,22 @@ router.get('/auth/google/callback',
 // post location phone number -- make sure optional
 
 
-router.post('/api/v1//postitem', (req, res) => {
+router.post('/api/v1/postitem', (req, res) => {
   productController.post(req, res)
 })
 
 //Needs seller_id to passed in through req
-router.get('/api/v1//getuserproducts', (req, res) => {
+router.get('/api/v1/getuserproducts', (req, res) => {
   console.log(req.query)
   productController.getUserProducts(req, res)
 });
 
 //needs id passed in through req
-router.get('/api/v1//getuserprofile', (req, res) => {
+router.get('/api/v1/getuserprofile', (req, res) => {
   userController.getUserProfile(req, res)
 })
 
-router.post('/api/v1//postcontactinfo', (req, res) => {
+router.post('/api/v1/postcontactinfo', (req, res) => {
   userController.setContactInfo(req, res)
 })
 
