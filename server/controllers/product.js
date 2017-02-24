@@ -29,22 +29,40 @@ controller.buy = function(req, res, next) {
     console.log(err)
   })
 }
-//seller_id & category_id need to be not hardcoded
-//can delete preferred_time_and_date
+
+
+//example req.body:
+// {
+//   "seller_id": 2,
+//   "address": "asfsadg",
+//   "address_2": "asdgasfh",
+//   "postal_code": "1234124",
+//   "buyer_id": 3,
+//   "category_id": 2,
+//   "title": "asgasdg",
+//   "description": "sdfhsdjhgsdfh",
+//   "asking_price": "100.11",
+//   "imageUrl": ["asdgasfhfshashf"]
+// }
 controller.post = function(req, res) {
   db.Product.create({
-  seller_id: 1,
-  address: req.body.address,
-  address_2: req.body.address_2,
-  postal_code: req.body.zip,
-  buyer_id: null,
-  category_id: 1,
-  title: req.body.title,
-  description: req.body.details,
-  asking_price: req.body.price,
-  image_links: [req.body.imageUrl],
+    seller_id: req.body.seller_id,
+    address: req.body.address,
+    address_2: req.body.address_2,
+    postal_code: req.body.postal_code,
+    buyer_id: req.body.buyer_id,
+    category_id: req.body.category_id,
+    title: req.body.title,
+    description: req.body.description,
+    asking_price: req.body.asking_price,
+    image_links: req.body.imageUrl,  //make sure is array
+  }).then(result => {
+    console.log(result.attributes.id)
+    res.end(JSON.stringify(result.attributes.id))
+  }).catch(err => {
+    console.log(err)
+    res.end(JSON.stringify(err))
   })
-  res.end('all good homies')
 }
 
 controller.getUserProducts = function(req, res) {

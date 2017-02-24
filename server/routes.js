@@ -27,21 +27,12 @@ router.get('/auth/google/callback',
       failureRedirect : '/auth/google/failure'
 }));
 
-
-
-//TODO:
-// given a user, return all products you have listed
-// given user, return user profile info 
-// post location phone number -- make sure optional
-
-
 router.post('/api/v1/postitem', (req, res) => {
   productController.post(req, res)
 })
 
 //Needs seller_id to passed in through req
 router.get('/api/v1/getuserproducts', (req, res) => {
-  console.log(req.query)
   productController.getUserProducts(req, res)
 });
 
