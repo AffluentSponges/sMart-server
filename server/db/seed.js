@@ -15,6 +15,12 @@ var insertRow = function(seedDataArray, tableName, i, uniqueName) {
 
 var promiseArray = []
 
+if(process.env.NODE_ENV === 'test') {
+  promiseArray.push(db.knex('users').del())
+  promiseArray.push(db.knex('categories').del())
+  promiseArray.push(db.knex('products').del())
+}
+
 for(var i = 0; i < usersArray.length; i++) {
   promiseArray.push(insertRow(usersArray, 'users', i, 'username'))
 }
@@ -27,13 +33,13 @@ for(var i = 0; i < productArray.length; i++) {
   promiseArray.push(insertRow(productArray, 'products', i, 'title'))
 }
 
-
 Promise.all(promiseArray)
 .then(values => {
-  // console.log(values)
-  console.log('done seeding data. exiting gracefully')
-  db.knex.destroy()
-  process.exit()
+  if(process.env.NODE_ENV !== 'test') {
+    console.log('done seeding data. exiting gracefully')
+    db.knex.destroy()
+    process.exit()
+  }
 })
 .catch(err => {
   console.log(err)
