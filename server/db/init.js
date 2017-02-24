@@ -12,13 +12,13 @@ knex.schema.hasTable('transactions')
   console.log('dropping transactions table if it exists')
   return exists ? knex.schema.dropTable('transactions') : null
 })
-// .then(() => {
-//   return knex.schema.hasTable('bids')
-// }) 
-// .then(exists => {
-//   console.log('dropping bids table if it exists')
-//   return exists ? knex.schema.dropTable('bids') : null
-// })
+.then(() => {
+  return knex.schema.hasTable('bids')
+}) 
+.then(exists => {
+  console.log('dropping bids table if it exists')
+  return exists ? knex.schema.dropTable('bids') : null
+})
 .then(() => {
   return knex.schema.hasTable('products')
 })
