@@ -44,9 +44,11 @@ class Login extends React.Component {
           </Button>
         </Grid.Row>
         <Grid.Row>
-          <Button color='google plus' className='socialLogin'>
-            <Icon name='google plus' /> Login with Google
-          </Button>
+          <a href='/login'>
+            <Button color='google plus' className='socialLogin'>
+              <Icon name='google plus' /> Login with Google
+            </Button>
+          </a>
         </Grid.Row>
       </Grid>
       <Divider horizontal>Or</Divider>
