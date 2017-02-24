@@ -6,7 +6,7 @@ var productController = require('./controllers/product')
 var uberRUSHController = require('./controllers/uberRUSH')
 var upload = require('./s3/upload')
 var s3Handler = require('./s3/s3Handler')
-
+var userController = require('./controllers/users')
 // Routes for login and logout
 
 router.get('/login', passport.authenticate('google', { scope : ['profile', 'email'] }));
@@ -18,8 +18,29 @@ router.get('/auth/google/callback',
 );
 
 
+//TODO:
+// given a user, return all products you have listed
+// given user, return user profile info 
+// post location phone number -- make sure optional
+
+
 router.post('/postitem', (req, res) => {
   productController.post(req, res)
+})
+
+//Needs seller_id to passed in through req
+router.get('/getuserproducts', (req, res) => {
+  console.log(req.query)
+  productController.getUserProducts(req, res)
+});
+
+//needs id passed in through req
+router.get('/getuserprofile', (req, res) => {
+  userController.getUserProfile(req, res)
+})
+
+router.post('/postcontactinfo', (req, res) => {
+  userController.setContactInfo(req, res)
 })
 
 router.get('/logout', function(req, res) {

@@ -47,4 +47,11 @@ controller.post = function(req, res) {
   res.end('all good homies')
 }
 
+controller.getUserProducts = function(req, res) {
+  db.Product.where({seller_id: req.query.user_id}).fetchAll()
+  .then(products => {
+    res.json(products)
+  })
+};
+
 module.exports = controller
