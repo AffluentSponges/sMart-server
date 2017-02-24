@@ -24,22 +24,22 @@ router.get('/auth/google/callback',
 // post location phone number -- make sure optional
 
 
-router.post('/postitem', (req, res) => {
+router.post('/api/v1//postitem', (req, res) => {
   productController.post(req, res)
 })
 
 //Needs seller_id to passed in through req
-router.get('/getuserproducts', (req, res) => {
+router.get('/api/v1//getuserproducts', (req, res) => {
   console.log(req.query)
   productController.getUserProducts(req, res)
 });
 
 //needs id passed in through req
-router.get('/getuserprofile', (req, res) => {
+router.get('/api/v1//getuserprofile', (req, res) => {
   userController.getUserProfile(req, res)
 })
 
-router.post('/postcontactinfo', (req, res) => {
+router.post('/api/v1//postcontactinfo', (req, res) => {
   userController.setContactInfo(req, res)
 })
 
@@ -49,8 +49,8 @@ router.get('/logout', function(req, res) {
   res.redirect('/');
 });
 
-router.get('/api/v1/categories', categoryController.getAll) 
-router.get('/api/v1/products', productController.getAll) //?category_id=3 default sold=false
+router.get('/categories', categoryController.getAll) 
+router.get('/products', productController.getAll) //?category_id=3 default sold=false
 // router.get('/api/v1/product') //?id=3
 
 // router.get('/api/v1/user') //?id=3

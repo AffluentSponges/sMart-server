@@ -17,10 +17,12 @@ controller.getUserProfile = (req, res) => {
 };
 
 controller.setContactInfo = (req, res) => {
-  var profile = db.User.where({id: req.query.id}).fetch()
+  var profile = db.User.where({id: req.body.id}).fetch()
     .then(model => {
-      model.set("physical_address", req.query.address);
-      model.set("phone_number", req.query.phone_number);
+      model.set("address", req.body.address);
+      model.set("address_2", req.body.address_2);
+      model.set("postal_code", req.body.postal_code);
+      model.set("phone_number", req.body.phone_number);
       model.save()
       res.json(model)
   })
