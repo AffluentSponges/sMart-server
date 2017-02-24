@@ -33,16 +33,16 @@ controller.buy = function(req, res, next) {
 //can delete preferred_time_and_date
 controller.post = function(req, res) {
   db.Product.create({
-  seller_id: 1,
-  address: req.body.address,
-  address_2: req.body.address_2,
-  postal_code: req.body.zip,
-  buyer_id: null,
-  category_id: 1,
-  title: req.body.title,
-  description: req.body.details,
-  asking_price: req.body.price,
-  image_links: [req.body.imageUrl],
+    seller_id: 1,
+    address: req.body.address,
+    address_2: req.body.address_2,
+    postal_code: req.body.zip,
+    buyer_id: null,
+    category_id: 1,
+    title: req.body.title,
+    description: req.body.details,
+    asking_price: req.body.price,
+    image_links: [req.body.imageUrl],
   })
   res.end('all good homies')
 }
