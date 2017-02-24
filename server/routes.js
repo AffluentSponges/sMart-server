@@ -8,14 +8,25 @@ var upload = require('./s3/upload')
 var s3Handler = require('./s3/s3Handler')
 
 // Routes for login and logout
+router.get('/auth/google/success', function(req, res) {
+  console.log('SUCCESS', req.session);
+  res.redirect('/');
+  // res.send(req.session);
+})
 
-router.get('/login', passport.authenticate('google', { scope : ['profile', 'email'] }));
+router.get('/auth/google/failure', function(req, res) {
+  console.log('LOGIN FAILURE');
+  res.redirect('/login');
+});
+
+router.get('/login', 
+  passport.authenticate('google', { scope : ['profile', 'email'] }));
 router.get('/auth/google/callback',
-	passport.authenticate('google', {
-    	successRedirect : '/',
-    	failureRedirect : '/login'
-	})
-);
+  passport.authenticate('google', {
+      successRedirect : '/auth/google/success',
+      failureRedirect : '/auth/google/failure'
+}));
+
 
 
 router.post('/postitem', (req, res) => {
@@ -65,6 +76,8 @@ router.post('/upload', upload, s3Handler)
 
 router.get('*', (req, res, next) => {
   // if(req.path.split('/')[1] === 'static') return next();
+
+
   res.sendFile(path.resolve(__dirname, '../client/public/index.html'));
 });
 
