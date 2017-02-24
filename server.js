@@ -30,7 +30,7 @@ app.use(session({
   secret: process.env.SESSION_SECRET_KEY || 'nothing is secret',
   resave: false,
   saveUninitialized: true,
-  // store: new FileStore(),
+  store: new FileStore(),
   cookie : { maxAge: 2419200000 }
 }));
 app.use(passport.initialize());
