@@ -49,8 +49,8 @@ router.get('/logout', function(req, res) {
   res.redirect('/');
 });
 
-router.get('/categories', categoryController.getAll) 
-router.get('/products', productController.getAll) //?category_id=3 default sold=false
+router.get('/api/v1/categories', categoryController.getAll) 
+router.get('/api/v1/products', productController.getAll) //?category_id=3 default sold=false
 // router.get('/api/v1/product') //?id=3
 
 // router.get('/api/v1/user') //?id=3
