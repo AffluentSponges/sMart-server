@@ -137,6 +137,15 @@ knex.schema.hasTable('transactions')
         })
 })
 .then(() => {
+  console.log('created sessions table')
+
+  return knex.raw('CREATE TABLE "session" ("sid" varchar NOT NULL COLLATE "default", "sess" json NOT NULL, "expire" timestamp(6) NOT NULL) WITH (OIDS=FALSE)')
+})
+.then(() => {
+  console.log('Add constraint to sessions table')
+  return knex.raw('ALTER TABLE "session" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid") NOT DEFERRABLE INITIALLY IMMEDIATE')
+})
+.then(() => {
   console.log('exiting with no errors')
   knex.destroy()
   process.exit()
