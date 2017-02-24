@@ -5,13 +5,13 @@ const passport = require('passport');
 
 module.exports = (passport) => {
     passport.serializeUser((user, done) => {
-        // console.log('SERIALIZED', user);
+        console.log('SERIALIZED', user);
         done(null, user);
     });
     passport.deserializeUser((id, done) => {
         db.User.where({ googleID: id.googleID }).fetch()
         .then((user) => { 
-            // console.log('DESERIALIZED', user)
+            console.log('DESERIALIZED', user)
             done(null, user);
         })
         .catch((err) => { done(err,null); });
