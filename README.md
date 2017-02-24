@@ -6,12 +6,14 @@ Add the postgres database:
 ```
 psql
 create database smart_server_dev;
+create database smart_server_test;
 \q
 
 
 open .env
 ```
 copy&paste this -> ```DATABASE_URL=postgres://USERNAME:@localhost:5432/smart_server_dev```
+copy&paste this -> ```TEST_DATABASE_URL=postgres://USERNAME:@localhost:5432/smart_server_test```
 into the .env file. replace ```USERNAME``` with the name that appears before the ```=#``` when you do ```psql```
 
 add these two lines too: 
@@ -31,6 +33,7 @@ save and close the ```.env``` file
 ```npm run dev``` to run on a dev environment
 
 
+To test run ```npm test```
 
 
 
