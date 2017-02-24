@@ -20,30 +20,22 @@ class Header extends React.Component {
     return (
       <Menu>
         <Menu.Item as={Link} to='/'name='smart' active={activeItem === 'smart'} onClick={this.handleItemClick}>SMart</Menu.Item>
-        <Menu.Item>
-          <Search items={this.props.items}/>
-        </Menu.Item>
         <Menu.Menu position='right'>
           {this.props.loggedIn ? (
-            <Dropdown item text='Hello!'>
+            <Dropdown item text={this.props.appState.user.first_name}>
               <Dropdown.Menu>
                 <Dropdown.Item as={Link} to='/u/1234123'>My Profile</Dropdown.Item>
                 <Divider />
-                <Dropdown.Item onClick={this.props.logout}>Log Out</Dropdown.Item>
+                <a href='/logout'><Dropdown.Item onClick={this.props.logout}>Log Out</Dropdown.Item></a>
               </Dropdown.Menu>
             </Dropdown>
           ) : (
-            <Menu.Item as={Link} to='/login' name='Log in' active={activeItem === 'Log in'} onClick={this.handleItemClick} onClick={this.props.axiosSignin}>
+            <Menu.Item as={Link} to='/login' name='Log in' active={activeItem === 'Log in'} onClick={this.handleItemClick} >
               <Button basic color='red' >
                 Log in
               </Button>
             </Menu.Item>
           )}
-          <Menu.Item name='Log in' onClick={this.props.axiosSignin}>
-            <Button basic color='red' >
-              Log in
-            </Button>
-          </Menu.Item>
           <Menu.Item position='right' as={Link} to='/post' name='Sell Your Stuff' active={activeItem === 'Sell Your Stuff'} onClick={this.handleItemClick} >
             <Button color='red'>
               Sell Your Stuff
@@ -58,6 +50,9 @@ class Header extends React.Component {
 export default Header;
 
 
+        // <Menu.Item>
+          // <Search items={this.props.items}/>
+        // </Menu.Item>
 
 
 // <Menu.Item as={Search}></Menu.Item>
