@@ -27,6 +27,19 @@ router.get('/auth/google/callback',
       failureRedirect : '/auth/google/failure'
 }));
 
+//example req.body:
+// {
+//   "seller_id": 2,
+//   "address": "asfsadg",
+//   "address_2": "asdgasfh",
+//   "postal_code": "1234124",
+//   "buyer_id": 3,
+//   "category_id": 2,
+//   "title": "asgasdg",
+//   "description": "sdfhsdjhgsdfh",
+//   "asking_price": "100.11",
+//   "imageUrl": ["asdgasfhfshashf"]
+// }
 router.post('/api/v1/postitem', (req, res) => {
   productController.post(req, res)
 })

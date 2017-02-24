@@ -20,14 +20,14 @@ controller.buy = function(req, res, next) {
   console.log('product_id: ', product_id)
 
   Product.buyProduct(product_id, buyer_id)
-  .then(transaction => {
-    console.log('TRANSACTION: ', transaction)
-    next()
-  })
-  .catch(err => {
-    console.log('PRODUCT CONTROLLER BUY ERROR')
-    console.log(err)
-  })
+    .then(transaction => {
+      console.log('TRANSACTION: ', transaction)
+      next()
+    })
+    .catch(err => {
+      console.log('PRODUCT CONTROLLER BUY ERROR')
+      console.log(err)
+    })
 }
 
 
