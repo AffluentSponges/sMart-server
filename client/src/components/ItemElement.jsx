@@ -9,10 +9,8 @@ const ItemElement = (props) => (
       <Card.Meta>Joined in 2016</Card.Meta>
     </Card.Content>
     <Card.Content extra>
-      <a>
         <Icon name='user' />
         10 Friends
-      </a>
     </Card.Content>
   </Card>
 )

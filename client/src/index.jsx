@@ -24,19 +24,38 @@ class App extends React.Component {
     super(props);
     this.state = {
       loggedIn: false,
+      user: null,
       categories: [],
       currentCategory:'',
       items: []
     }
     this.currentCategoryHandler = this.currentCategoryHandler.bind(this);
-    this.logout = this.logout.bind(this);
-    this.axiosSignin = this.axiosSignin.bind(this);
+    // this.logout = this.logout.bind(this);
+    // this.axiosSignin = this.axiosSignin.bind(this);
   }
 
   componentDidMount() {
     this.setState({items: data.home});
-    this.setState({loggedIn: auth.loggedIn()});
-    console.log('loggedIn?: ', this.state.loggedIn);
+    var _this = this;
+    axios.get('/users/auth')
+    .then((res) => {
+      // console.log(res.data.passport.user);
+      if (res.data.passport) {
+        if (res.data.passport.user.id) {
+          _this.setState({
+            user: {
+              id: res.data.passport.user.id,
+              first_name: res.data.passport.user.first_name
+            },
+            loggedIn: true
+          }); 
+        }        
+      }
+      console.log('App.state = ', _this.state);
+    })
+    .catch((err) => {
+      console.log('err', err);
+    });
   }
 
   currentCategoryHandler(category) {
@@ -45,10 +64,10 @@ class App extends React.Component {
     console.log('currentCategory is changed to ', category)
   }
 
-  logout() {
-    auth.logout()
-    this.props.router.replace('/')
-  }
+  // logout() {
+  //   auth.logout()
+  //   this.props.router.replace('/')
+  // }
 
   axiosSignin() {
     axios.get('/login')
@@ -61,7 +80,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Header items={this.state.items} loggedIn={this.state.loggedIn} logout={this.logout} axiosSignin={this.axiosSignin}/>
+        <Header appState={this.state} items={this.state.items} loggedIn={this.state.loggedIn} logout={this.logout} axiosSignin={this.axiosSignin}/>
         {React.cloneElement(this.props.children, {
           items: this.state.items,
           currentCategoryHandler: this.currentCategoryHandler
