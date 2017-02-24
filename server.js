@@ -19,9 +19,9 @@ const app = express();
 passportAuth(passport);
 // app.use(morgan('combined'));
 
-// if (process.env.NODE_ENV !== 'test') {
-//     app.use(morgan('combined'));
-// }
+if (process.env.NODE_ENV !== 'test') {
+    app.use(morgan('combined'));
+}
 
 app.use(cookieParser());
 app.use(bodyParser.json());
@@ -30,7 +30,7 @@ app.use(session({
   secret: process.env.SESSION_SECRET_KEY || 'nothing is secret',
   resave: false,
   saveUninitialized: true,
-  store: new FileStore(),
+  // store: new FileStore(),
   cookie : { maxAge: 2419200000 }
 }));
 app.use(passport.initialize());
