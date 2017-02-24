@@ -1,6 +1,7 @@
 require('dotenv').config()
-
-const environment = process.env.NODE_ENV || 'development';
+//pass in 'test' as an arg to the command line if you want this to init the test db
+process.env.NODE_ENV = process.argv[2] || 'development'
+const environment = process.env.NODE_ENV
 const config = require('./envConfig')[environment];
 const knex = require('knex')(config)
 

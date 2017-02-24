@@ -40,4 +40,6 @@ jspm_packages
 client/public/bundle.js
 client/public/bundle.js.map
 
+sessions/
+
 .DS_Store
