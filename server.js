@@ -15,6 +15,7 @@ const router = require('./server/routes');
 const port = process.env.PORT || 3000;
 const app = express();
 
+
 passportAuth(passport);
 // app.use(morgan('combined'));
 
@@ -26,7 +27,7 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(session({
-  secret: process.env.SESSION_SECRET_KEY,
+  secret: process.env.SESSION_SECRET_KEY || 'nothing is secret',
   resave: false,
   saveUninitialized: true,
   store: new FileStore(),
