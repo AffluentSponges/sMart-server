@@ -102,20 +102,20 @@ knex.schema.hasTable('transactions')
   //no native knex way to add this
   return knex.raw('ALTER TABLE products ADD COLUMN image_links text[]')
 })
-.then(() => {
-  console.log('creating bids table')
-  return knex.schema.createTable('bids', b => {
-          b.increments()
-          b.integer('user_id').references('id').inTable('users').notNullable()
-          b.integer('product_id').references('id').inTable('products')
-          b.decimal('offer_price')
-          b.timestamp('created_at').notNullable().defaultTo(knex.raw('now()'))
-          b.timestamp('updated_at').notNullable().defaultTo(knex.raw('now()'))
-          // b.string('message', 1023)
-          // b.boolean('accepted')
-          // b.dateTime('preferred_time')
-        })
-})
+// .then(() => {
+  // console.log('creating bids table')
+  // return knex.schema.createTable('bids', b => {
+  //         b.increments()
+  //         b.integer('user_id').references('id').inTable('users').notNullable()
+  //         b.integer('product_id').references('id').inTable('products')
+  //         b.decimal('offer_price')
+  //         b.timestamp('created_at').notNullable().defaultTo(knex.raw('now()'))
+  //         b.timestamp('updated_at').notNullable().defaultTo(knex.raw('now()'))
+  //         // b.string('message', 1023)
+  //         // b.boolean('accepted')
+  //         // b.dateTime('preferred_time')
+  //       })
+// })
 .then(() => {
   console.log('created transactions table')
   return knex.schema.createTable('transactions', t => {

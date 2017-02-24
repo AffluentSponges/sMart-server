@@ -9,7 +9,6 @@ module.exports = (passport) => {
         done(null, user);
     });
     passport.deserializeUser((id, done) => {
-        console.log('ID', id);
         db.User.where({ googleID: id.googleID }).fetch()
         .then((user) => { 
             // console.log('DESERIALIZED', user)
