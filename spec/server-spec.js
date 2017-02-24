@@ -8,10 +8,14 @@ const server = require('../server')
 chai.use(chaiHttp)
 
 describe('API Routes', function() {
-  describe('easy test', function() {
-    it('should return 1+1=2', function(done) {
-      (1+1).should.equal(2)
-      done()
+  describe('Products', function() {
+    it('should return all products', function(done) {
+      chai.request(server)
+      .get('/api/v1/products')
+      .end((err, res) => {
+        res.should.have.status(200)
+        done()
+      })
     })
   })
 })

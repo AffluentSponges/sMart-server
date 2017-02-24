@@ -1,3 +1,6 @@
+//pass in 'test' as an arg to the command line if you want this to seed the test db
+process.env.NODE_ENV = process.argv[2] || 'development'
+
 const db = require('./db')
 const {
   usersArray,
@@ -35,11 +38,9 @@ for(var i = 0; i < productArray.length; i++) {
 
 Promise.all(promiseArray)
 .then(values => {
-  if(process.env.NODE_ENV !== 'test') {
-    console.log('done seeding data. exiting gracefully')
-    db.knex.destroy()
-    process.exit()
-  }
+  console.log('done seeding data. exiting gracefully')
+  db.knex.destroy()
+  process.exit()
 })
 .catch(err => {
   console.log(err)
