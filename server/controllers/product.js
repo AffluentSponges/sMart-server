@@ -1,5 +1,6 @@
 const db = require('../db/db')
 var uberRUSHController = require('./uberRUSH')
+var Product = require('../models/product')
 var controller = {}
 
 controller.getAll = function (req, res) {
@@ -18,22 +19,9 @@ controller.buy = function(req, res, next) {
 
   console.log('product_id: ', product_id)
 
-  db.Product.findById(product_id)
-  .then(product => {
-    return product.set({buyer_id: buyer_id, sold: true}).save()
-  })
-  .then(product => {
-    var date = new Date()
-    date = date.toUTCString()
-    return db.Transaction.upsert({product_id: product.id},
-      {
-      user_id: product.attributes.buyer_id,
-      sale_price: product.attributes.asking_price,
-      status: 'processing_buyer_payment',
-      sale_time_and_date: date
-    })
-  })
+  Product.buyProduct(product_id, buyer_id)
   .then(transaction => {
+    console.log('TRANSACTION: ', transaction)
     next()
   })
   .catch(err => {
@@ -58,5 +46,12 @@ controller.post = function(req, res) {
   })
   res.end('all good homies')
 }
+
+controller.getUserProducts = function(req, res) {
+  db.Product.where({seller_id: req.query.user_id}).fetchAll()
+  .then(products => {
+    res.json(products)
+  })
+};
 
 module.exports = controller
