@@ -7,7 +7,6 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const passport = require('passport');
 const path = require('path');
-const FileStore = require('session-file-store')(session);
 const passportAuth = require('./server/auth/passport');
 const router = require('./server/routes');
 
@@ -30,8 +29,8 @@ app.use(session({
   secret: process.env.SESSION_SECRET_KEY || 'nothing is secret',
   resave: false,
   saveUninitialized: true,
-  store: new FileStore(),
-  cookie : { maxAge: 2419200000 }
+  store: new (require('connect-pg-simple')(session))(),
+  cookie : { maxAge:  30 * 24 * 60 * 60 * 1000 } // this means 30days
 }));
 app.use(passport.initialize());
 app.use(passport.session());
