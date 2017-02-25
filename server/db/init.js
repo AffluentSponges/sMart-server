@@ -41,6 +41,13 @@ knex.schema.hasTable('transactions')
   return exists ? knex.schema.dropTable('users') : null
 })
 .then(() => {
+  return knex.schema.hasTable('session')
+})
+.then(exists => {
+  console.log('dropping session table if it exists')
+  return exists ? knex.schema.dropTable('session') : null
+})
+.then(() => {
   console.log('creating users table')
   return knex.schema.createTable('users', u => {
           u.increments()
