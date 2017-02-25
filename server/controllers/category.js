@@ -3,7 +3,6 @@ const db = require('../db/db')
 var controller = {}
 
 controller.getAll = function (req, res) {
-  console.log('getAll categories')
   db.Category.findAll()
   .then(categories => {
     res.json(categories)

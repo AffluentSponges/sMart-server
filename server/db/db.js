@@ -1,10 +1,10 @@
 require('dotenv').config();
-var knex = require('knex')({
-  client: 'pg',
-  connection: process.env.DATABASE_URL,
-})
 
-console.log('Connecting to ' + process.env.DATABASE_URL)
+const environment = process.env.NODE_ENV || 'development';
+const config = require('./envConfig')[environment];
+const knex = require('knex')(config)
+
+console.log('Connecting to ' + config.connection)
 
 var bookshelf = require('bookshelf')(knex)
 var ModelBase = require('bookshelf-modelbase')(bookshelf)

@@ -3,16 +3,13 @@ import { Card, Icon, Image } from 'semantic-ui-react'
 
 const ItemElement = (props) => (
   <Card>
-    <Image src={props.item.imageUrls[0]} />
+    <Image src={props.item.image_links[0]} />
     <Card.Content>
       <Card.Header>{props.item.title}</Card.Header>
-      <Card.Meta>Joined in 2016</Card.Meta>
+      <Card.Meta>{'$' + props.item.asking_price}</Card.Meta>
     </Card.Content>
     <Card.Content extra>
-      <a>
-        <Icon name='user' />
-        10 Friends
-      </a>
+        {props.item.created_at.split('T')[0]}
     </Card.Content>
   </Card>
 )
