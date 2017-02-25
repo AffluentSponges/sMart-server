@@ -63,7 +63,7 @@ class ItemDetail extends React.Component {
               <Grid.Row>
                 <h2>{this.state.thisProduct.title}</h2>
               </Grid.Row>
-              <Divider section />
+              <Divider horizontal>Uber</Divider>
               <Grid.Row>
                 <Button size='huge' className='buy' color='red'>
                   Buy now!
