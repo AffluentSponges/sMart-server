@@ -17,28 +17,14 @@ controller.getUserProfile = (req, res) => {
 };
 
 controller.checkInfo = (req, res) => {
-  // query db to check user session
-    // if user has a valid phone number AND address, redirect to '/'
-    // if user does not have phone or address, redirect to further registration
-  
-  // session user
   var user = req.session.passport.user;
 
-  // if any address or phone# info is null, redirect from googleOauth to further registration
   if (!user.address || !user.postal_code || !user.city || !user.state || !user.phone_number) {
-    // res.redirect('/furtherRegistration')
+    res.redirect('/account-edit')
   } else {
-    // if all info is there, redirect to root '/'
     res.redirect('/');
   }
-
-  // db.User.where({id: sessionUser.id})
-  // .fetch()
-  // .then(user => {
-
-  // })
-  console.log('SESSION === ', req.session.passport.user.id);
-  res.redirect('/');
+  res.end();
 };
 
 controller.setContactInfo = (req, res) => {
@@ -50,8 +36,7 @@ controller.setContactInfo = (req, res) => {
       model.set("phone_number", req.body.phone_number);
       model.save()
       res.json(model)
-  })
-
-}
+  });
+};
 
 module.exports = controller;

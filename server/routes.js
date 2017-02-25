@@ -7,14 +7,9 @@ var uberRUSHController = require('./controllers/uberRUSH')
 var userController = require('./controllers/users');
 var upload = require('./s3/upload')
 var s3Handler = require('./s3/s3Handler')
-// Routes for login and logout
 
-// router.get('/auth/google/success', function(req, res) {
-//   console.log('SUCCESS', req.session);
 
-//   res.redirect('/');
-//   // res.send(req.session);
-// })
+// ** routes for authentication, login, and registration ** 
 
 router.get('/auth/google/success', userController.checkInfo);
 
