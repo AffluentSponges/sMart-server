@@ -57,6 +57,24 @@ router.get('/api/v1/getone', productController.getOne);
 
 router.post('/api/v1/postcontactinfo', userController.setContactInfo);
 
+router.post('/api/v1/postitem', (req, res) => {
+  productController.post(req, res)
+})
+
+//Needs seller_id to passed in through req
+router.get('/api/v1/getuserproducts', (req, res) => {
+  productController.getUserProducts(req, res)
+});
+
+//needs id passed in through req
+router.get('/api/v1/getuserprofile', (req, res) => {
+  userController.getUserProfile(req, res)
+})
+
+router.post('/api/v1/postcontactinfo', (req, res) => {
+  userController.setContactInfo(req, res)
+})
+
 router.get('/logout', function(req, res) {
   req.logout();
   req.session.destroy();

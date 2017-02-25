@@ -65,6 +65,10 @@ controller.post = function(req, res) {
   }).then(result => {
     res.end(JSON.stringify(result.attributes.id))
   }).catch(err => {
+    console.log(result.attributes.id)
+    res.end(JSON.stringify(result.attributes.id))
+  }).catch(err => {
+    console.log(err)
     res.end(JSON.stringify(err))
   })
 }
