@@ -10,10 +10,11 @@ class ItemList extends React.Component {
   }
 
   render() {
+    var _this = this;
     return (
       <Grid relaxed columns={4}>
-        {this.props.items.map((item) =>
-          <Grid.Column key={item.postId} as={Link} to={'/i/' + item.postId} onClick={()=>{console.log(item.postId)}}>
+        {_this.props.items.map((item) =>
+          <Grid.Column key={item.id} as={Link} to={'/i/' + item.id} onClick={()=>{console.log(item.id)}}>
             <ItemElement item={item} />
           </Grid.Column>       
         )}

@@ -62,27 +62,35 @@ seedData.usersArray = [
 
 seedData.categoryArray = [
   {
-  name: 'electronics',
+  name: 'Fashion and Accessories',
   parent_category_id: null,
   },
   {
-  name: 'clothes',
+  name: 'Home and Garden',
   parent_category_id: null,
   },
   {
-  name: 'antiques',
+  name: 'Electronics',
   parent_category_id: null,
   },
   {
-  name: 'games',
+  name: 'Baby and Child',
   parent_category_id: null,
   },
   {
-  name: 'toys',
+  name: 'Cars and Motors',
   parent_category_id: null,
   },
   {
-  name: 'cars',
+  name: 'Sports, Leisure and Games',
+  parent_category_id: null,
+  },
+  {
+  name: 'Movies, Books and Music',
+  parent_category_id: null,
+  },
+  {
+  name: 'Other',
   parent_category_id: null,
   }
 ]

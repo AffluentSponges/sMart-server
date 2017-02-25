@@ -10,7 +10,6 @@ module.exports = function(env) {
   return knex.schema.hasTable('transactions')
   .then(exists => {return exists ? knex.schema.dropTable('transactions') : null})
 
-<<<<<<< HEAD
   .then(() => {return knex.schema.hasTable('bids')})
   .then(exists => {return exists ? knex.schema.dropTable('bids') : null})
 
@@ -133,7 +132,7 @@ module.exports = function(env) {
     // process.exit()
   })
 }
-=======
+
 knex.schema.hasTable('transactions')
 .then(exists => {
   console.log('dropping transactions table if it exists')
@@ -271,4 +270,3 @@ knex.schema.hasTable('transactions')
   knex.destroy()
   process.exit()
 })
->>>>>>> bb86922f15c4265a4cc726c3adbf32c4f41da383
