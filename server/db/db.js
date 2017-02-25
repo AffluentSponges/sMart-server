@@ -88,7 +88,8 @@ var Transaction = ModelBase.extend({
   product: function() {
     return this.belongsTo(Product)
   }
-})
+});
+
 
 db.User = User
 db.Product = Product

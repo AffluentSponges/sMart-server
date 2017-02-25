@@ -4,27 +4,24 @@ const passport = require('passport');
 var categoryController = require('./controllers/category')
 var productController = require('./controllers/product')
 var uberRUSHController = require('./controllers/uberRUSH')
+var userController = require('./controllers/users');
 var upload = require('./s3/upload')
 var s3Handler = require('./s3/s3Handler')
-var userController = require('./controllers/users')
-// Routes for login and logout
-// router.get('/auth/google/success', function(req, res) {
-//   console.log('SUCCESS', req.session);
-//   res.redirect('/');
-//   // res.send(req.session);
-// })
 
-// router.get('/auth/google/failure', function(req, res) {
-//   console.log('LOGIN FAILURE');
-//   res.redirect('/login');
-// });
 
-router.get('/login', 
-  passport.authenticate('google', { scope : ['profile', 'email'] }));
+// ** routes for authentication, login, and registration ** 
+
+router.get('/auth/google/success', userController.checkInfo);
+
+router.get('/auth/google/failure', (req, res) => {
+  res.redirect('/login');
+});
+
+router.get('/login', passport.authenticate('google', { scope : ['profile', 'email'] }));
 
 router.get('/auth/google/callback',
   passport.authenticate('google', {
-      successRedirect : '/',
+      successRedirect : '/auth/google/success',
       failureRedirect : '/auth/google/failure'
 }));
 
@@ -47,6 +44,7 @@ router.get('/logout', function(req, res) {
 //   "asking_price": "100.11",
 //   "imageUrl": ["asdgasfhfshashf"]
 // }
+
 router.get('/users/auth', function(req, res) {
   res.send(req.session);
 })
@@ -66,12 +64,6 @@ router.post('/api/v1/postcontactinfo', userController.setContactInfo);
 router.post('/api/v1/postitem', (req, res) => {
   productController.post(req, res)
 })
-
-// router.get('/auth/google/failure', function(req, res) {
-//   console.log('LOGIN FAILURE');
-//   res.redirect('/login');
-// });
-
 
 router.get('/api/v1/categories', categoryController.getAll) 
 router.get('/api/v1/products', productController.getAll) //?category_id=3 default sold=false

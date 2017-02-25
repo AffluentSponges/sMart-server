@@ -16,6 +16,17 @@ controller.getUserProfile = (req, res) => {
   })
 };
 
+controller.checkInfo = (req, res) => {
+  var user = req.session.passport.user;
+
+  if (!user.address || !user.postal_code || !user.city || !user.state || !user.phone_number) {
+    res.redirect('/account-edit')
+  } else {
+    res.redirect('/');
+  }
+  res.end();
+};
+
 controller.setContactInfo = (req, res) => {
   var profile = db.User.where({id: req.body.id}).fetch()
     .then(model => {
@@ -25,8 +36,7 @@ controller.setContactInfo = (req, res) => {
       model.set("phone_number", req.body.phone_number);
       model.save()
       res.json(model)
-  })
-
-}
+  });
+};
 
 module.exports = controller;
