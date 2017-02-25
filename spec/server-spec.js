@@ -126,7 +126,7 @@ describe('API Routes', function() {
           res.should.have.status(200)
           res.should.be.json
           res.body.should.be.a('object')
-          res.body.username.should.equal("brenner-test")
+          res.body.username.should.equal("mark-test")
           done()
         })
 
