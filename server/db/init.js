@@ -7,8 +7,6 @@ module.exports = function(env) {
   const config = require('./envConfig')[environment];
   const knex = require('knex')(config)
 
-  console.log('Connecting to ' + config.connection)
-
   return knex.schema.hasTable('transactions')
   .then(exists => {return exists ? knex.schema.dropTable('transactions') : null})
 
@@ -28,7 +26,6 @@ module.exports = function(env) {
   .then(exists => {return exists ? knex.schema.dropTable('session') : null})
 
   .then(() => {
-    console.log('creating users table')
     return knex.schema.createTable('users', u => {
             u.increments()
             u.string('username')
