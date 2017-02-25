@@ -32,6 +32,11 @@ save and close the ```.env``` file
 
 ```npm run dev``` to run on a dev environment
 
+For testing: 
+
+```npm run init-db test``` to construct the seed database schema. this will most likely clear any data in it.
+
+```npm run seed-db test``` to seed the database with some dummy data
 
 To test run ```npm test```
 
