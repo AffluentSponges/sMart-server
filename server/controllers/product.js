@@ -49,7 +49,7 @@ controller.post = function(req, res) {
     address: req.body.address,
     address_2: req.body.address_2,
     postal_code: req.body.postal_code,
-    buyer_id: req.body.buyer_id,
+    // buyer_id: req.body.buyer_id,
     category_id: req.body.category_id,
     title: req.body.title,
     description: req.body.description,
@@ -63,6 +63,14 @@ controller.post = function(req, res) {
     res.end(JSON.stringify(err))
   })
 }
+
+controller.getOneProduct = function(req, res) {
+  db.Product.where({id: req.query.id}).fetch()
+  .then(products => {
+    res.json(products)
+  })
+};
+
 
 controller.getUserProducts = function(req, res) {
   db.Product.where({seller_id: req.query.user_id}).fetchAll()
