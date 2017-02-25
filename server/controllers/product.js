@@ -26,7 +26,6 @@ controller.buy = function(req, res, next) {
   console.log('product_id: ', product_id)
 
   Product.buyProduct(product_id, buyer_id)
-<<<<<<< HEAD
     .then(transaction => {
       console.log('TRANSACTION: ', transaction)
       next()
@@ -35,7 +34,6 @@ controller.buy = function(req, res, next) {
       console.log('PRODUCT CONTROLLER BUY ERROR')
       console.log(err)
     })
-=======
   .then(transaction => {
     console.log('TRANSACTION: ', transaction)
     next()
@@ -44,7 +42,6 @@ controller.buy = function(req, res, next) {
     console.log('PRODUCT CONTROLLER BUY ERROR')
     console.log(err)
   })
->>>>>>> 99228224fa1723ed93824ec135386e878af26fd9
 }
 
 
@@ -67,18 +64,15 @@ controller.post = function(req, res) {
     address: req.body.address,
     address_2: req.body.address_2,
     postal_code: req.body.postal_code,
-    // buyer_id: req.body.buyer_id,
+    buyer_id: req.body.buyer_id,
     category_id: req.body.category_id,
     title: req.body.title,
     description: req.body.description,
     asking_price: req.body.asking_price,
     image_links: req.body.imageUrl,  //make sure is array
   }).then(result => {
-<<<<<<< HEAD
     res.end(JSON.stringify(result.attributes.id))
   }).catch(err => {
-=======
->>>>>>> 99228224fa1723ed93824ec135386e878af26fd9
     console.log(result.attributes.id)
     res.end(JSON.stringify(result.attributes.id))
   }).catch(err => {
