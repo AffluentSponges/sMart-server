@@ -4,6 +4,9 @@ const chai = require('chai')
 const should = chai.should()
 const chaiHttp = require('chai-http')
 const server = require('../server')
+const db = require('../server/db/db')
+const init = require('../server/db/init')
+const seed = require('../server/db/seed')
 
 chai.use(chaiHttp)
 
@@ -46,6 +49,17 @@ describe('API Routes', function() {
           res.body[i].seller_id.should.equal(1)
         }
         res.body[0].should.have.property('category_id')
+        done()
+      })
+    })
+  })
+  describe('POST routes', function() {
+    beforeEach(function(done) {
+      init('test')
+      .then(() => {
+        return seed('test')
+      })
+      .then(() => {
         done()
       })
     })
