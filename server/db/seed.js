@@ -40,6 +40,7 @@ module.exports = function(env) {
   Promise.all(promiseArray)
   .then(values => {
     console.log('done seeding data. exiting gracefully')
+    // db.knex.destroy()
     db.knex.destroy()
     // process.exit()
   })
