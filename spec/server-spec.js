@@ -11,73 +11,44 @@ const seed = require('../server/db/seed')
 const knex = require('knex')
 chai.use(chaiHttp)
 
-
 describe('API Routes', function() {
-
-  describe('easy test', function() {
-    it('should return 1+1=2', function(done) {
-      (1+1).should.equal(2)
-      done()
-    })
-  })
-
   describe('POST routes', function() {
-    // beforeEach(function(done) {
-    //   init('test')
-    //   .then(() => {
-    //     return seed('test')
-    //   })
-    //   .then(() => {
-    //     done()
-    //   })
-    // })
-
     var product_id;
     it('should post an item', function(done) {
-
       chai.request(server)
-        .post('/api/v1/postitem')
-        .set('content-type', 'application/x-www-form-urlencoded')
-        .send({
-          "seller_id": 2,
-          "address": "asfsadg",
-          "address_2": "asdgasfh",
-          "postal_code": "1234124",
-          "buyer_id": 3,
-          "category_id": 1,
-          "title": "asgasdg",
-          "description": "sdfhsdjhgsdfh",
-          "asking_price": "100.11",
-          "imageUrl": ["asdgasfhfshashf"]
-        })
-        .end((err, res) => {
-          product_id = res.text;
-          res.should.have.status(200)
-          res.text.should.be.a("string")
-          done()
-        })
+      .post('/api/v1/postitem')
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .send({
+        "seller_id": 2,
+        "address": "asfsadg",
+        "address_2": "asdgasfh",
+        "postal_code": "1234124",
+        "buyer_id": 3,
+        "category_id": 1,
+        "title": "asgasdg",
+        "description": "sdfhsdjhgsdfh",
+        "asking_price": "100.11",
+        "imageUrl": ["asdgasfhfshashf"]
       })
-      it('should retrieve an item posted to the db', function(done) {
-        chai.request(server)
-          .get('/api/v1/getone?id=' + product_id)
-          .end((err, res) => {
-            // console.log(typeof res.body)
-            res.should.have.status(200)
-            res.body[0].should.be.a('object')
-            res.body[0].id.should.equal(Number(product_id))
-            done()
-        })
+      .end((err, res) => {
+        product_id = res.text;
+        res.should.have.status(200)
+        res.text.should.be.a("string")
+        done()
       })
-
+    })
+    it('should retrieve an item posted to the db', function(done) {
+      chai.request(server)
+      .get('/api/v1/getone?id=' + product_id)
+      .end((err, res) => {
+        // console.log(typeof res.body)
+        res.should.have.status(200)
+        res.body[0].should.be.a('object')
+        res.body[0].id.should.equal(Number(product_id))
+        done()
+      })
+    })
   })
-
-const db = require('../server/db/db')
-const init = require('../server/db/init')
-const seed = require('../server/db/seed')
-
-chai.use(chaiHttp)
-
-describe('API Routes', function() {
   describe('GET ROUTES', function() {
     it('should return all products', function(done) {
       chai.request(server)
@@ -132,18 +103,13 @@ describe('API Routes', function() {
     })
   })
 })
-  //uberRush.getQuote
-  //product.quote
-
-// describe('POST routes', function() {
-//   beforeEach(function(done) {
-//     init('test')
-//     .then(() => {
-//       return seed('test')
-//     })
-//     .then(() => {
-//       done()
-//     })
+// beforeEach(function(done) {
+//   init('test')
+//   .then(() => {
+//     return seed('test')
+//   })
+//   .then(() => {
+//     done()
 //   })
 // })
 
