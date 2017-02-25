@@ -26,7 +26,7 @@ seedData.usersArray = [
   city: 'San Francisco',
   state: 'CA',
   country: 'US',
-  postal_code: '94117',
+  postal_code: '94102',
   phone_number: '111-222-4444',
   preferred_time: '11:30:00 PST'
   },
