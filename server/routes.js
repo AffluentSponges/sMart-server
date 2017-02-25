@@ -4,31 +4,33 @@ const passport = require('passport');
 var categoryController = require('./controllers/category')
 var productController = require('./controllers/product')
 var uberRUSHController = require('./controllers/uberRUSH')
+var userController = require('./controllers/users');
 var upload = require('./s3/upload')
 var s3Handler = require('./s3/s3Handler')
-var userController = require('./controllers/users')
 // Routes for login and logout
+
 // router.get('/auth/google/success', function(req, res) {
 //   console.log('SUCCESS', req.session);
+
 //   res.redirect('/');
 //   // res.send(req.session);
 // })
 
-// router.get('/auth/google/failure', function(req, res) {
-//   console.log('LOGIN FAILURE');
-//   res.redirect('/login');
-// });
+router.get('/auth/google/success', userController.checkInfo);
 
-router.get('/login', 
-  passport.authenticate('google', { scope : ['profile', 'email'] }));
+router.get('/auth/google/failure', (req, res) => {
+  res.redirect('/login');
+});
+
+router.get('/login', passport.authenticate('google', { scope : ['profile', 'email'] }));
 
 router.get('/auth/google/callback',
   passport.authenticate('google', {
-      successRedirect : '/',
+      successRedirect : '/auth/google/success',
       failureRedirect : '/auth/google/failure'
 }));
 
-router.get('/users/auth', function(req, res) {
+router.get('/users/auth', (req, res) => {
   res.send(req.session);
 })
 
@@ -42,7 +44,7 @@ router.get('/api/v1/getuserprofile', userController.getUserProfile)
 
 router.post('/api/v1/postcontactinfo', userController.setContactInfo)
 
-router.get('/logout', function(req, res) {
+router.get('/logout', (req, res) => {
   req.logout();
   req.session.destroy();
   res.redirect('/');
