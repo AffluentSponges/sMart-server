@@ -45,15 +45,17 @@ router.get('/users/auth', function(req, res) {
   res.send(req.session);
 })
 
-router.post('/api/v1/postitem', productController.post)
+router.post('/api/v1/postitem', productController.post);
 
 //Needs seller_id to passed in through req
 router.get('/api/v1/getuserproducts', productController.getUserProducts);
 
 //needs id passed in through req
-router.get('/api/v1/getuserprofile', userController.getUserProfile)
+router.get('/api/v1/getuserprofile', userController.getUserProfile);
 
-router.post('/api/v1/postcontactinfo', userController.setContactInfo)
+router.get('/api/v1/getone', productController.getOne);
+
+router.post('/api/v1/postcontactinfo', userController.setContactInfo);
 
 router.get('/logout', function(req, res) {
   req.logout();

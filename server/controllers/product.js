@@ -10,6 +10,13 @@ controller.getAll = function (req, res) {
   })
 }
 
+controller.getOne = function (req, res) {
+  db.Product.where({id: req.query.id}).fetchAll()
+  .then(product => {
+    res.json(product)
+  })
+}
+
 controller.buy = function(req, res, next) {
   console.log('buy Product')
 
@@ -44,7 +51,6 @@ controller.buy = function(req, res, next) {
 //   "imageUrl": ["asdgasfhfshashf"]
 // }
 controller.post = function(req, res) {
-  console.log('TYPE: ', Array.isArray(req.body.imageUrl))
   db.Product.create({
     seller_id: req.body.seller_id,
     address: req.body.address,

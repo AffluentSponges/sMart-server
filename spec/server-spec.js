@@ -70,13 +70,56 @@ describe('API Routes', function() {
           done()
         })
     })
-  // describe('postitem', function() {
-  //   //post something to db
-  //   // chai.request(app).post('/postitem')
-  //   it('should post items to the database', function(done) {
-  //     (/*query db to see if it is there*/1).should.equal(/*hand written result of what should be there*/1)
-  //     done()
-  //   })
-  // })
-})
+    //example req.body:
+  // {
+  //   "seller_id": 2,
+  //   "address": "asfsadg",
+  //   "address_2": "asdgasfh",
+  //   "postal_code": "1234124",
+  //   "buyer_id": 3,
+  //   "category_id": 2,
+  //   "title": "asgasdg",
+  //   "description": "sdfhsdjhgsdfh",
+  //   "asking_price": "100.11",
+  //   "imageUrl": ["asdgasfhfshashf"]
+  // }
+    var product_id;
+    it('should post an item', function(done) {
+
+      chai.request(server)
+        .post('/api/v1/postitem')
+        .set('content-type', 'application/x-www-form-urlencoded')
+        .send({
+          "seller_id": 2,
+          "address": "asfsadg",
+          "address_2": "asdgasfh",
+          "postal_code": "1234124",
+          "buyer_id": 3,
+          "category_id": 2,
+          "title": "asgasdg",
+          "description": "sdfhsdjhgsdfh",
+          "asking_price": "100.11",
+          "imageUrl": ["asdgasfhfshashf"]
+        })
+        .end((err, res) => {
+          product_id = res.text;
+          // console.log(res.text)
+          res.should.have.status(200)
+          res.text.should.be.a("string")
+          done()
+        })
+      })
+      console.log(product_id);
+      it('should retrieve an item posted to the db', function(done) {
+        chai.request(server)
+          .get('/api/v1/getone?id=' + product_id)
+          .end((err, res) => {
+            // console.log(typeof res.body)
+            res.should.have.status(200)
+            res.body[0].should.be.a('object')
+            res.body[0].id.should.equal(Number(product_id))
+            done()
+        })
+      })
+  })
 })
