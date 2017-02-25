@@ -53,4 +53,15 @@ describe('API Routes', function() {
       })
     })
   })
+  describe('POST routes', function() {
+    beforeEach(function(done) {
+      init('test')
+      .then(() => {
+        return seed('test')
+      })
+      .then(() => {
+        done()
+      })
+    })
+  })
 })
