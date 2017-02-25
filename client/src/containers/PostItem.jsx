@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
+import { browserHistory } from 'react-router'
 import { Button, Checkbox, Form, Input, Message, Radio, Select, TextArea, Grid, Image } from 'semantic-ui-react'
 
 import Autocomplete from '../components/Autocomplete.jsx'
 import FileUpload from '../components/FileUpload.jsx'
+import axios from 'axios';
 const categories = [
   'Fashion and Accessories',
   'Home and Garden',
@@ -25,7 +27,8 @@ class PostItem extends Component {
     super(props)
     this.state = { 
       formData: {},
-      imageUrl: ''
+      imageUrl: '',
+      categories: []
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -41,14 +44,27 @@ class PostItem extends Component {
     e.preventDefault()
     //this.setState({ formData })
     var data = {};
+    data.seller_id = this.props.state.user.id;
     data.title = formData.title;
-    data.imageUrl = this.state.imageUrl;
-    data.details = formData.details;
-    data.category = formData.category;
-    data.address1 = formData.address1;
-    data.address2 = formData.address2;
-    data.zip = formData.zip;
-    console.log(data);
+    data.imageUrl = [this.state.imageUrl];
+    data.description = formData.details;
+    data.category_id = formData.category;
+    data.address = formData.address1;
+    data.address_2 = formData.address2;
+    data.asking_price = Number.parseInt(formData.price);
+    data.buyer_id = ''
+    data.postal_code = formData.zip;
+    console.log('before send', data);
+    axios.post('/api/v1/postitem', data)
+      .then(function (response) {
+        console.log(response);
+        console.log(response.data.toString());
+        console.log(typeof '/i/' + response.data.toString())
+        browserHistory.push(`/i/${response.data}`);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
   handleImageUrl(url){
@@ -56,6 +72,10 @@ class PostItem extends Component {
   }
 
   componentDidMount() {
+    var categories = this.props.state.categories.map(function(category) {
+      return { key: category.id, text: category.name, value: category.id };
+    });
+    this.setState({categories: categories});
     // get users gps location
     // var options = {
     //   enableHighAccuracy: true,
@@ -112,7 +132,10 @@ class PostItem extends Component {
               <Form.Input label='Address2' name='address2' placeholder='#153' />
               <Form.Input label='Zip' name='zip' placeholder='zip' />
             </Form.Group>
-            <Form.Select label='Category' name='category' options={products} placeholder='Choose category...' search />
+            <Form.Group widths='equal'>
+              <Form.Select label='Category' name='category' options={this.state.categories} placeholder='Choose category...'/>
+              <Form.Input label='Price' name='price' placeholder='$0' />
+            </Form.Group>
             <Form.TextArea name='details' label='Details' placeholder='Anything else we should know?(optinal)' rows='3' />
             <Button primary type='submit'>Show me the money!</Button>
 

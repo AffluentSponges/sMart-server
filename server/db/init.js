@@ -137,8 +137,14 @@ knex.schema.hasTable('transactions')
         })
 })
 .then(() => {
+  return knex.schema.hasTable('session')
+})
+.then(exists => {
+  console.log('dropping session table if it exists')
+  return exists ? knex.schema.dropTable('session') : null
+})
+.then(() => {
   console.log('created sessions table')
-
   return knex.raw('CREATE TABLE "session" ("sid" varchar NOT NULL COLLATE "default", "sess" json NOT NULL, "expire" timestamp(6) NOT NULL) WITH (OIDS=FALSE)')
 })
 .then(() => {
