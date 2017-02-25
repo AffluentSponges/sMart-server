@@ -4,7 +4,6 @@ var Product = require('../models/product')
 var controller = {}
 
 controller.getAll = function (req, res) {
-  console.log('getAll products')
   db.Product.findAll()
   .then(products => {
     res.json(products)
