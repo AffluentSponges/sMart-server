@@ -61,26 +61,22 @@ router.get('/api/v1/product', productController.getOneProduct) //?id=3
 // router.get('/api/v1/products')?user_id=3&sold=false
 
 
-// router.get('/api/v1/product/get_quote', /*productController.getPickupAndDeliverInfo,*/ uberRUSHController.getQuote)
+router.get('/api/v1/product/get_quote', productController.quote)
 // ?product_id=3& buyer_id=4 
 
 router.post('/api/v1/buy', productController.buy, uberRUSHController.requestDelivery)
 // ?product_id=3 & buyer_id=4
 
-
-
-
 /* ## NOT IN MVP ## */
 // router.post('/api/v1/make_bid', /**/)
 //?product_id=3 & user_id=4 & offer_price = 100.50
-
 //delete an item
 /* ################## */
 
 
 
-router.post('/uber_webhook', uberRUSHController.webhook)
 
+router.post('/uber_webhook', uberRUSHController.webhook)
 router.post('/upload', upload, s3Handler)
 
 router.get('*', (req, res, next) => {

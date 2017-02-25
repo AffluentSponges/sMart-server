@@ -53,6 +53,10 @@ describe('API Routes', function() {
       })
     })
   })
+
+  //uberRush.getQuote
+  //product.quote
+
   describe('POST routes', function() {
     beforeEach(function(done) {
       init('test')

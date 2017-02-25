@@ -1,5 +1,5 @@
 const db = require('../db/db')
-var uberRUSHController = require('./uberRUSH')
+var uberRUSH = require('./uberRUSH')
 var Product = require('../models/product')
 var controller = {}
 
@@ -13,8 +13,8 @@ controller.getAll = function (req, res) {
 controller.buy = function(req, res, next) {
   console.log('buy Product')
 
-  var product_id = req.body.product_id
-  var buyer_id = req.body.buyer_id
+  const product_id = req.body.product_id
+  const buyer_id = req.body.buyer_id
 
   console.log('product_id: ', product_id)
 
@@ -26,6 +26,27 @@ controller.buy = function(req, res, next) {
   .catch(err => {
     console.log('PRODUCT CONTROLLER BUY ERROR')
     console.log(err)
+  })
+}
+
+controller.quote = function(req, res, next) {
+  console.log('quote product')
+  const product_id = req.query.product_id
+  const buyer_id = req.query.buyer_id
+
+  var product = null
+
+  Product.getWithSeller(product_id)
+  .then(p => {
+    console.log('got product')
+    product = p
+    return db.User.findById(buyer_id) 
+  })
+  .then(buyer => {
+    return uberRUSH.quote(product, buyer)
+  })
+  .then(delivery => {
+    res.send(delivery)
   })
 }
 
@@ -65,7 +86,7 @@ controller.post = function(req, res) {
 }
 
 controller.getOneProduct = function(req, res) {
-  db.Product.where({id: req.query.id}).fetch()
+  db.Product.findById(req.query.id)
   .then(products => {
     res.json(products)
   })

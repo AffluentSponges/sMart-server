@@ -13,4 +13,13 @@ model.buyProduct = function (product_id, buyer_id) {
   })
 }
 
+model.getWithSeller = function(id) {
+  return db.Product.where({id: id}).fetch({withRelated: ['seller']})
+}
+
+model.getWithAllRelated = function(id) {
+  return db.Product.where({id: id}).fetch({withRelated: ['seller', 'buyer', 'transaction']})
+}
+
+
 module.exports = model

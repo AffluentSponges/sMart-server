@@ -8,9 +8,12 @@ const UberRUSHClient = UberRUSH.createClient({
 })
 
 
-var createDeliveryObj = function(productWithRelatedData) {
+var createDeliveryObj = function(productWithRelatedData, potentialBuyer) {
   p = productWithRelatedData
-  // console.log(p)
+  b = potentialBuyer
+  
+  p.relations.buyer = b || p.relations.buyer  
+
   const deliveryObj = {
     order_reference_id: p.id.toString(),
     item: {
@@ -58,23 +61,25 @@ var createDeliveryObj = function(productWithRelatedData) {
 
 var controller = {}
 
-controller.getQuote = function(req, res) {
+controller.quote = function(product, buyer) {
   console.log('getting Quote')
-
+  var delivery = createDeliveryObj(product, buyer)
   //create quote from req
-  delivery.quote()
+  console.log(delivery)
+  return delivery.quote()
   .then(quotes => {
+    console.log('send quotes')
     //send back delivery fee, est ETA, delivery
-    return res.json(quotes)
-  })
-  .then (() => {
-    return delivery.confirm()
-  })
-  .then(confirmation => {
-    console.log(confirmation)
+    var quote = quotes[0]
+
+    return {
+      uber_delivery_price: quote.fee,
+      pickup_eta: quote.pickup_eta,
+      dropoff_eta: quote.dropoff_eta
+    }
   })
   .catch(err => {
-    // res.json(err)
+    return err
   })
 }
 
