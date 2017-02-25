@@ -9,6 +9,8 @@ import itemDetail from './containers/itemDetail.jsx';
 import PostItem from './containers/PostItem.jsx';
 import Signup from './containers/Signup.jsx';
 import Profile from './containers/Profile.jsx';
+import AccountEdit from'./containers/AccountEdit.jsx';
+
 //from App.jsx
 
 import Header from './components/Header.jsx';
@@ -127,7 +129,8 @@ ReactDOM.render(
       <Route path="x/:category" component={Category}/>
       <Route path="i/:postId" component={itemDetail}/>
       <Route path="u/:userId" component={Profile}/>      
-      <Route path="post" component={PostItem} onEnter={authCheck}/>
+      <Route path="post" component={PostItem}/>
+      <Route path="account-edit" component={AccountEdit}/>
     </Route>
   </Router>,
   document.getElementById('app')

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Header, Icon, Image, Button, Container, Menu, Segment } from 'semantic-ui-react'
+import { Link } from 'react-router';
 
 
 class MenuExampleSecondaryPointing extends React.Component {
@@ -42,7 +43,7 @@ class Profile extends React.Component {
               Mark Taehoon Jung
             </Header.Content>
           </Header>
-          <Button basic color='red'>
+          <Button as={Link} to={'/account-edit'}basic color='red'>
             Edit profile
           </Button>        
         </Container>
