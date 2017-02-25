@@ -4,6 +4,7 @@ const chai = require('chai')
 const should = chai.should()
 const chaiHttp = require('chai-http')
 const server = require('../server')
+<<<<<<< HEAD
 const productController = require('../server/controllers/product.js')
 const db = require('../server/db/db')
 const init = require('../server/db/init')
@@ -71,12 +72,18 @@ describe('API Routes', function() {
 
   })
 
+const db = require('../server/db/db')
+const init = require('../server/db/init')
+const seed = require('../server/db/seed')
+
+chai.use(chaiHttp)
+
+describe('API Routes', function() {
   describe('GET ROUTES', function() {
     it('should return all products', function(done) {
       chai.request(server)
       .get('/api/v1/products')
       .end((err, res) => {
-        // console.log(res.body)
         res.should.have.status(200)
         res.should.be.json
         res.body.should.be.a('array')
@@ -127,4 +134,6 @@ describe('API Routes', function() {
     })
   })
 })
+
+  })
 

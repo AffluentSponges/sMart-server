@@ -41,6 +41,7 @@ module.exports = function(env) {
   .then(values => {
     console.log('done seeding data. exiting gracefully')
     // db.knex.destroy()
+    db.knex.destroy()
     // process.exit()
   })
   .catch(err => {
