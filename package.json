@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "webpack --config webpack.config.js --watch | nodemon server.js",
-    "test": "mocha",
+    "test": "mocha --bail spec/server-spec.js",
     "init-db": "node ./server/db/init.js",
     "seed-db": "node ./server/db/seed.js"
   },
@@ -37,6 +37,8 @@
     "passport": "^0.3.2",
     "passport-google-oauth20": "^1.0.0",
     "pg": "^6.1.2",
+    "session-file-store": "^1.0.0",
+    "sessionstore": "^1.2.18",
     "uber-rush": "^0.4.1"
   },
   "devDependencies": {
@@ -47,8 +49,11 @@
     "babel-preset-es2015": "^6.22.0",
     "babel-preset-react": "^6.22.0",
     "babel-preset-stage-0": "^6.22.0",
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
     "faker": "^3.1.0",
     "lodash": "^4.17.4",
+    "mocha": "^3.2.0",
     "nodemon": "^1.11.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",

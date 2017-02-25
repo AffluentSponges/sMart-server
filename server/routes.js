@@ -6,20 +6,48 @@ var productController = require('./controllers/product')
 var uberRUSHController = require('./controllers/uberRUSH')
 var upload = require('./s3/upload')
 var s3Handler = require('./s3/s3Handler')
-
+var userController = require('./controllers/users')
 // Routes for login and logout
+// router.get('/auth/google/success', function(req, res) {
+//   console.log('SUCCESS', req.session);
+//   res.redirect('/');
+//   // res.send(req.session);
+// })
 
-router.get('/login', passport.authenticate('google', { scope : ['profile', 'email'] }));
+// router.get('/auth/google/failure', function(req, res) {
+//   console.log('LOGIN FAILURE');
+//   res.redirect('/login');
+// });
+
+router.get('/login', 
+  passport.authenticate('google', { scope : ['profile', 'email'] }));
+
 router.get('/auth/google/callback',
-	passport.authenticate('google', {
-    	successRedirect : '/',
-    	failureRedirect : '/login'
-	})
-);
+  passport.authenticate('google', {
+      successRedirect : '/',
+      failureRedirect : '/auth/google/failure'
+}));
 
+router.get('/users/auth', function(req, res) {
+  res.send(req.session);
+})
 
-router.post('/postitem', (req, res) => {
+router.post('/api/v1/postitem', (req, res) => {
   productController.post(req, res)
+})
+
+//Needs seller_id to passed in through req
+router.get('/api/v1/getuserproducts', (req, res) => {
+  productController.getUserProducts(req, res)
+});
+
+//needs id passed in through req
+router.get('/api/v1/getuserprofile', (req, res) => {
+  userController.getUserProfile(req, res)
+})
+
+router.post('/api/v1/postcontactinfo', (req, res) => {
+  userController.setContactInfo(req, res)
 })
 
 router.get('/logout', function(req, res) {
@@ -65,6 +93,8 @@ router.post('/upload', upload, s3Handler)
 
 router.get('*', (req, res, next) => {
   // if(req.path.split('/')[1] === 'static') return next();
+
+
   res.sendFile(path.resolve(__dirname, '../client/public/index.html'));
 });
 

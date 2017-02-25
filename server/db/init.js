@@ -1,24 +1,24 @@
 require('dotenv').config()
+//pass in 'test' as an arg to the command line if you want this to init the test db
+process.env.NODE_ENV = process.argv[2] || 'development'
+const environment = process.env.NODE_ENV
+const config = require('./envConfig')[environment];
+const knex = require('knex')(config)
 
-var knex = require('knex')({
-  client: 'pg',
-  connection: process.env.DATABASE_URL,
-})
-
-console.log('Connecting to ' + process.env.DATABASE_URL)
+console.log('Connecting to ' + config.connection)
 
 knex.schema.hasTable('transactions')
 .then(exists => {
   console.log('dropping transactions table if it exists')
   return exists ? knex.schema.dropTable('transactions') : null
 })
-// .then(() => {
-//   return knex.schema.hasTable('bids')
-// }) 
-// .then(exists => {
-//   console.log('dropping bids table if it exists')
-//   return exists ? knex.schema.dropTable('bids') : null
-// })
+.then(() => {
+  return knex.schema.hasTable('bids')
+}) 
+.then(exists => {
+  console.log('dropping bids table if it exists')
+  return exists ? knex.schema.dropTable('bids') : null
+})
 .then(() => {
   return knex.schema.hasTable('products')
 })
@@ -47,6 +47,8 @@ knex.schema.hasTable('transactions')
           u.string('username')
           u.string('first_name')
           u.string('last_name')
+          u.string('googleID')
+          u.string('token')
           u.string('email').unique()
           u.string('password')
           u.string('wallet_address')
@@ -101,18 +103,18 @@ knex.schema.hasTable('transactions')
   return knex.raw('ALTER TABLE products ADD COLUMN image_links text[]')
 })
 // .then(() => {
-//   console.log('creating bids table')
-//   return knex.schema.createTable('bids', b => {
-//           b.increments()
-//           b.integer('user_id').references('id').inTable('users').notNullable()
-//           b.integer('product_id').references('id').inTable('products')
-//           b.decimal('offer_price')
-//           b.timestamp('created_at').notNullable().defaultTo(knex.raw('now()'))
-//           b.timestamp('updated_at').notNullable().defaultTo(knex.raw('now()'))
-//           // b.string('message', 1023)
-//           // b.boolean('accepted')
-//           // b.dateTime('preferred_time')
-//         })
+  // console.log('creating bids table')
+  // return knex.schema.createTable('bids', b => {
+  //         b.increments()
+  //         b.integer('user_id').references('id').inTable('users').notNullable()
+  //         b.integer('product_id').references('id').inTable('products')
+  //         b.decimal('offer_price')
+  //         b.timestamp('created_at').notNullable().defaultTo(knex.raw('now()'))
+  //         b.timestamp('updated_at').notNullable().defaultTo(knex.raw('now()'))
+  //         // b.string('message', 1023)
+  //         // b.boolean('accepted')
+  //         // b.dateTime('preferred_time')
+  //       })
 // })
 .then(() => {
   console.log('created transactions table')
