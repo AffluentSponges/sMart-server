@@ -8,7 +8,7 @@ const productController = require('../server/controllers/product.js')
 const db = require('../server/db/db')
 const init = require('../server/db/init')
 const seed = require('../server/db/seed')
-
+const knex = require('knex')
 chai.use(chaiHttp)
 
 
@@ -123,7 +123,7 @@ describe('API Routes', function() {
           res.body.username.should.equal("brenner-test")
           done()
         })
-        
+
     })
   })
 })
