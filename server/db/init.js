@@ -1,11 +1,11 @@
 require('dotenv').config()
+//pass in 'test' as an arg to the command line if you want this to init the test db
+process.env.NODE_ENV = process.argv[2] || 'development'
+const environment = process.env.NODE_ENV
+const config = require('./envConfig')[environment];
+const knex = require('knex')(config)
 
-var knex = require('knex')({
-  client: 'pg',
-  connection: process.env.DATABASE_URL,
-})
-
-console.log('Connecting to ' + process.env.DATABASE_URL)
+console.log('Connecting to ' + config.connection)
 
 knex.schema.hasTable('transactions')
 .then(exists => {
@@ -135,6 +135,15 @@ knex.schema.hasTable('transactions')
           t.timestamp('created_at').notNullable().defaultTo(knex.raw('now()'))
           t.timestamp('updated_at').notNullable().defaultTo(knex.raw('now()'))
         })
+})
+.then(() => {
+  console.log('created sessions table')
+
+  return knex.raw('CREATE TABLE "session" ("sid" varchar NOT NULL COLLATE "default", "sess" json NOT NULL, "expire" timestamp(6) NOT NULL) WITH (OIDS=FALSE)')
+})
+.then(() => {
+  console.log('Add constraint to sessions table')
+  return knex.raw('ALTER TABLE "session" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid") NOT DEFERRABLE INITIALLY IMMEDIATE')
 })
 .then(() => {
   console.log('exiting with no errors')
