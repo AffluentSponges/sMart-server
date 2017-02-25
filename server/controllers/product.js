@@ -44,6 +44,7 @@ controller.buy = function(req, res, next) {
 //   "imageUrl": ["asdgasfhfshashf"]
 // }
 controller.post = function(req, res) {
+  console.log('TYPE: ', Array.isArray(req.body.imageUrl))
   db.Product.create({
     seller_id: req.body.seller_id,
     address: req.body.address,

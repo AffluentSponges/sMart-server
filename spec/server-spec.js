@@ -6,8 +6,9 @@ const chaiHttp = require('chai-http')
 const server = require('../server')
 const productController = require('../server/controllers/product.js')
 
-// chai.use(chaiHttp)
-app = server()
+chai.use(chaiHttp)
+
+
 describe('API Routes', function() {
 
   describe('easy test', function() {
@@ -57,10 +58,18 @@ describe('API Routes', function() {
         res.body[0].should.have.property('category_id')
         done()
       })
-
     })
-  })
-
+    it('should get a users profile', function(done) {
+      chai.request(server)
+        .get('/api/v1/getuserprofile?id=1')
+        .end((err, res) => {
+          res.should.have.status(200)
+          res.should.be.json
+          res.body.should.be.a('object')
+          res.body.username.should.equal("brenner-test")
+          done()
+        })
+    })
   // describe('postitem', function() {
   //   //post something to db
   //   // chai.request(app).post('/postitem')
@@ -69,4 +78,5 @@ describe('API Routes', function() {
   //     done()
   //   })
   // })
+})
 })
