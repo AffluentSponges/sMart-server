@@ -121,18 +121,29 @@ describe('API Routes', function() {
     })
     it('should get a users profile', function(done) {
       chai.request(server)
-        .get('/api/v1/getuserprofile?id=4')
-        .end((err, res) => {
-          res.should.have.status(200)
-          res.should.be.json
-          res.body.should.be.a('object')
-          res.body.username.should.equal("mark-test")
-          done()
-        })
-
+      .get('/api/v1/getuserprofile?id=4')
+      .end((err, res) => {
+        res.should.have.status(200)
+        res.should.be.json
+        res.body.should.be.a('object')
+        res.body.username.should.equal("mark-test")
+        done()
+      })
     })
   })
 })
+  //uberRush.getQuote
+  //product.quote
 
-  })
+// describe('POST routes', function() {
+//   beforeEach(function(done) {
+//     init('test')
+//     .then(() => {
+//       return seed('test')
+//     })
+//     .then(() => {
+//       done()
+//     })
+//   })
+// })
 
