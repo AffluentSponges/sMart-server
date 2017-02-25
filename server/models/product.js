@@ -1,25 +1,44 @@
-const db = require('../db/db')
-const transaction = require('./transaction')
-var model = {}
+const knex = require('../db/knex')
+const bookshelf = require('bookshelf')(knex)
+const ModelBase = require('bookshelf-modelbase')(bookshelf)
+bookshelf.plugin(require('bookshelf-modelbase').pluggable)
 
-//returns the new transaction
-model.buyProduct = function (product_id, buyer_id) {
-  return db.Product.findById(product_id)
-  .then(product => {
-    return product.set({buyer_id: buyer_id, sold: true}).save()
-  })
-  .then(product => {
-    return transaction.addNewTransaction(product)
-  })
-}
+const Product = ModelBase.extend({
+  tableName: 'products',
 
-model.getWithSeller = function(id) {
-  return db.Product.where({id: id}).fetch({withRelated: ['seller']})
-}
+  seller: function() {
+    return this.belongsTo(User, 'seller_id')
+  },
 
-model.getWithAllRelated = function(id) {
-  return db.Product.where({id: id}).fetch({withRelated: ['seller', 'buyer', 'transaction']})
-}
+  buyer: function() {
+    return this.belongsTo(User, 'buyer_id')
+  },
 
+  category: function() {
+    return this.belongsTo(Category)
+  },
+  
+  transaction: function() {
+    return this.hasOne(Transaction)
+  },
 
-module.exports = model
+  getWithSeller: function(id) {
+    return this.where({id: id}).fetch({withRelated: ['seller']})
+  },
+
+  getWithAllRelated: function(id) {
+    return this.where({id: id}).fetch({withRelated: ['seller', 'buyer', 'transaction']})
+  },
+
+  buyProduct: function (product_id, buyer_id) {
+    return this.findById(product_id)
+    .then(product => {
+      return product.set({buyer_id: buyer_id, sold: true}).save()
+    })
+    .then(product => {
+      return transaction.addNewTransaction(product)
+    })
+  }
+})
+
+module.exports = Product

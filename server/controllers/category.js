@@ -1,9 +1,9 @@
-const db = require('../db/db')
+const Category = require('../models/category')
 
 var controller = {}
 
 controller.getAll = function (req, res) {
-  db.Category.findAll()
+  Category.findAll()
   .then(categories => {
     res.json(categories)
   })

@@ -1,8 +1,8 @@
 module.exports = function(env) {
   //pass in 'test' as an arg to the command line if you want this to seed the test db
   process.env.NODE_ENV = env || 'development'
-
-  const db = require('./db')
+  const knex = require('./knex')
+  const db = require('../models')
   const {
     usersArray,
     categoryArray,
@@ -11,18 +11,18 @@ module.exports = function(env) {
 
   var insertRow = function(seedDataArray, tableName, i, uniqueName) {
     var name = seedDataArray[i][uniqueName]
-    return db.knex(tableName).where({[uniqueName]: name}).first()
+    return knex(tableName).where({[uniqueName]: name}).first()
     .then(row => {
-      return !row ? db.knex(tableName).insert(seedDataArray[i]) : null
+      return !row ? knex(tableName).insert(seedDataArray[i]) : null
     })
   }
 
   var promiseArray = []
 
   if(process.env.NODE_ENV === 'test') {
-    promiseArray.push(db.knex('users').del())
-    promiseArray.push(db.knex('categories').del())
-    promiseArray.push(db.knex('products').del())
+    promiseArray.push(knex('users').del())
+    promiseArray.push(knex('categories').del())
+    promiseArray.push(knex('products').del())
   }
 
   for(var i = 0; i < usersArray.length; i++) {
@@ -40,13 +40,13 @@ module.exports = function(env) {
   Promise.all(promiseArray)
   .then(values => {
     console.log('done seeding data. exiting gracefully')
-    // db.knex.destroy()
-    db.knex.destroy()
+    // knex.destroy()
+    knex.destroy()
     // process.exit()
   })
   .catch(err => {
     console.log(err)
-    db.knex.destroy()
+    knex.destroy()
     process.exit()
   })
 }
