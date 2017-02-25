@@ -10,6 +10,13 @@ controller.getAll = function (req, res) {
   })
 }
 
+controller.getOne = function (req, res) {
+  db.Product.where({id: req.query.id}).fetchAll()
+  .then(product => {
+    res.json(product)
+  })
+}
+
 controller.buy = function(req, res, next) {
   console.log('buy Product')
 
@@ -19,6 +26,16 @@ controller.buy = function(req, res, next) {
   console.log('product_id: ', product_id)
 
   Product.buyProduct(product_id, buyer_id)
+<<<<<<< HEAD
+    .then(transaction => {
+      console.log('TRANSACTION: ', transaction)
+      next()
+    })
+    .catch(err => {
+      console.log('PRODUCT CONTROLLER BUY ERROR')
+      console.log(err)
+    })
+=======
   .then(transaction => {
     console.log('TRANSACTION: ', transaction)
     next()
@@ -27,6 +44,7 @@ controller.buy = function(req, res, next) {
     console.log('PRODUCT CONTROLLER BUY ERROR')
     console.log(err)
   })
+>>>>>>> 99228224fa1723ed93824ec135386e878af26fd9
 }
 
 
@@ -56,6 +74,11 @@ controller.post = function(req, res) {
     asking_price: req.body.asking_price,
     image_links: req.body.imageUrl,  //make sure is array
   }).then(result => {
+<<<<<<< HEAD
+    res.end(JSON.stringify(result.attributes.id))
+  }).catch(err => {
+=======
+>>>>>>> 99228224fa1723ed93824ec135386e878af26fd9
     console.log(result.attributes.id)
     res.end(JSON.stringify(result.attributes.id))
   }).catch(err => {
