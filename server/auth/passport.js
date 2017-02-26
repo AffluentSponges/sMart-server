@@ -1,6 +1,6 @@
 require('dotenv').config();
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const db = require('../db/db');
+const db = require('../models');
 const passport = require('passport');
 
 module.exports = (passport) => {
@@ -11,7 +11,7 @@ module.exports = (passport) => {
     passport.deserializeUser((id, done) => {
         db.User.where({ googleID: id.googleID }).fetch()
         .then((user) => { 
-            console.log('DESERIALIZED', user)
+            // console.log('DESERIALIZED', user)
             done(null, user);
         })
         .catch((err) => { done(err,null); });

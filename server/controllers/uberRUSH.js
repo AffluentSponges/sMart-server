@@ -1,4 +1,5 @@
-const db = require('../db/db')
+const {Product} = require('../models')
+
 const transactionController = require('./transaction')
 const UberRUSH = require('uber-rush')
 const UberRUSHClient = UberRUSH.createClient({
@@ -88,7 +89,7 @@ controller.requestDelivery = function(req, res) {
 
   var product_id = req.body.product_id
 
-  db.Product.where({id: product_id}).fetch({withRelated: ['transaction', 'seller', 'buyer']})
+  Product.where({id: product_id}).fetch({withRelated: ['transaction', 'seller', 'buyer']})
   .then(productWithRelatedData => {
     var delivery = createDeliveryObj(productWithRelatedData)
     delivery.confirm()
@@ -184,43 +185,3 @@ controller.webhook = function(req, res) {
 }
 
 module.exports = controller
-
-// var delivery = UberRUSHClient.createDelivery({
-//       item: {
-//           title: 'Chocolate bar',
-//           quantity: 1,
-//           is_fragile: true
-//       },
-//       pickup: {
-//           contact: {
-//               first_name: 'Brenner',
-//               last_name: 'Spear',
-//               phone: {
-//                 number: "+14152229670"
-//               }
-//           },
-//           location: {
-//               address: '420 baker st',
-//               city: 'San Francisco',
-//               state: 'CA',
-//               postal_code: '94117',
-//               country: 'US'
-//           }
-//       },
-//       dropoff: {
-//           contact: {
-//               first_name: 'Derek',
-//               last_name: 'Young',
-//               phone: {
-//                 number: "+14152229670"
-//               }
-//           },
-//           location: {
-//               address: '944 Market St',
-//               city: 'San Francisco',
-//               state: 'CA',
-//               postal_code: '94102',
-//               country: 'US'
-//           }
-//       }
-//   });

@@ -1,6 +1,5 @@
 require('dotenv').config();
 const express = require('express');
-const db = require('./server/db/db');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');

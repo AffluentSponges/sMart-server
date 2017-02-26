@@ -1,16 +1,16 @@
-const db = require('../db/db')
+const User = require('../models/User')
 var controller = {}
 
 controller.getAll = (req, res) => {
   console.log('getAll products')
-  db.User.findAll()
+  User.findAll()
   .then(users => {
     res.json(users)
   })
 }
 
 controller.getUserProfile = (req, res) => {
-  db.User.where({id: req.query.id}).fetch()
+  User.where({id: req.query.id}).fetch()
   .then(user => {
     res.json(user)
   })
@@ -28,7 +28,7 @@ controller.checkInfo = (req, res) => {
 };
 
 controller.setContactInfo = (req, res) => {
-  var profile = db.User.where({id: req.body.id}).fetch()
+  var profile = User.where({id: req.body.id}).fetch()
     .then(model => {
       model.set("address", req.body.address);
       model.set("address_2", req.body.address_2);

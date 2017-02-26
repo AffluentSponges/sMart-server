@@ -1,17 +1,17 @@
-const db = require('../db/db')
-var uberRUSH = require('./uberRUSH')
-var Product = require('../models/product')
+const Product = require('../models/product')
+const {User} = require('../models')
+const uberRUSH = require('./uberRUSH')
 var controller = {}
 
 controller.getAll = function (req, res) {
-  db.Product.findAll()
+  Product.findAll()
   .then(products => {
     res.json(products)
   })
 }
 
 controller.getOne = function (req, res) {
-  db.Product.where({id: req.query.id}).fetchAll()
+  Product.where({id: req.query.id}).fetchAll()
   .then(product => {
     res.json(product)
   })
@@ -55,7 +55,7 @@ controller.quote = function(req, res, next) {
   .then(p => {
     console.log('got product')
     product = p
-    return db.User.findById(buyer_id) 
+    return User.findById(buyer_id) 
   })
   .then(buyer => {
     return uberRUSH.quote(product, buyer)
@@ -80,7 +80,7 @@ controller.quote = function(req, res, next) {
 //   "imageUrl": ["asdgasfhfshashf"]
 // }
 controller.post = function(req, res) {
-  db.Product.create({
+  Product.create({
     seller_id: req.body.seller_id,
     address: req.body.address,
     address_2: req.body.address_2,
@@ -103,7 +103,7 @@ controller.post = function(req, res) {
 }
 
 controller.getOneProduct = function(req, res) {
-  db.Product.findById(req.query.id)
+  Product.findById(req.query.id)
   .then(products => {
     res.json(products)
   })
@@ -111,7 +111,7 @@ controller.getOneProduct = function(req, res) {
 
 
 controller.getUserProducts = function(req, res) {
-  db.Product.where({seller_id: req.query.user_id}).fetchAll()
+  Product.where({seller_id: req.query.user_id}).fetchAll()
   .then(products => {
     res.json(products)
   })
