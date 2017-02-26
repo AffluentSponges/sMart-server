@@ -44,6 +44,7 @@ class App extends React.Component {
       // console.log(res.data.passport.user);
       if (res.data.passport) {
         if (res.data.passport.user.id) {
+            console.log('res.data.passport.user', res.data.passport.user);
           _this.setState({
             user: {
               id: res.data.passport.user.id,
