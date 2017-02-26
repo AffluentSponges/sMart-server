@@ -4,12 +4,34 @@ const chai = require('chai')
 const should = chai.should()
 const chaiHttp = require('chai-http')
 const server = require('../server')
-const productController = require('../server/controllers/product.js')
-const db = require('../server/models')
+const {userController,
+       productController,
+       categoryController,
+       transactionController} = require('../server/controllers')
+const {User,
+       Product,
+       Category,
+       Transaction} = require('../server/models')
 const init = require('../server/db/init')
 const seed = require('../server/db/seed')
 const knex = require('knex')
 chai.use(chaiHttp)
+
+describe('Model Methods', function() {
+  describe('Product Methods', function() {
+    it('should get a product with its related seller', function(done) {
+      console.log(Product)
+      Product.getWithSeller(1)
+      .then(p => {
+        p.attributes.title.should.equal('macbook pro')
+        p.attributes.asking_price.should.equal(200.34)
+        p.relations.seller.should.exist()
+        p.relations.seller.attributes.first_name.should.equal('brenner')
+      })
+    })
+  })
+})
+
 
 describe('API Routes', function() {
   describe('POST routes', function() {
