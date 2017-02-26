@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Image, Segment, Divider, Button } from 'semantic-ui-react'
+import { Dimmer, Loader, Grid, Image, Segment, Divider, Button, Container } from 'semantic-ui-react'
 import axios from 'axios';
 
 class ItemDetail extends React.Component {
@@ -7,24 +7,44 @@ class ItemDetail extends React.Component {
     super(props);
     this.state = {
       thisProduct: '',
-      products: ''
+      products: '',
+      uber: {
+        dropoff_eta: '',
+        pickup_eta: '',
+        uber_delivery_price: ''
+      }
     }
   }
 
   componentDidMount() {
     var context = this;
     axios.get('/api/v1/product', {
-        params: {
-          id: this.props.params.postId
-        }
-      })
-      .then(function (response) {
-        console.log(response);
-        context.setState({thisProduct: response.data});
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+      params: {
+        id: this.props.params.postId
+      }
+    })
+    .then(function (response) {
+      console.log(response);
+      context.setState({thisProduct: response.data});
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+    axios.get('/api/v1/product/get_quote', {
+      params: {
+        product_id: this.props.params.postId,
+        buyer_id: this.props.state.user.id
+      }
+    })
+    .then(function (response) {
+      console.log(response);
+      context.setState({uber: response.data});
+      console.log('context.state', context.state)
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  // ?product_id=3& buyer_id=4  '/api/v1/product/get_quote'
   }
 
   render() {
@@ -34,6 +54,7 @@ class ItemDetail extends React.Component {
     //   return item.postId == _this.props.params.postId;
     // })[0];
     // let temp = JSON.stringify(itemObj);
+    var dimmer = !this.state.uber.dropoff_eta;
     var imgSrc;
     if (this.state.thisProduct.image_links) {
       imgSrc = this.state.thisProduct.image_links[0];
@@ -58,12 +79,23 @@ class ItemDetail extends React.Component {
                 <h1>${this.state.thisProduct.asking_price}</h1>
               </Grid.Row>
               <Grid.Row>
-                <h1>urber rush fee</h1>
-              </Grid.Row>
-              <Grid.Row>
                 <h2>{this.state.thisProduct.title}</h2>
               </Grid.Row>
               <Divider horizontal>Uber</Divider>
+              <Container>
+                <Dimmer active={dimmer}>
+                  <Loader />
+                </Dimmer>
+                <Grid.Row>
+                  <h2>{`UberRUSH fee is $${this.state.uber.uber_delivery_price}`}</h2>
+                </Grid.Row>
+                <Grid.Row>
+                  <h2>You will get this in</h2>
+                </Grid.Row>   
+                <Grid.Row>
+                  <h2>{`${this.state.uber.dropoff_eta + this.state.uber.pickup_eta} mins`}</h2>
+                </Grid.Row>
+              </Container>                       
               <Grid.Row>
                 <Button size='huge' className='buy' color='red'>
                   Buy now!
