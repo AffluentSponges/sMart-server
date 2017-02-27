@@ -39,12 +39,12 @@ module.exports = function(env) {
     transactions.push(insertRow(transactionArray, 'transactions', i, 'id'))
   }
 
-  if(process.env.NODE_ENV === 'test') {
+  // if(process.env.NODE_ENV === 'test') {
     users.push(knex.raw(`ALTER SEQUENCE users_id_seq RESTART WITH ${usersArray.length+1}`))
     categories.push(knex.raw(`ALTER SEQUENCE categories_id_seq RESTART WITH ${categoryArray.length+1}`))
     products.push(knex.raw(`ALTER SEQUENCE products_id_seq RESTART WITH ${productArray.length+1}`))
     transactions.push(knex.raw(`ALTER SEQUENCE transactions_id_seq RESTART WITH ${transactionArray.length+1}`))
-  }
+  // }
 
   Promise.all(users)
   .then(() => {
