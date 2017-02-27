@@ -4,12 +4,50 @@ const chai = require('chai')
 const should = chai.should()
 const chaiHttp = require('chai-http')
 const server = require('../server')
-const productController = require('../server/controllers/product.js')
-const db = require('../server/models')
+const {userController,
+       productController,
+       categoryController,
+       transactionController} = require('../server/controllers')
+const {User,
+       Product,
+       Category,
+       Transaction} = require('../server/models')
 const init = require('../server/db/init')
 const seed = require('../server/db/seed')
 const knex = require('knex')
 chai.use(chaiHttp)
+
+describe('Model Methods', function() {
+  describe('Product Methods', function() {
+    it('should get a product with its related seller', function(done) {
+      // console.log(Product)
+      Product.getWithSeller(1)
+      .then(p => {
+        p.attributes.title.should.equal('macbook pro')
+        p.attributes.asking_price.should.equal('200.34')
+        p.relations.should.have.property('seller')
+        p.relations.seller.attributes.first_name.should.equal('brenner')
+        done()
+      })
+    })
+    it('should get a product with its related seller, buyer, and transaction', function(done) {
+      // console.log(Product)
+      Product.getWithAllRelated(4)
+      .then(p => {
+        p.attributes.title.should.equal('beanie')
+        p.attributes.asking_price.should.equal('7.00')
+        p.relations.should.have.property('seller')
+        p.relations.seller.attributes.first_name.should.equal('daniel')
+        p.relations.should.have.property('buyer')
+        p.relations.buyer.attributes.first_name.should.equal('Greg')
+        p.relations.should.have.property('transaction')
+        p.relations.transaction.attributes.status.should.equal('buyer_paid')
+        done()
+      })
+    })
+  })
+})
+
 
 describe('API Routes', function() {
   describe('POST routes', function() {
@@ -23,7 +61,6 @@ describe('API Routes', function() {
         "address": "asfsadg",
         "address_2": "asdgasfh",
         "postal_code": "1234124",
-        "buyer_id": 3,
         "category_id": 1,
         "title": "asgasdg",
         "description": "sdfhsdjhgsdfh",
@@ -31,9 +68,8 @@ describe('API Routes', function() {
         "imageUrl": ["asdgasfhfshashf"]
       })
       .end((err, res) => {
-        product_id = res.text;
+        product_id = res.body.id;
         res.should.have.status(200)
-        res.text.should.be.a("string")
         done()
       })
     })
@@ -97,7 +133,7 @@ describe('API Routes', function() {
         res.should.have.status(200)
         res.should.be.json
         res.body.should.be.a('object')
-        res.body.username.should.equal("brenner-test")
+        res.body.username.should.equal("mark-test")
         done()
       })
     })

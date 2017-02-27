@@ -85,17 +85,13 @@ controller.post = function(req, res) {
     address: req.body.address,
     address_2: req.body.address_2,
     postal_code: req.body.postal_code,
-    // buyer_id: req.body.buyer_id,
     category_id: req.body.category_id,
     title: req.body.title,
     description: req.body.description,
     asking_price: req.body.asking_price,
     image_links: req.body.imageUrl,  //make sure is array
   }).then(result => {
-    res.end(JSON.stringify(result.attributes.id))
-  }).catch(err => {
-    console.log(result.attributes.id)
-    res.end(JSON.stringify(result.attributes.id))
+    res.send({id: result.attributes.id})
   }).catch(err => {
     console.log(err)
     res.end(JSON.stringify(err))

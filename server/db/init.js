@@ -100,10 +100,10 @@ module.exports = function(env) {
   .then(() => {
     return knex.schema.createTable('transactions', t => {
             t.increments()
-            t.integer('user_id').references('id').inTable('users').notNullable() //buyer
+            t.integer('buyer_id').references('id').inTable('users').notNullable() //buyer
             t.integer('product_id').references('id').inTable('products').notNullable()
             t.decimal('sale_price')
-            t.string('status') //buyed_paid, product_in_transit, seller_paid_out (should be enum but oh well)
+            t.string('status') //buyer_paid, product_in_transit, seller_paid_out (should be enum but oh well)
             t.string('uber_delivery_id').unique()
             // t.decimal('uber_delivery_quote')
             t.decimal('uber_delivery_price')

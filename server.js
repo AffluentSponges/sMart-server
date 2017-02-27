@@ -8,6 +8,7 @@ const passport = require('passport');
 const path = require('path');
 const passportAuth = require('./server/auth/passport');
 const router = require('./server/routes');
+require('./server/models')
 
 //use .env for port number
 const port = process.env.PORT || 3000;

@@ -9,7 +9,8 @@
     "build": "webpack --config webpack.config.js --watch",
     "test": "mocha --bail spec/server-spec.js",
     "init-db": "node ./server/db/script.js init",
-    "seed-db": "node ./server/db/script.js seed"
+    "seed-db": "node ./server/db/script.js seed",
+    "test-db": "node ./server/db/script.js all test"
   },
   "repository": {
     "type": "git",
