@@ -12,11 +12,24 @@ class ItemDetail extends React.Component {
         dropoff_eta: '',
         pickup_eta: '',
         uber_delivery_price: ''
-      }
+      },
+      seller: ''
     }
   }
 
   componentDidMount() {
+    // Performing Multiple Requests simultaneously
+    // Requests will be executed in parallel...
+    // axios.all([
+    //     axios.get('https://api.github.com/users/codeheaven-io');
+    //     axios.get('https://api.github.com/users/codeheaven-io/repos')
+    //   ])
+    //   .then(axios.spread(function (userResponse, reposResponse) {
+    //     //... but this callback will be executed only when both requests are complete.
+    //     console.log('User', userResponse.data);
+    //     console.log('Repositories', reposResponse.data);
+    //   }));
+
     var context = this;
     axios.get('/api/v1/product', {
       params: {
@@ -26,6 +39,18 @@ class ItemDetail extends React.Component {
     .then(function (response) {
       console.log(response);
       context.setState({thisProduct: response.data});
+      axios.get('/api/v1/getuserprofile', {
+          params: {
+            id: response.data.seller_id
+          }
+        })
+        .then(function (response) {
+          console.log('/api/v1/getuserprofile', response.data);
+          context.setState({seller: response.data})
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     })
     .catch(function (error) {
       console.log(error);
@@ -103,6 +128,12 @@ class ItemDetail extends React.Component {
               </Grid.Row>
             </Grid>
           </Segment>
+          <Divider horizontal>ABOUT THE SELLER</Divider>
+          <Segment>
+            <Grid.Row>
+              <h3>{this.state.seller.first_name + ' ' + this.state.seller.last_name}</h3>
+            </Grid.Row>
+          </Segment>
         </Grid.Column>
       </Grid>
 
@@ -110,47 +141,4 @@ class ItemDetail extends React.Component {
   }
 }
 
-
 export default ItemDetail;
-
-
-    // axios.get('/api/v1/getuserproducts', {
-    //     params: {
-    //       user_id: this.props.state.user.id
-    //     }
-    //   })
-    //   .then(function (response) {
-    //     console.log('ItemDetail response ',response);
-    //     var products = response.data;
-    //     var thisProduct = response.data.filter((product)=>{return product.id === parseInt(_this.props.params.postId)})[0];
-    //     console.log(products, thisProduct);
-    //     _this.setState({
-    //       thisProduct: thisProduct,
-    //       products: products 
-    //     });
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });  
-
-
-
-
-
-
-
-
-
-
-
-      // <Grid centered>
-      //   <Grid.Column width={10}>
-      //     <Image src={itemObj.imageUrls[0]} />
-      //     {itemObj.description}
-      //   </Grid.Column>
-      //   <Grid.Column width={6}>
-      //     $180
-
-      //     {temp}
-      //   </Grid.Column>
-      // </Grid>
