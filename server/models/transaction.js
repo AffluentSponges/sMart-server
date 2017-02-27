@@ -12,8 +12,9 @@ const Transaction = ModelBase.extend({
 
   product: function() {
     return this.belongsTo(Product)
-  },
-
+  }
+  
+}, {
   addNewTransaction: function(product) {
     var date = new Date()
     date = date.toUTCString()

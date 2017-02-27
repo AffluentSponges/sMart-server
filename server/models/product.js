@@ -20,7 +20,9 @@ const Product = ModelBase.extend({
   
   transaction: function() {
     return this.hasOne(Transaction)
-  },
+  }
+  
+}, {
 
   getWithSeller: function(id) {
     return this.where({id: id}).fetch({withRelated: ['seller']})
