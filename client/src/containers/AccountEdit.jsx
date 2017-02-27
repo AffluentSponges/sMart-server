@@ -1,6 +1,7 @@
 import React from 'react';
-
+import { browserHistory } from 'react-router'
 import { Header, Icon, Image, Button, Container, Menu, Segment, Divider, Grid, Form, Message } from 'semantic-ui-react'
+import axios from 'axios';
 
 class AccountEdit extends React.Component {
   constructor(props) {
@@ -20,17 +21,18 @@ class AccountEdit extends React.Component {
     // data.address_2 = 
     // data.phone = 
     console.log(formData);
-
-    // axios.post('/api/v1/postitem', data)
-    //   .then(function (response) {
-    //     console.log(response);
-    //     console.log(response.data.toString());
-    //     console.log(typeof '/i/' + response.data.toString())
-    //     browserHistory.push(`/i/${response.data}`);
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
+    console.log(this.props.state.user.id);
+    formData.id = this.props.state.user.id;
+    axios.post('/api/v1/postcontactinfo', formData)
+      .then(function (response) {
+        console.log('response', response);
+        // console.log(response.data.toString());
+        // console.log(typeof '/i/' + response.data.toString())
+        browserHistory.push('/u/1234123');
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
   handleChange(e, { value }) {
@@ -62,7 +64,7 @@ class AccountEdit extends React.Component {
                 <Form.Input label='Address2' name='address_2' placeholder='#153' />
                 <Form.Input label='Zip' name='postal_code' placeholder='zip' />
               </Form.Group>
-                <Form.Input label='PHONE' name='phone' placeholder='415-4324-2345' />
+                <Form.Input label='PHONE' name='phone_number' placeholder='415-4324-2345' />
               <Button primary type='submit'>Save</Button>
             </Form>
           </Grid.Column>       
