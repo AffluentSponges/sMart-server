@@ -17,7 +17,7 @@ const seed = require('../server/db/seed')
 const knex = require('knex')
 chai.use(chaiHttp)
 
-describe('Model Methods', function() {
+describe('Model Methods (Read only)', function() {
   describe('Product Methods', function() {
     it('should get a product with its related seller', function(done) {
       // console.log(Product)
@@ -48,6 +48,19 @@ describe('Model Methods', function() {
   })
 })
 
+//example req.body:
+// {
+//   "seller_id": 2,
+//   "address": "asfsadg",
+//   "address_2": "asdgasfh",
+//   "postal_code": "1234124",
+//   "buyer_id": 3,
+//   "category_id": 2,
+//   "title": "asgasdg",
+//   "description": "sdfhsdjhgsdfh",
+//   "asking_price": "100.11",
+//   "imageUrl": ["asdgasfhfshashf"]
+// }
 
 describe('API Routes', function() {
   describe('POST routes', function() {

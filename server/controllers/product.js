@@ -66,31 +66,10 @@ controller.quote = function(req, res, next) {
 }
 
 
-//example req.body:
-// {
-//   "seller_id": 2,
-//   "address": "asfsadg",
-//   "address_2": "asdgasfh",
-//   "postal_code": "1234124",
-//   "buyer_id": 3,
-//   "category_id": 2,
-//   "title": "asgasdg",
-//   "description": "sdfhsdjhgsdfh",
-//   "asking_price": "100.11",
-//   "imageUrl": ["asdgasfhfshashf"]
-// }
+
 controller.post = function(req, res) {
-  Product.create({
-    seller_id: req.body.seller_id,
-    address: req.body.address,
-    address_2: req.body.address_2,
-    postal_code: req.body.postal_code,
-    category_id: req.body.category_id,
-    title: req.body.title,
-    description: req.body.description,
-    asking_price: req.body.asking_price,
-    image_links: req.body.imageUrl,  //make sure is array
-  }).then(result => {
+  Product.create(req.body)
+  .then(result => {
     res.send({id: result.attributes.id})
   }).catch(err => {
     console.log(err)
@@ -107,7 +86,7 @@ controller.getOneProduct = function(req, res) {
 
 
 controller.getUserProducts = function(req, res) {
-  Product.where({seller_id: req.query.user_id}).fetchAll()
+  Product.getAllBySellerId(req.query.seller_id)
   .then(products => {
     res.json(products)
   })
