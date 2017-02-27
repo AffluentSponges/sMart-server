@@ -6,7 +6,8 @@ module.exports = function(env) {
   const {
     usersArray,
     categoryArray,
-    productArray
+    productArray,
+    transactionArray
   } = require('./seedData')
 
   var insertRow = function(seedDataArray, tableName, i, uniqueName) {
@@ -17,27 +18,44 @@ module.exports = function(env) {
     })
   }
 
-  var promiseArray = []
-
-  if(process.env.NODE_ENV === 'test') {
-    promiseArray.push(knex('users').del())
-    promiseArray.push(knex('categories').del())
-    promiseArray.push(knex('products').del())
-  }
+  var users = []
+  var categories = []
+  var products = []
+  var transactions = []
 
   for(var i = 0; i < usersArray.length; i++) {
-    promiseArray.push(insertRow(usersArray, 'users', i, 'username'))
+    users.push(insertRow(usersArray, 'users', i, 'username'))
   }
 
   for(var i = 0; i < categoryArray.length; i++) {
-    promiseArray.push(insertRow(categoryArray, 'categories', i, 'name'))
+    categories.push(insertRow(categoryArray, 'categories', i, 'name'))
   }
 
   for(var i = 0; i < productArray.length; i++) {
-    promiseArray.push(insertRow(productArray, 'products', i, 'title'))
+    products.push(insertRow(productArray, 'products', i, 'title'))
   }
 
-  Promise.all(promiseArray)
+  for(var i = 0; i < transactionArray.length; i++) {
+    transactions.push(insertRow(transactionArray, 'transactions', i, 'id'))
+  }
+
+  // if(process.env.NODE_ENV === 'test') {
+    users.push(knex.raw(`ALTER SEQUENCE users_id_seq RESTART WITH ${usersArray.length+1}`))
+    categories.push(knex.raw(`ALTER SEQUENCE categories_id_seq RESTART WITH ${categoryArray.length+1}`))
+    products.push(knex.raw(`ALTER SEQUENCE products_id_seq RESTART WITH ${productArray.length+1}`))
+    transactions.push(knex.raw(`ALTER SEQUENCE transactions_id_seq RESTART WITH ${transactionArray.length+1}`))
+  // }
+
+  Promise.all(users)
+  .then(() => {
+    return Promise.all(categories)
+  })
+  .then(() => {
+    return Promise.all(products)
+  })
+  .then(() => {
+    return Promise.all(transactions)
+  })
   .then(values => {
     console.log('done seeding data. exiting gracefully')
     // knex.destroy()

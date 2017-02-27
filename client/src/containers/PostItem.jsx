@@ -60,7 +60,7 @@ class PostItem extends Component {
         console.log(response);
         console.log(response.data.toString());
         console.log(typeof '/i/' + response.data.toString())
-        browserHistory.push(`/i/${response.data}`);
+        browserHistory.push(`/i/${response.data.id}`);
       })
       .catch(function (error) {
         console.log(error);
