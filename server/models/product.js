@@ -7,18 +7,22 @@ const Product = ModelBase.extend({
   tableName: 'products',
 
   seller: function() {
+    const User = require('./user')
     return this.belongsTo(User, 'seller_id')
   },
 
   buyer: function() {
+    const User = require('./user')
     return this.belongsTo(User, 'buyer_id')
   },
 
   category: function() {
+    const Category = require('./category')
     return this.belongsTo(Category)
   },
   
   transaction: function() {
+    const Transaction = require('./transaction')
     return this.hasOne(Transaction)
   }
 }, {

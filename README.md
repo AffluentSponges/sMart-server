@@ -36,9 +36,7 @@ save and close the ```.env``` file
 
 For testing: 
 
-```npm run init-db test``` to construct the seed database schema. this will most likely clear any data in it.
-
-```npm run seed-db test``` to seed the database with some dummy data
+```npm run test-db``` - it might throw an error if it does. for now, just rerun it until it works lol
 
 To test run ```npm test```
 
