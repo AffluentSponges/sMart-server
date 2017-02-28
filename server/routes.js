@@ -8,93 +8,53 @@ var userController = require('./controllers/user');
 var upload = require('./s3/upload')
 var s3Handler = require('./s3/s3Handler')
 
-
-// ** routes for authentication, login, and registration ** 
-
+// ** routes for authentication, login, and registration **/
+//@TODO TEST
 router.get('/auth/google/success', userController.checkInfo);
-
+//@TODO TEST
 router.get('/auth/google/failure', (req, res) => {
   res.redirect('/login');
 });
-
+//@TODO TEST
 router.get('/login', passport.authenticate('google', { scope : ['profile', 'email'] }));
-
+//@TODO TEST
 router.get('/auth/google/callback',
   passport.authenticate('google', {
       successRedirect : '/auth/google/success',
       failureRedirect : '/auth/google/failure'
 }));
-
+//@TODO TEST
 router.get('/logout', function(req, res) {
   req.logout();
   req.session.destroy();
   res.redirect('/');
 });
-
-//example req.body:
-// {
-//   "seller_id": 2,
-//   "address": "asfsadg",
-//   "address_2": "asdgasfh",
-//   "postal_code": "1234124",
-//   "buyer_id": 3,
-//   "category_id": 2,
-//   "title": "asgasdg",
-//   "description": "sdfhsdjhgsdfh",
-//   "asking_price": "100.11",
-//   "imageUrl": ["asdgasfhfshashf"]
-// }
-
+//@TODO TEST
 router.get('/users/auth', function(req, res) {
   res.send(req.session);
 })
 
-router.post('/api/v1/postitem', productController.post);
-
-//Needs seller_id to passed in through req
-router.get('/api/v1/getuserproducts', productController.getUserProducts);
-
-//needs id passed in through req
-router.get('/api/v1/getuserprofile', userController.getUserProfile);
-
-router.get('/api/v1/getone', productController.getOne);
-
-router.post('/api/v1/postcontactinfo', userController.setContactInfo);
-
-router.post('/api/v1/postitem', (req, res) => {
-  productController.post(req, res)
-})
-
+router.get('/api/v1/product', productController.getOne)
+router.get('/api/v1/products', productController.getAll)
 router.get('/api/v1/categories', categoryController.getAll) 
-router.get('/api/v1/products', productController.getAll) //?category_id=3 default sold=false
-router.get('/api/v1/product', productController.getOneProduct) //?id=3
-
-// router.get('/api/v1/user') //?id=3
-// router.post('/api/v1/user') {location, phone_number, etc}
-
-// router.post('/api/v1/product') {location, item info, image_urls, etc}
-
-// router.get('/api/v1/products')?user_id=3&sold=true
-// router.get('/api/v1/products')?user_id=3&sold=false
-
-
+router.get('/api/v1/getuserproducts', productController.getUserProducts); 
+router.get('/api/v1/getuserprofile', userController.getUserProfile); //@TODO change to /user
 router.get('/api/v1/product/get_quote', productController.quote)
-// ?product_id=3& buyer_id=4 
 
+router.post('/api/v1/postitem', productController.post); //@TODO change to /product
+
+//@TODO TEST:
+router.post('/api/v1/postcontactinfo', userController.setContactInfo); //@TODO change to /user
 router.post('/api/v1/buy', productController.buy, uberRUSHController.requestDelivery)
-// ?product_id=3 & buyer_id=4
+router.post('/uber_webhook', uberRUSHController.webhook)
+router.post('/upload', upload, s3Handler)
 
 /* ## NOT IN MVP ## */
 // router.post('/api/v1/make_bid', /**/)
 //?product_id=3 & user_id=4 & offer_price = 100.50
 //delete an item
-/* ################## */
-
-router.post('/uber_webhook', uberRUSHController.webhook)
-router.post('/upload', upload, s3Handler)
 
 router.get('*', (req, res, next) => {
-  // if(req.path.split('/')[1] === 'static') return next();
   res.sendFile(path.resolve(__dirname, '../client/public/index.html'));
 });
 
