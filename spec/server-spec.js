@@ -21,11 +21,12 @@ describe('Model Methods (Read only)', function() {
   describe('Product Methods', function() {
     it('should return a product with its related seller', function(done) {
       Product.getWithSeller(1)
-      .then(p => {
-        p.attributes.title.should.equal('macbook pro')
-        p.attributes.asking_price.should.equal('200.34')
-        p.relations.should.have.property('seller')
-        p.relations.seller.attributes.first_name.should.equal('brenner')
+      .then(product => {
+        var p = JSON.parse(JSON.stringify(product))
+        p.title.should.equal('macbook pro')
+        p.asking_price.should.equal('200.34')
+        p.should.have.property('seller')
+        p.seller.first_name.should.equal('brenner')
         done()
       })
     })
@@ -45,10 +46,17 @@ describe('Model Methods (Read only)', function() {
       })
     })
     it('should return all products of a seller', function(done) {
-      Product.getAllBySellerId(1)
+      var seller_id = 1
+      Product.getAllBySellerId(seller_id)
       .then(products => {
         var pArray = JSON.parse(JSON.stringify(products))
         pArray.should.be.an('array')
+        for(var i=0; i <pArray.length; i++) {
+          pArray[i].seller_id.should.equal(seller_id)
+          pArray[i].address.should.not.be.null
+          pArray[i].sold.should.not.be.null
+          pArray[i].image_links.should.be.an('array')
+        }
         done()
       })
     })
