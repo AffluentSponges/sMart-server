@@ -27,7 +27,7 @@ class PostItem extends Component {
     super(props)
     this.state = { 
       formData: {},
-      imageUrl: '',
+      image_link: '',
       categories: []
     }
     this.handleChange = this.handleChange.bind(this);
@@ -46,7 +46,7 @@ class PostItem extends Component {
     var data = {};
     data.seller_id = this.props.state.user.id;
     data.title = formData.title;
-    data.imageUrl = [this.state.imageUrl];
+    data.image_link = [this.state.image_link];
     data.description = formData.details;
     data.category_id = formData.category;
     data.address = formData.address1;
@@ -68,7 +68,7 @@ class PostItem extends Component {
   }
 
   handleImageUrl(url){
-    this.setState({imageUrl: url});
+    this.setState({image_link: url});
   }
 
   componentDidMount() {
@@ -106,8 +106,8 @@ class PostItem extends Component {
     const { formData, value } = this.state
     let image = null;
     let src = 'http://react.semantic-ui.com/assets/images/wireframe/image.png'
-    if (this.state.imageUrl) {
-      src = this.state.imageUrl;
+    if (this.state.image_link) {
+      src = this.state.image_link;
     }
     return (
       <Grid centered>
