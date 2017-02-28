@@ -130,8 +130,8 @@ describe('API Routes', function() {
       .get('/api/v1/product?id=' + product_id)
       .end((err, res) => {
         res.should.have.status(200)
-        res.body[0].should.be.a('object')
-        res.body[0].id.should.equal(Number(product_id))
+        res.body.should.be.a('object')
+        res.body.id.should.equal(Number(product_id))
         done()
       })
     })
