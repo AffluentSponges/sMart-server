@@ -7,7 +7,7 @@ var uberRUSHController = require('./controllers/uberRUSH')
 var userController = require('./controllers/user');
 var upload = require('./s3/upload')
 var s3Handler = require('./s3/s3Handler')
-
+var vision = require('./controllers/vision')
 
 // ** routes for authentication, login, and registration ** 
 
@@ -83,6 +83,8 @@ router.get('/api/v1/product/get_quote', productController.quote)
 
 router.post('/api/v1/buy', productController.buy, uberRUSHController.requestDelivery)
 // ?product_id=3 & buyer_id=4
+
+router.get('/api/v1/vision', vision.getImageTitleAndCategory)
 
 /* ## NOT IN MVP ## */
 // router.post('/api/v1/make_bid', /**/)
