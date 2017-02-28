@@ -6,9 +6,14 @@ bookshelf.plugin(require('bookshelf-modelbase').pluggable)
 const Transaction = ModelBase.extend({
   tableName: 'transactions',
 
-  user: function() {
+  buyer: function() {
     const User = require('./user')
     return this.belongsTo(User, 'buyer_id')
+  },
+
+  seller: function() {
+    const User = require('./user')
+    return this.belongsTo(User, 'seller_id')
   },
 
   product: function() {
