@@ -7,7 +7,8 @@ const server = require('../server')
 const {userController,
        productController,
        categoryController,
-       transactionController} = require('../server/controllers')
+       transactionController,
+       uberRUSHController} = require('../server/controllers')
 const {User,
        Product,
        Category,
@@ -80,9 +81,25 @@ describe('Model Methods (Insert/Update)', function() {
 
 describe('Controllers', function() {
   describe('UberRUSH', function() {
-    xit('should return an Uber delivery object from a product with a buyer', function(done) {
-      //@TODO
-      done()
+    it.only('should return an Uber delivery object from a product with a buyer', function(done) {
+      Product.getWithAllRelated(4)
+      .then(product => {
+        var delivery = uberRUSHController.createDeliveryObj(product)
+        delivery.updateInterval.should.be.a('number')
+        delivery.items.should.be.an('array')
+        delivery.items[0].title.should.be.equal('beanie')
+        delivery.pickup.should.be.an('object')
+        delivery.pickup.contact.first_name.should.be.equal('daniel')
+        delivery.pickup.contact.phone.number.should.be.equal('+11112224444')
+        delivery.pickup.location.address.should.be.equal('944 market st')
+        delivery.pickup.location.postal_code.should.be.equal('94102')
+        delivery.dropoff.should.be.an('object')
+        delivery.dropoff.contact.first_name.should.be.equal('Greg')
+        delivery.dropoff.contact.phone.number.should.be.equal('+11112224444')
+        delivery.dropoff.location.address.should.be.equal('556 mission st')
+        delivery.dropoff.location.postal_code.should.be.equal('94117')
+        done()
+      })
     })
     xit('should return an Uber delivery object from a product and a potential buyer', function(done) {
       //@TODO

@@ -8,8 +8,9 @@ const UberRUSHClient = UberRUSH.createClient({
     sandbox: true // No couriers will actually be called if set
 })
 
+var controller = {}
 
-var createDeliveryObj = function(productWithRelatedData, potentialBuyer) {
+controller.createDeliveryObj = function(productWithRelatedData, potentialBuyer) {
   p = productWithRelatedData
   b = potentialBuyer
   
@@ -60,11 +61,9 @@ var createDeliveryObj = function(productWithRelatedData, potentialBuyer) {
   return UberRUSHClient.createDelivery(deliveryObj)
 }
 
-var controller = {}
-
 controller.quote = function(product, buyer) {
   console.log('getting Quote')
-  var delivery = createDeliveryObj(product, buyer)
+  var delivery = this.createDeliveryObj(product, buyer)
   //create quote from req
   console.log(delivery)
   return delivery.quote()
@@ -91,7 +90,7 @@ controller.requestDelivery = function(req, res) {
 
   Product.where({id: product_id}).fetch({withRelated: ['transaction', 'seller', 'buyer']})
   .then(productWithRelatedData => {
-    var delivery = createDeliveryObj(productWithRelatedData)
+    var delivery = this.createDeliveryObj(productWithRelatedData)
     delivery.confirm()
     res.send(delivery)
   })
