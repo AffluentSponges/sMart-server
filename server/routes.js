@@ -7,6 +7,7 @@ var uberRUSHController = require('./controllers/uberRUSH')
 var userController = require('./controllers/user');
 var upload = require('./s3/upload')
 var s3Handler = require('./s3/s3Handler')
+var vision = require('./controllers/vision')
 
 // ** routes for authentication, login, and registration **/
 //@TODO TEST
