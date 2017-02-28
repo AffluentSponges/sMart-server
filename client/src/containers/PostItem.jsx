@@ -27,7 +27,7 @@ class PostItem extends Component {
     super(props)
     this.state = { 
       formData: {},
-      image_link: '',
+      image_links: '',
       categories: []
     }
     this.handleChange = this.handleChange.bind(this);
@@ -46,13 +46,12 @@ class PostItem extends Component {
     var data = {};
     data.seller_id = this.props.state.user.id;
     data.title = formData.title;
-    data.image_link = [this.state.image_link];
+    data.image_links = [this.state.image_links];
     data.description = formData.details;
     data.category_id = formData.category;
     data.address = formData.address1;
     data.address_2 = formData.address2;
     data.asking_price = Number.parseInt(formData.price);
-    data.buyer_id = ''
     data.postal_code = formData.zip;
     console.log('before send', data);
     axios.post('/api/v1/postitem', data)
@@ -68,7 +67,7 @@ class PostItem extends Component {
   }
 
   handleImageUrl(url){
-    this.setState({image_link: url});
+    this.setState({image_links: url});
   }
 
   componentDidMount() {
@@ -106,8 +105,8 @@ class PostItem extends Component {
     const { formData, value } = this.state
     let image = null;
     let src = 'http://react.semantic-ui.com/assets/images/wireframe/image.png'
-    if (this.state.image_link) {
-      src = this.state.image_link;
+    if (this.state.image_links) {
+      src = this.state.image_links;
     }
     return (
       <Grid centered>
