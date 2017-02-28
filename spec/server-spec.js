@@ -78,6 +78,19 @@ describe('Model Methods (Insert/Update)', function() {
   })
 })
 
+describe('Controllers', function() {
+  describe('UberRUSH', function() {
+    xit('should return an Uber delivery object from a product with a buyer', function(done) {
+      //@TODO
+      done()
+    })
+    xit('should return an Uber delivery object from a product and a potential buyer', function(done) {
+      //@TODO
+      done()
+    })
+  })
+})
+
 describe('API Routes', function() {
   var product_id;
   after(function(done) {
