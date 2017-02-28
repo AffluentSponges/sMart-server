@@ -9,7 +9,7 @@ const Transaction = ModelBase.extend({
 
   user: function() {
     const User = require('./user')
-    return this.belongsTo(User)
+    return this.belongsTo(User, 'buyer_id')
   },
 
   product: function() {

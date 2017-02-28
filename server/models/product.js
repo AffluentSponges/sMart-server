@@ -51,6 +51,7 @@ const Product = ModelBase.extend({
   },
 
   createFromSeller: function(reqObject) {
+    // console.log(reqObject)
     return this.create({
       seller_id: reqObject.seller_id,
       address: reqObject.address,
