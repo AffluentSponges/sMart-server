@@ -60,13 +60,10 @@ controller.createDeliveryObj = function(productWithRelatedData, potentialBuyer) 
 }
 
 controller.quote = function(product, buyer) {
-  console.log('getting Quote')
   var delivery = this.createDeliveryObj(product, buyer)
   //create quote from req
-  console.log(delivery)
   return delivery.quote()
   .then(quotes => {
-    console.log('send quotes')
     //send back delivery fee, est ETA, delivery
     var quote = quotes[0]
 

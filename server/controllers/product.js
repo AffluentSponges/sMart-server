@@ -34,7 +34,6 @@ controller.buy = function(req, res, next) {
 }
 
 controller.quote = function(req, res, next) {
-  console.log('quote product')
   const product_id = req.query.product_id
   const buyer_id = req.query.buyer_id
 

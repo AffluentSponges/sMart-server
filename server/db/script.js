@@ -5,7 +5,8 @@ const cmd = process.argv[2]
 const env = process.argv[3]
 
 if(cmd === 'seed') {
-  seed(env)
+  var initialzing = true
+  seed(env, true)
 }
 if(cmd === 'init') {
   init(env)

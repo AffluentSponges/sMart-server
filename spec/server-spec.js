@@ -18,6 +18,16 @@ const seed = require('../server/db/seed')
 const knex = require('knex')
 chai.use(chaiHttp)
 
+before(function(done) {
+  init('test')
+  .then(() => {
+    return seed('test')
+  })
+  .then(() => {
+    done()
+  })
+})
+
 describe('Model Methods (Read only)', function() {
   describe('Product Methods', function() {
     it('should return a product with its related seller', function(done) {
@@ -81,7 +91,7 @@ describe('Model Methods (Insert/Update)', function() {
 
 describe('Controllers', function() {
   describe('UberRUSH', function() {
-    it.only('should return an Uber delivery object from a product with a buyer', function(done) {
+    it('should return an Uber delivery object from a product with a buyer', function(done) {
       Product.getWithAllRelated(4)
       .then(product => {
         var delivery = uberRUSHController.createDeliveryObj(product)
@@ -101,7 +111,7 @@ describe('Controllers', function() {
         done()
       })
     })
-    it.only('should return an Uber delivery object from a product and a potential buyer', function(done) {
+    it('should return an Uber delivery object from a product and a potential buyer', function(done) {
       var product
       Product.getWithAllRelated(1)
       .then(p => {
@@ -237,18 +247,19 @@ describe('API Routes', function() {
         done()
       })
     })
-
-    xit('should return an uberRUSH quote', function(done) {
+    it('should return an uberRUSH quote', function(done) {
       chai.request(server)
-      .get('/api/v1/product/get_quote?product_id=3&buyer_id=4')
+      .get('/api/v1/product/get_quote?product_id=1&buyer_id=3')
       .end((err, res) => {
         res.should.have.status(200)
         res.should.be.json
-        // @TODO
+        const quote = res.body
+        quote.uber_delivery_price.should.be.a('number')
+        quote.pickup_eta.should.be.a('number')
+        quote.dropoff_eta.should.be.a('number')
         done()
       })
     })
-
     it('should return a title of a given image url', function(done) {
       chai.request(server)
       .get('/api/v1/vision?image_links=https://cnet1.cbsistatic.com/img/hu-by7YBD22hiXFqkorB2xKbcdw=/770x578/2016/11/04/b88dcfca-056b-4f74-aeb1-84da826ead0b/apple-macbook-pro-with-touch-bar-13-inch-2016-39.jpg')
