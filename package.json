@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/BrennerSpear/sMart-server#readme",
   "dependencies": {
+    "@google-cloud/vision": "^0.8.0",
     "aws-sdk": "^2.20.0",
     "bcrypt-nodejs": "0.0.3",
     "bcryptjs": "^2.4.3",
