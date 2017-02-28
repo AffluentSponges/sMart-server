@@ -101,9 +101,30 @@ describe('Controllers', function() {
         done()
       })
     })
-    xit('should return an Uber delivery object from a product and a potential buyer', function(done) {
-      //@TODO
-      done()
+    it.only('should return an Uber delivery object from a product and a potential buyer', function(done) {
+      var product
+      Product.getWithAllRelated(1)
+      .then(p => {
+        product = p
+        return User.findById(3) 
+      })
+      .then(potentialBuyer => {
+        var delivery = uberRUSHController.createDeliveryObj(product, potentialBuyer)
+        delivery.updateInterval.should.be.a('number')
+        delivery.items.should.be.an('array')
+        delivery.items[0].title.should.be.equal('macbook pro')
+        delivery.pickup.should.be.an('object')
+        delivery.pickup.contact.first_name.should.be.equal('brenner')
+        delivery.pickup.contact.phone.number.should.be.equal('+11112223333')
+        delivery.pickup.location.address.should.be.equal('400 baker st')
+        delivery.pickup.location.postal_code.should.be.equal('94117')
+        delivery.dropoff.should.be.an('object')
+        delivery.dropoff.contact.first_name.should.be.equal('Greg')
+        delivery.dropoff.contact.phone.number.should.be.equal('+11112224444')
+        delivery.dropoff.location.address.should.be.equal('556 mission st')
+        delivery.dropoff.location.postal_code.should.be.equal('94117')
+        done()
+      })
     })
   })
 })
