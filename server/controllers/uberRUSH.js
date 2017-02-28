@@ -83,7 +83,7 @@ controller.requestDelivery = function(req, res) {
 
   var product_id = req.body.product_id
 
-  Product.where({id: product_id}).fetch({withRelated: ['transaction', 'seller', 'buyer']})
+  Product.getWithAllRelated(product_id)
   .then(productWithRelatedData => {
     var delivery = this.createDeliveryObj(productWithRelatedData)
     delivery.confirm()

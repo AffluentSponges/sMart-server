@@ -76,9 +76,33 @@ describe('Model Methods (Read only)', function() {
 
 describe('Model Methods (Insert/Update)', function() {
   describe('Product Methods', function() {
-    xit('should buy a product (update 1 product, insert 1 transaction)', function(done) {
-      //TODO
-      done()
+    it('should buy a product (update 1 product, insert 1 transaction)', function(done) {
+      var product_id = 2
+      var buyer_id   = 4
+      var product
+      var buyer
+      var transaction
+
+      User.findById(buyer_id)
+      .then(b => {
+        buyer = JSON.parse(JSON.stringify(b))
+        return Product.buyProduct(product_id, buyer_id)
+      })
+      .then(t => {
+        transaction = JSON.parse(JSON.stringify(t))
+        return Product.findById(product_id)
+      })
+      .then(p => {
+        product = JSON.parse(JSON.stringify(p))
+        product.buyer_id.should.equal(buyer.id)
+        product.sold.should.equal(true)
+        transaction.buyer_id.should.equal(buyer.id)
+        transaction.product_id.should.equal(product.id)
+        transaction.sale_price.should.equal(product.asking_price)
+        transaction.status.should.equal('processing_buyer_payment')
+        done()
+        
+      })
     })
   })
   describe('Transaction Methods', function() {
@@ -97,17 +121,17 @@ describe('Controllers', function() {
         var delivery = uberRUSHController.createDeliveryObj(product)
         delivery.updateInterval.should.be.a('number')
         delivery.items.should.be.an('array')
-        delivery.items[0].title.should.be.equal('beanie')
+        delivery.items[0].title.should.equal('beanie')
         delivery.pickup.should.be.an('object')
-        delivery.pickup.contact.first_name.should.be.equal('daniel')
-        delivery.pickup.contact.phone.number.should.be.equal('+11112224444')
-        delivery.pickup.location.address.should.be.equal('944 market st')
-        delivery.pickup.location.postal_code.should.be.equal('94102')
+        delivery.pickup.contact.first_name.should.equal('daniel')
+        delivery.pickup.contact.phone.number.should.equal('+11112224444')
+        delivery.pickup.location.address.should.equal('944 market st')
+        delivery.pickup.location.postal_code.should.equal('94102')
         delivery.dropoff.should.be.an('object')
-        delivery.dropoff.contact.first_name.should.be.equal('Greg')
-        delivery.dropoff.contact.phone.number.should.be.equal('+11112224444')
-        delivery.dropoff.location.address.should.be.equal('556 mission st')
-        delivery.dropoff.location.postal_code.should.be.equal('94117')
+        delivery.dropoff.contact.first_name.should.equal('Greg')
+        delivery.dropoff.contact.phone.number.should.equal('+11112224444')
+        delivery.dropoff.location.address.should.equal('556 mission st')
+        delivery.dropoff.location.postal_code.should.equal('94117')
         done()
       })
     })
@@ -122,17 +146,17 @@ describe('Controllers', function() {
         var delivery = uberRUSHController.createDeliveryObj(product, potentialBuyer)
         delivery.updateInterval.should.be.a('number')
         delivery.items.should.be.an('array')
-        delivery.items[0].title.should.be.equal('macbook pro')
+        delivery.items[0].title.should.equal('macbook pro')
         delivery.pickup.should.be.an('object')
-        delivery.pickup.contact.first_name.should.be.equal('brenner')
-        delivery.pickup.contact.phone.number.should.be.equal('+11112223333')
-        delivery.pickup.location.address.should.be.equal('400 baker st')
-        delivery.pickup.location.postal_code.should.be.equal('94117')
+        delivery.pickup.contact.first_name.should.equal('brenner')
+        delivery.pickup.contact.phone.number.should.equal('+11112223333')
+        delivery.pickup.location.address.should.equal('400 baker st')
+        delivery.pickup.location.postal_code.should.equal('94117')
         delivery.dropoff.should.be.an('object')
-        delivery.dropoff.contact.first_name.should.be.equal('Greg')
-        delivery.dropoff.contact.phone.number.should.be.equal('+11112224444')
-        delivery.dropoff.location.address.should.be.equal('556 mission st')
-        delivery.dropoff.location.postal_code.should.be.equal('94117')
+        delivery.dropoff.contact.first_name.should.equal('Greg')
+        delivery.dropoff.contact.phone.number.should.equal('+11112224444')
+        delivery.dropoff.location.address.should.equal('556 mission st')
+        delivery.dropoff.location.postal_code.should.equal('94117')
         done()
       })
     })
@@ -261,6 +285,7 @@ describe('API Routes', function() {
       })
     })
     it('should return a title of a given image url', function(done) {
+      this.timeout(3000)
       chai.request(server)
       .get('/api/v1/vision?image_links=https://cnet1.cbsistatic.com/img/hu-by7YBD22hiXFqkorB2xKbcdw=/770x578/2016/11/04/b88dcfca-056b-4f74-aeb1-84da826ead0b/apple-macbook-pro-with-touch-bar-13-inch-2016-39.jpg')
       .end((err, res) => {
