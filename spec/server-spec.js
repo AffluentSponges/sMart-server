@@ -21,11 +21,12 @@ describe('Model Methods (Read only)', function() {
   describe('Product Methods', function() {
     it('should return a product with its related seller', function(done) {
       Product.getWithSeller(1)
-      .then(p => {
-        p.attributes.title.should.equal('macbook pro')
-        p.attributes.asking_price.should.equal('200.34')
-        p.relations.should.have.property('seller')
-        p.relations.seller.attributes.first_name.should.equal('brenner')
+      .then(product => {
+        var p = JSON.parse(JSON.stringify(product))
+        p.title.should.equal('macbook pro')
+        p.asking_price.should.equal('200.34')
+        p.should.have.property('seller')
+        p.seller.first_name.should.equal('brenner')
         done()
       })
     })
@@ -45,12 +46,34 @@ describe('Model Methods (Read only)', function() {
       })
     })
     it('should return all products of a seller', function(done) {
-      Product.getAllBySellerId(1)
+      var seller_id = 1
+      Product.getAllBySellerId(seller_id)
       .then(products => {
         var pArray = JSON.parse(JSON.stringify(products))
         pArray.should.be.an('array')
+        for(var i=0; i <pArray.length; i++) {
+          pArray[i].seller_id.should.equal(seller_id)
+          pArray[i].address.should.not.be.null
+          pArray[i].sold.should.not.be.null
+          pArray[i].image_links.should.be.an('array')
+        }
         done()
       })
+    })
+  })
+})
+
+describe('Model Methods (Insert/Update)', function() {
+  describe('Product Methods', function() {
+    xit('should buy a product (update 1 product, insert 1 transaction)', function(done) {
+      //TODO
+      done()
+    })
+  })
+  describe('Transaction Methods', function() {
+    xit('should add a new transaction to the specified product', function(done) {
+      //TODO
+      done()
     })
   })
 })
@@ -90,15 +113,25 @@ describe('API Routes', function() {
         done()
       })
     })
+    xit('should buy a product', function(done) {
+      chai.request(server)
+      .get('/api/v1/buy?product_id=3&buyer_id=4')
+      .end((err, res) => {
+        res.should.have.status(200)
+        res.should.be.json
+        // TODO
+        done()
+      })
+    })
   })
   describe('GET ROUTES', function() {
     it('should return the single product just posted', function(done) {
       chai.request(server)
-      .get('/api/v1/getone?id=' + product_id)
+      .get('/api/v1/product?id=' + product_id)
       .end((err, res) => {
         res.should.have.status(200)
-        res.body[0].should.be.a('object')
-        res.body[0].id.should.equal(Number(product_id))
+        res.body.should.be.a('object')
+        res.body.id.should.equal(Number(product_id))
         done()
       })
     })
@@ -150,6 +183,16 @@ describe('API Routes', function() {
         res.should.be.json
         res.body.should.be.a('object')
         res.body.username.should.equal("mark-test")
+        done()
+      })
+    })
+    xit('should return an uberRUSH quote', function(done) {
+      chai.request(server)
+      .get('/api/v1/product/get_quote?product_id=3&buyer_id=4')
+      .end((err, res) => {
+        res.should.have.status(200)
+        res.should.be.json
+        // @TODO
         done()
       })
     })

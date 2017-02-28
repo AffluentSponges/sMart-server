@@ -3,7 +3,6 @@ const bookshelf = require('bookshelf')(knex)
 const ModelBase = require('bookshelf-modelbase')(bookshelf)
 bookshelf.plugin(require('bookshelf-modelbase').pluggable)
 
-console.log('LOADING TRANSACTIONS')
 const Transaction = ModelBase.extend({
   tableName: 'transactions',
 
