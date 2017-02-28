@@ -11,8 +11,10 @@ if(cmd === 'init') {
   init(env)
 }
 if(cmd === 'all') {
+  var initialzing = true
+
   init(env)
   .then(() => {
-    seed(env)
+    seed(env, true)
   })
 }

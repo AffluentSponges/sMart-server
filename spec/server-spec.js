@@ -17,10 +17,9 @@ const seed = require('../server/db/seed')
 const knex = require('knex')
 chai.use(chaiHttp)
 
-describe('Model Methods', function() {
+describe('Model Methods (Read only)', function() {
   describe('Product Methods', function() {
-    it('should get a product with its related seller', function(done) {
-      // console.log(Product)
+    it('should return a product with its related seller', function(done) {
       Product.getWithSeller(1)
       .then(p => {
         p.attributes.title.should.equal('macbook pro')
@@ -30,62 +29,79 @@ describe('Model Methods', function() {
         done()
       })
     })
-    it('should get a product with its related seller, buyer, and transaction', function(done) {
-      // console.log(Product)
+    it('should return a product with its related seller, buyer, and transaction', function(done) {
       Product.getWithAllRelated(4)
-      .then(p => {
-        p.attributes.title.should.equal('beanie')
-        p.attributes.asking_price.should.equal('7.00')
-        p.relations.should.have.property('seller')
-        p.relations.seller.attributes.first_name.should.equal('daniel')
-        p.relations.should.have.property('buyer')
-        p.relations.buyer.attributes.first_name.should.equal('Greg')
-        p.relations.should.have.property('transaction')
-        p.relations.transaction.attributes.status.should.equal('buyer_paid')
+      .then(product => {
+        var p = JSON.parse(JSON.stringify(product))
+        p.title.should.equal('beanie')
+        p.asking_price.should.equal('7.00')
+        p.should.have.property('seller')
+        p.seller.first_name.should.equal('daniel')
+        p.should.have.property('buyer')
+        p.buyer.first_name.should.equal('Greg')
+        p.should.have.property('transaction')
+        p.transaction.status.should.equal('buyer_paid')
+        done()
+      })
+    })
+    it('should return all products of a seller', function(done) {
+      Product.getAllBySellerId(1)
+      .then(products => {
+        var pArray = JSON.parse(JSON.stringify(products))
+        pArray.should.be.an('array')
         done()
       })
     })
   })
 })
 
-
 describe('API Routes', function() {
+  var product_id;
+  after(function(done) {
+    init('test')
+    .then(() => {
+      return seed('test')
+    })
+    .then(() => {
+      done()
+    })
+  })
   describe('POST routes', function() {
-    var product_id;
-    it('should post an item', function(done) {
+    it('should insert an item', function(done) {
       chai.request(server)
       .post('/api/v1/postitem')
       .set('content-type', 'application/x-www-form-urlencoded')
       .send({
         "seller_id": 2,
-        "address": "asfsadg",
-        "address_2": "asdgasfh",
-        "postal_code": "1234124",
+        "address": "322 Mission st",
+        "address_2": "apt 205",
+        "postal_code": "94102",
         "category_id": 1,
-        "title": "asgasdg",
-        "description": "sdfhsdjhgsdfh",
+        "title": "a paper bag",
+        "description": "very big",
         "asking_price": "100.11",
-        "imageUrl": ["asdgasfhfshashf"]
+        "image_links": ["amazon.s3.pics.com"]
       })
       .end((err, res) => {
         product_id = res.body.id;
+        res.body.should.have.property('id')
+        res.body.id.should.be.an('number')
         res.should.have.status(200)
         done()
       })
     })
-    it('should retrieve an item posted to the db', function(done) {
+  })
+  describe('GET ROUTES', function() {
+    it('should return the single product just posted', function(done) {
       chai.request(server)
       .get('/api/v1/getone?id=' + product_id)
       .end((err, res) => {
-        // console.log(typeof res.body)
         res.should.have.status(200)
         res.body[0].should.be.a('object')
         res.body[0].id.should.equal(Number(product_id))
         done()
       })
     })
-  })
-  describe('GET ROUTES', function() {
     it('should return all products', function(done) {
       chai.request(server)
       .get('/api/v1/products')
@@ -112,9 +128,9 @@ describe('API Routes', function() {
         done()
       })
     })
-    it('should get a users products', function(done) {
+    it('should return all products of a seller', function(done) {
       chai.request(server)
-      .get('/api/v1/getuserproducts?user_id=1')
+      .get('/api/v1/getuserproducts?seller_id=1')
       .end((err, res) => {
         res.should.have.status(200)
         res.should.be.json
@@ -126,7 +142,7 @@ describe('API Routes', function() {
         done()
       })
     })
-    it('should get a users profile', function(done) {
+    it('should return a users profile', function(done) {
       chai.request(server)
       .get('/api/v1/getuserprofile?id=4')
       .end((err, res) => {
@@ -139,13 +155,5 @@ describe('API Routes', function() {
     })
   })
 })
-// beforeEach(function(done) {
-//   init('test')
-//   .then(() => {
-//     return seed('test')
-//   })
-//   .then(() => {
-//     done()
-//   })
-// })
+
 

@@ -36,6 +36,10 @@ const Product = ModelBase.extend({
     return this.where({id: id}).fetch({withRelated: ['seller', 'buyer', 'transaction']})
   },
 
+  getAllBySellerId: function(seller_id) {
+    return this.where({seller_id: seller_id}).fetchAll()
+  },
+
   buyProduct: function (product_id, buyer_id) {
     return this.findById(product_id)
     .then(product => {
@@ -43,6 +47,21 @@ const Product = ModelBase.extend({
     })
     .then(product => {
       return transaction.addNewTransaction(product)
+    })
+  },
+
+  createFromSeller: function(reqObject) {
+    // console.log(reqObject)
+    return this.create({
+      seller_id: reqObject.seller_id,
+      address: reqObject.address,
+      address_2: reqObject.address_2,
+      postal_code: reqObject.postal_code,
+      category_id: reqObject.category_id,
+      title: reqObject.title,
+      description: reqObject.description,
+      asking_price: reqObject.asking_price,
+      image_links: reqObject.imageUrl  //make sure is array
     })
   }
 })
