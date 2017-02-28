@@ -10,6 +10,9 @@ var s3Handler = require('./s3/s3Handler')
 
 // ** routes for authentication, login, and registration **/
 //@TODO TEST
+
+// ** routes for authentication, login, and registration ** 
+
 router.get('/auth/google/success', userController.checkInfo);
 //@TODO TEST
 router.get('/auth/google/failure', (req, res) => {
@@ -48,6 +51,8 @@ router.post('/api/v1/postcontactinfo', userController.setContactInfo); //@TODO c
 router.post('/api/v1/buy', productController.buy, uberRUSHController.requestDelivery)
 router.post('/uber_webhook', uberRUSHController.webhook)
 router.post('/upload', upload, s3Handler)
+
+router.get('/api/v1/vision', vision.getImageTitleAndCategory)
 
 /* ## NOT IN MVP ## */
 // router.post('/api/v1/make_bid', /**/)
