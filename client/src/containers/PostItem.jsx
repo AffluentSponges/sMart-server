@@ -26,7 +26,9 @@ class PostItem extends Component {
   constructor(props) {
     super(props)
     this.state = { 
-      formData: {},
+      formData: {
+        title: ''
+      },
       image_links: '',
       categories: []
     }
@@ -37,7 +39,8 @@ class PostItem extends Component {
   }
 
   handleChange(e, { value }) {
-    this.setState({ value })
+    console.log(value);
+    this.setState({ formData: {title: value }})
   }
 
   handleSubmit(e, { formData }) {
@@ -67,7 +70,21 @@ class PostItem extends Component {
   }
 
   handleImageUrl(url){
+    var context = this;
     this.setState({image_links: url});
+
+    axios.get('/api/v1/vision', {
+        params: {
+          image_links: url
+        }
+      })
+      .then(function (response) {
+        console.log(response.data.captions);
+        context.setState({ formData: {title: response.data.captions }});
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
   componentDidMount() {
@@ -124,7 +141,7 @@ class PostItem extends Component {
         <Grid.Column width={11}>
           <Form onSubmit={this.handleSubmit}>
             <Form.Group widths='equal'>
-              <Form.Input label='Title' name='title' placeholder='Title' />
+              <Form.Input label='Title' name='title' placeholder='Title' value={this.state.formData.title} onChange={this.handleChange}/>
             </Form.Group>
             <Form.Group widths='equal'>
               <Form.Input label='Address 1' name='address1' placeholder='922 folsom' />
@@ -137,7 +154,6 @@ class PostItem extends Component {
             </Form.Group>
             <Form.TextArea name='details' label='Details' placeholder='Anything else we should know?(optinal)' rows='3' />
             <Button primary type='submit'>Show me the money!</Button>
-
           </Form>
         </Grid.Column>
       </Grid>

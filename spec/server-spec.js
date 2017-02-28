@@ -237,6 +237,7 @@ describe('API Routes', function() {
         done()
       })
     })
+
     xit('should return an uberRUSH quote', function(done) {
       chai.request(server)
       .get('/api/v1/product/get_quote?product_id=3&buyer_id=4')
@@ -247,6 +248,18 @@ describe('API Routes', function() {
         done()
       })
     })
+
+    it('should return a title of a given image url', function(done) {
+      chai.request(server)
+      .get('/api/v1/vision?image_links=https://cnet1.cbsistatic.com/img/hu-by7YBD22hiXFqkorB2xKbcdw=/770x578/2016/11/04/b88dcfca-056b-4f74-aeb1-84da826ead0b/apple-macbook-pro-with-touch-bar-13-inch-2016-39.jpg')
+      .end((err, res) => {
+        res.should.have.status(200)
+        res.should.be.json
+        res.body.captions.should.be.a('string')
+        done()
+      })
+    }) 
+
   })
 })
 
