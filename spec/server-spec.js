@@ -7,7 +7,8 @@ const server = require('../server')
 const {userController,
        productController,
        categoryController,
-       transactionController} = require('../server/controllers')
+       transactionController,
+       uberRUSHController} = require('../server/controllers')
 const {User,
        Product,
        Category,
@@ -16,6 +17,16 @@ const init = require('../server/db/init')
 const seed = require('../server/db/seed')
 const knex = require('knex')
 chai.use(chaiHttp)
+
+before(function(done) {
+  init('test')
+  .then(() => {
+    return seed('test')
+  })
+  .then(() => {
+    done()
+  })
+})
 
 describe('Model Methods (Read only)', function() {
   describe('Product Methods', function() {
@@ -74,6 +85,56 @@ describe('Model Methods (Insert/Update)', function() {
     xit('should add a new transaction to the specified product', function(done) {
       //TODO
       done()
+    })
+  })
+})
+
+describe('Controllers', function() {
+  describe('UberRUSH', function() {
+    it('should return an Uber delivery object from a product with a buyer', function(done) {
+      Product.getWithAllRelated(4)
+      .then(product => {
+        var delivery = uberRUSHController.createDeliveryObj(product)
+        delivery.updateInterval.should.be.a('number')
+        delivery.items.should.be.an('array')
+        delivery.items[0].title.should.be.equal('beanie')
+        delivery.pickup.should.be.an('object')
+        delivery.pickup.contact.first_name.should.be.equal('daniel')
+        delivery.pickup.contact.phone.number.should.be.equal('+11112224444')
+        delivery.pickup.location.address.should.be.equal('944 market st')
+        delivery.pickup.location.postal_code.should.be.equal('94102')
+        delivery.dropoff.should.be.an('object')
+        delivery.dropoff.contact.first_name.should.be.equal('Greg')
+        delivery.dropoff.contact.phone.number.should.be.equal('+11112224444')
+        delivery.dropoff.location.address.should.be.equal('556 mission st')
+        delivery.dropoff.location.postal_code.should.be.equal('94117')
+        done()
+      })
+    })
+    it('should return an Uber delivery object from a product and a potential buyer', function(done) {
+      var product
+      Product.getWithAllRelated(1)
+      .then(p => {
+        product = p
+        return User.findById(3) 
+      })
+      .then(potentialBuyer => {
+        var delivery = uberRUSHController.createDeliveryObj(product, potentialBuyer)
+        delivery.updateInterval.should.be.a('number')
+        delivery.items.should.be.an('array')
+        delivery.items[0].title.should.be.equal('macbook pro')
+        delivery.pickup.should.be.an('object')
+        delivery.pickup.contact.first_name.should.be.equal('brenner')
+        delivery.pickup.contact.phone.number.should.be.equal('+11112223333')
+        delivery.pickup.location.address.should.be.equal('400 baker st')
+        delivery.pickup.location.postal_code.should.be.equal('94117')
+        delivery.dropoff.should.be.an('object')
+        delivery.dropoff.contact.first_name.should.be.equal('Greg')
+        delivery.dropoff.contact.phone.number.should.be.equal('+11112224444')
+        delivery.dropoff.location.address.should.be.equal('556 mission st')
+        delivery.dropoff.location.postal_code.should.be.equal('94117')
+        done()
+      })
     })
   })
 })
@@ -186,18 +247,19 @@ describe('API Routes', function() {
         done()
       })
     })
-
-    xit('should return an uberRUSH quote', function(done) {
+    it('should return an uberRUSH quote', function(done) {
       chai.request(server)
-      .get('/api/v1/product/get_quote?product_id=3&buyer_id=4')
+      .get('/api/v1/product/get_quote?product_id=1&buyer_id=3')
       .end((err, res) => {
         res.should.have.status(200)
         res.should.be.json
-        // @TODO
+        const quote = res.body
+        quote.uber_delivery_price.should.be.a('number')
+        quote.pickup_eta.should.be.a('number')
+        quote.dropoff_eta.should.be.a('number')
         done()
       })
     })
-
     it('should return a title of a given image url', function(done) {
       chai.request(server)
       .get('/api/v1/vision?image_links=https://cnet1.cbsistatic.com/img/hu-by7YBD22hiXFqkorB2xKbcdw=/770x578/2016/11/04/b88dcfca-056b-4f74-aeb1-84da826ead0b/apple-macbook-pro-with-touch-bar-13-inch-2016-39.jpg')

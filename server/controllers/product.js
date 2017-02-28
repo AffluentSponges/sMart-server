@@ -34,7 +34,6 @@ controller.buy = function(req, res, next) {
 }
 
 controller.quote = function(req, res, next) {
-  console.log('quote product')
   const product_id = req.query.product_id
   const buyer_id = req.query.buyer_id
 
@@ -42,7 +41,6 @@ controller.quote = function(req, res, next) {
 
   Product.getWithSeller(product_id)
   .then(p => {
-    console.log('got product')
     product = p
     return User.findById(buyer_id) 
   })
