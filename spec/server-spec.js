@@ -63,6 +63,21 @@ describe('Model Methods (Read only)', function() {
   })
 })
 
+describe('Model Methods (Insert/Update)', function() {
+  describe('Product Methods', function() {
+    xit('should buy a product (update 1 product, insert 1 transaction)', function(done) {
+      //TODO
+      done()
+    })
+  })
+  describe('Transaction Methods', function() {
+    xit('should add a new transaction to the specified product', function(done) {
+      //TODO
+      done()
+    })
+  })
+})
+
 describe('API Routes', function() {
   var product_id;
   after(function(done) {
@@ -98,11 +113,21 @@ describe('API Routes', function() {
         done()
       })
     })
+    xit('should buy a product', function(done) {
+      chai.request(server)
+      .get('/api/v1/buy?product_id=3&buyer_id=4')
+      .end((err, res) => {
+        res.should.have.status(200)
+        res.should.be.json
+        // TODO
+        done()
+      })
+    })
   })
   describe('GET ROUTES', function() {
     it('should return the single product just posted', function(done) {
       chai.request(server)
-      .get('/api/v1/getone?id=' + product_id)
+      .get('/api/v1/product?id=' + product_id)
       .end((err, res) => {
         res.should.have.status(200)
         res.body[0].should.be.a('object')
@@ -158,6 +183,16 @@ describe('API Routes', function() {
         res.should.be.json
         res.body.should.be.a('object')
         res.body.username.should.equal("mark-test")
+        done()
+      })
+    })
+    xit('should return an uberRUSH quote', function(done) {
+      chai.request(server)
+      .get('/api/v1/product/get_quote?product_id=3&buyer_id=4')
+      .end((err, res) => {
+        res.should.have.status(200)
+        res.should.be.json
+        // @TODO
         done()
       })
     })

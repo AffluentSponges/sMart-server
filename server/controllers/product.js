@@ -11,29 +11,18 @@ controller.getAll = function (req, res) {
 }
 
 controller.getOne = function (req, res) {
-  Product.where({id: req.query.id}).fetchAll()
-  .then(product => {
-    res.json(product)
+  Product.findById(req.query.id)
+  .then(products => {
+    res.json(products)
   })
 }
 
 controller.buy = function(req, res, next) {
-  console.log('buy Product')
 
   const product_id = req.body.product_id
   const buyer_id = req.body.buyer_id
 
-  console.log('product_id: ', product_id)
-
   Product.buyProduct(product_id, buyer_id)
-    .then(transaction => {
-      console.log('TRANSACTION: ', transaction)
-      next()
-    })
-    .catch(err => {
-      console.log('PRODUCT CONTROLLER BUY ERROR')
-      console.log(err)
-    })
   .then(transaction => {
     console.log('TRANSACTION: ', transaction)
     next()
@@ -65,8 +54,6 @@ controller.quote = function(req, res, next) {
   })
 }
 
-
-
 controller.post = function(req, res) {
   Product.create(req.body)
   .then(result => {
@@ -76,14 +63,6 @@ controller.post = function(req, res) {
     res.end(JSON.stringify(err))
   })
 }
-
-controller.getOneProduct = function(req, res) {
-  Product.findById(req.query.id)
-  .then(products => {
-    res.json(products)
-  })
-};
-
 
 controller.getUserProducts = function(req, res) {
   Product.getAllBySellerId(req.query.seller_id)
