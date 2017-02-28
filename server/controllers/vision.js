@@ -1,3 +1,4 @@
+require('dotenv').config();
 const Vision = require('@google-cloud/vision');
 const vision = Vision();
 const axios = require('axios')
@@ -16,7 +17,7 @@ controller.getImageTitleAndCategory = (req, res) => {
   axios({
     method: 'post',
     url: 'https://westus.api.cognitive.microsoft.com/vision/v1.0/describe',
-    headers: {'Ocp-Apim-Subscription-Key': 'a442d65b904f4c2495679c9ad93e5a20'},
+    headers: {'Ocp-Apim-Subscription-Key': process.env.MS_VISION},
     data: {
       url: url,
     }
