@@ -12,8 +12,8 @@ controller.getAll = function (req, res) {
 
 controller.getOne = function (req, res) {
   Product.findById(req.query.id)
-  .then(products => {
-    res.json(products)
+  .then(product => {
+    res.json(product)
   })
 }
 
