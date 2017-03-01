@@ -16,6 +16,9 @@ module.exports = function(env) {
   .then(() => {return knex.schema.hasTable('products')})
   .then(exists => {return exists ? knex.schema.dropTable('products') : null})
 
+  .then(() => {return knex.schema.hasTable('tags')})
+  .then(exists => {return exists ? knex.schema.dropTable('tags') : null})
+
   .then(() => {return knex.schema.hasTable('categories')})
   .then(exists => {return exists ? knex.schema.dropTable('categories') : null})
 
@@ -55,6 +58,13 @@ module.exports = function(env) {
             c.integer('parent_category_id').references('id').inTable('categories')
             c.timestamp('created_at').notNullable().defaultTo(knex.raw('now()'))
             c.timestamp('updated_at').notNullable().defaultTo(knex.raw('now()'))
+          })
+  })
+  .then(() => {
+    return knex.schema.createTable('tags', t => {
+            t.increments().unique()
+            t.string('tag')
+            t.integer('category_id').references('id').inTable('categories')
           })
   })
   .then(() => {
