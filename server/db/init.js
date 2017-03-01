@@ -62,6 +62,7 @@ module.exports = function(env) {
             p.increments()
             p.integer('seller_id').references('id').inTable('users').notNullable()
             p.integer('buyer_id').references('id').inTable('users')
+            p.integer('attempted_buyer_id').references('id').inTable('users')
             p.integer('category_id').references('id').inTable('categories').notNullable()
             p.string('title')
             p.text('description')

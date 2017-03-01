@@ -1,4 +1,4 @@
-const {Product} = require('../models')
+const {Product, Transaction} = require('../models')
 
 const transactionController = require('./transaction')
 const UberRUSH = require('uber-rush')
@@ -8,68 +8,64 @@ const UberRUSHClient = UberRUSH.createClient({
     sandbox: true // No couriers will actually be called if set
 })
 
+const twilio = require('./twilio');
 
-var createDeliveryObj = function(productWithRelatedData, potentialBuyer) {
-  p = productWithRelatedData
-  b = potentialBuyer
-  
-  p.relations.buyer = b || p.relations.buyer  
+var controller = {}
+
+controller.createDeliveryObj = function(productWithRelatedData, potentialBuyer) {
+  p = JSON.parse(JSON.stringify(productWithRelatedData))
+  p.buyer = !!potentialBuyer ? JSON.parse(JSON.stringify(potentialBuyer)) : p.buyer
 
   const deliveryObj = {
     order_reference_id: p.id.toString(),
     item: {
-      title: p.attributes.title,
-      quantity: p.attributes.quantity,
+      title: p.title,
+      quantity: p.quantity,
       is_fragile: false
     },
     pickup: {
       contact: {
-        first_name: p.relations.seller.attributes.first_name,
-        last_name: p.relations.seller.attributes.last_name,
+        first_name: p.seller.first_name,
+        last_name: p.seller.last_name,
         phone: {
-          number: p.relations.seller.attributes.phone_number
+          number: p.seller.phone_number
         }
       },
       location: {
-        address: p.relations.seller.attributes.address,
-        address_2: p.relations.seller.attributes.address_2,
-        city: p.relations.seller.attributes.city,
-        state: p.relations.seller.attributes.state,
-        postal_code: p.relations.seller.attributes.postal_code,
-        country: p.relations.seller.attributes.country
+        address: p.seller.address,
+        address_2: p.seller.address_2,
+        city: p.seller.city,
+        state: p.seller.state,
+        postal_code: p.seller.postal_code,
+        country: p.seller.country
       }
     },
     dropoff: {
       contact: {
-        first_name: p.relations.buyer.attributes.first_name,
-        last_name: p.relations.buyer.attributes.last_name,
+        first_name: p.buyer.first_name,
+        last_name: p.buyer.last_name,
         phone: {
-          number: p.relations.buyer.attributes.phone_number
+          number: p.buyer.phone_number
         }
       },
       location: {
-        address: p.relations.buyer.attributes.address,
-        address_2: p.relations.buyer.attributes.address_2,
-        city: p.relations.buyer.attributes.city,
-        state: p.relations.buyer.attributes.state,
-        postal_code: p.relations.buyer.attributes.postal_code,
-        country: p.relations.buyer.attributes.country
+        address: p.buyer.address,
+        address_2: p.buyer.address_2,
+        city: p.buyer.city,
+        state: p.buyer.state,
+        postal_code: p.buyer.postal_code,
+        country: p.buyer.country
       }
     }
   }
   return UberRUSHClient.createDelivery(deliveryObj)
 }
 
-var controller = {}
-
 controller.quote = function(product, buyer) {
-  console.log('getting Quote')
-  var delivery = createDeliveryObj(product, buyer)
+  var delivery = this.createDeliveryObj(product, buyer)
   //create quote from req
-  console.log(delivery)
   return delivery.quote()
   .then(quotes => {
-    console.log('send quotes')
     //send back delivery fee, est ETA, delivery
     var quote = quotes[0]
 
@@ -85,25 +81,25 @@ controller.quote = function(product, buyer) {
 }
 
 controller.requestDelivery = function(req, res) {
-  console.log('buy uberRUSH')
-
   var product_id = req.body.product_id
 
-  Product.where({id: product_id}).fetch({withRelated: ['transaction', 'seller', 'buyer']})
+  Product.getWithAllRelated(product_id)
   .then(productWithRelatedData => {
-    var delivery = createDeliveryObj(productWithRelatedData)
-    delivery.confirm()
-    res.send(delivery)
+    var delivery = controller.createDeliveryObj(productWithRelatedData)
+    return delivery.confirm()
   })
-}
-
-controller.confirmDelivery = function(req, res) {
-  //   .then (() => {
-  //   return delivery.confirm()
-  // })
-  // .then(confirmation => {
-  //   console.log(confirmation)
-  // })
+  .then(confirmedDelivery => {
+    var options = {
+      uber_delivery_id: confirmedDelivery.delivery_id,
+      uber_delivery_price: confirmedDelivery.fee,
+      est_pickup_time_and_date: confirmedDelivery.pickup.eta,
+      est_deliver_time_and_date: confirmedDelivery.dropoff.eta
+    }
+    return Transaction.updateByProductId(product_id, options)
+  })
+  .then(transaction => {
+    res.send(transaction)
+  })
 }
 
 controller.webhook = function(req, res) {
@@ -122,9 +118,25 @@ controller.webhook = function(req, res) {
 
     notify buyer
     */
+
+    Transaction.getTransactionInfo(delivery_id)
+    .then(function(transactionData) {
+
+        // var product = transactionData.product;
+        // var seller = transactionData.seller;
+        // var buyer = transactionData.buyer;
+  
+        // twilio(buyer.phone_number, `S-Mart Alert to ${buyer.username}: Your recently purchased product, ${product}, is ${status}`);
+        // twilio(seller.phone_number, `S-Mart Alert to ${seller.username}: Your recently sold product, ${product}, is ${status}`);
+      res.send(transactionData);
+
+    });
+
   }
+
   if(status === 'at_pickup') {
     //notify seller
+
   }
   if(status === 'en_route_to_dropoff') {
     /*
@@ -134,9 +146,12 @@ controller.webhook = function(req, res) {
 
     notify buyer
     */
+
+
   }
   if(status === 'at_dropoff') {
     //notify buyer
+
   }
   if(status === 'completed') {
     /*
@@ -154,34 +169,35 @@ controller.webhook = function(req, res) {
     //notify seller
 
     */
+
   }
-  if(status === 'processing') {
-    console.log('status: ', req.body)
-  }
-  if(status === 'no_couriers_available') {
-    console.log('status: ', status) 
-  }
-  if(status === 'scheduled') {
-    console.log('status: ', status)
-  }
-  if(status === 'client_canceled') {
-    console.log('status: ', status)
-  }
-  if(status === 'returning') {
-    console.log('status: ', status)
-  }
-  if(status === 'returned') {
-    console.log('status: ', status)
-  }
-  if(status === 'unable_to_return') {
-    console.log('status: ', status)
-  }
-  if(status === 'unable_to_deliver') {
-    console.log('status: ', status)
-  }
-  if(status === 'unknown') {
-    console.log('status: ', status)
-  }
+  // if(status === 'processing') {
+  //   console.log('status: ', req.body)
+  // }
+  // if(status === 'no_couriers_available') {
+  //   console.log('status: ', status) 
+  // }
+  // if(status === 'scheduled') {
+  //   console.log('status: ', status)
+  // }
+  // if(status === 'client_canceled') {
+  //   console.log('status: ', status)
+  // }
+  // if(status === 'returning') {
+  //   console.log('status: ', status)
+  // }
+  // if(status === 'returned') {
+  //   console.log('status: ', status)
+  // }
+  // if(status === 'unable_to_return') {
+  //   console.log('status: ', status)
+  // }
+  // if(status === 'unable_to_deliver') {
+  //   console.log('status: ', status)
+  // }
+  // if(status === 'unknown') {
+  //   console.log('status: ', status)
+  // }
 }
 
 module.exports = controller

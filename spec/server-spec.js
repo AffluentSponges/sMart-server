@@ -7,7 +7,8 @@ const server = require('../server')
 const {userController,
        productController,
        categoryController,
-       transactionController} = require('../server/controllers')
+       transactionController,
+       uberRUSHController} = require('../server/controllers')
 const {User,
        Product,
        Category,
@@ -16,6 +17,16 @@ const init = require('../server/db/init')
 const seed = require('../server/db/seed')
 const knex = require('knex')
 chai.use(chaiHttp)
+
+before(function(done) {
+  init('test')
+  .then(() => {
+    return seed('test')
+  })
+  .then(() => {
+    done()
+  })
+})
 
 describe('Model Methods (Read only)', function() {
   describe('Product Methods', function() {
@@ -64,16 +75,164 @@ describe('Model Methods (Read only)', function() {
 })
 
 describe('Model Methods (Insert/Update)', function() {
-  describe('Product Methods', function() {
-    xit('should buy a product (update 1 product, insert 1 transaction)', function(done) {
-      //TODO
+  after(function(done) {
+    init('test')
+    .then(() => {
+      return seed('test')
+    })
+    .then(() => {
       done()
     })
   })
-  describe('Transaction Methods', function() {
-    xit('should add a new transaction to the specified product', function(done) {
-      //TODO
-      done()
+  describe('Product Methods', function() {
+    it('should buy a product (update 1 product, insert 1 transaction)', function(done) {
+      var product_id = 2
+      var buyer_id   = 4
+      var product
+      var buyer
+      var transaction
+
+      User.findById(buyer_id)
+      .then(b => {
+        buyer = JSON.parse(JSON.stringify(b))
+        return Product.buyProduct(product_id, buyer_id)
+      })
+      .then(t => {
+        transaction = JSON.parse(JSON.stringify(t))
+        return Product.findById(product_id)
+      })
+      .then(p => {
+        product = JSON.parse(JSON.stringify(p))
+        product.buyer_id.should.equal(buyer.id)
+        product.sold.should.equal(true)
+        transaction.buyer_id.should.equal(buyer.id)
+        transaction.product_id.should.equal(product.id)
+        transaction.sale_price.should.equal(product.asking_price)
+        transaction.status.should.equal('received_payment')
+        done()
+        
+      })
+    })
+  })
+})
+
+describe('Controllers', function() {
+  describe('UberRUSH', function() {
+    it('should return an Uber delivery object from a product with a buyer', function(done) {
+      Product.getWithAllRelated(4)
+      .then(product => {
+        var delivery = uberRUSHController.createDeliveryObj(product)
+        delivery.updateInterval.should.be.a('number')
+        delivery.items.should.be.an('array')
+        delivery.items[0].title.should.equal('beanie')
+        delivery.pickup.should.be.an('object')
+        delivery.pickup.contact.first_name.should.equal('daniel')
+        delivery.pickup.contact.phone.number.should.equal('+11112224444')
+        delivery.pickup.location.address.should.equal('944 market st')
+        delivery.pickup.location.postal_code.should.equal('94102')
+        delivery.dropoff.should.be.an('object')
+        delivery.dropoff.contact.first_name.should.equal('Greg')
+        delivery.dropoff.contact.phone.number.should.equal('+11112224444')
+        delivery.dropoff.location.address.should.equal('556 mission st')
+        delivery.dropoff.location.postal_code.should.equal('94117')
+        done()
+      })
+    })
+    it('should return an Uber delivery object from a product and a potential buyer', function(done) {
+      var product
+      Product.getWithAllRelated(1)
+      .then(p => {
+        product = p
+        return User.findById(3) 
+      })
+      .then(potentialBuyer => {
+        var delivery = uberRUSHController.createDeliveryObj(product, potentialBuyer)
+        delivery.updateInterval.should.be.a('number')
+        delivery.items.should.be.an('array')
+        delivery.items[0].title.should.equal('macbook pro')
+        delivery.pickup.should.be.an('object')
+        delivery.pickup.contact.first_name.should.equal('brenner')
+        delivery.pickup.contact.phone.number.should.equal('+11112223333')
+        delivery.pickup.location.address.should.equal('400 baker st')
+        delivery.pickup.location.postal_code.should.equal('94117')
+        delivery.dropoff.should.be.an('object')
+        delivery.dropoff.contact.first_name.should.equal('Greg')
+        delivery.dropoff.contact.phone.number.should.equal('+11112224444')
+        delivery.dropoff.location.address.should.equal('556 mission st')
+        delivery.dropoff.location.postal_code.should.equal('94117')
+        done()
+      })
+    })
+  })
+})
+
+describe('Controllers', function() {
+  describe('UberRUSH', function() {
+    it('should return an Uber delivery object from a product with a buyer', function(done) {
+      Product.getWithAllRelated(4)
+      .then(product => {
+        var delivery = uberRUSHController.createDeliveryObj(product)
+        delivery.updateInterval.should.be.a('number')
+        delivery.items.should.be.an('array')
+        delivery.items[0].title.should.be.equal('beanie')
+        delivery.pickup.should.be.an('object')
+        delivery.pickup.contact.first_name.should.be.equal('daniel')
+        delivery.pickup.contact.phone.number.should.be.equal('+11112224444')
+        delivery.pickup.location.address.should.be.equal('944 market st')
+        delivery.pickup.location.postal_code.should.be.equal('94102')
+        delivery.dropoff.should.be.an('object')
+        delivery.dropoff.contact.first_name.should.be.equal('Greg')
+        delivery.dropoff.contact.phone.number.should.be.equal('+11112224444')
+        delivery.dropoff.location.address.should.be.equal('556 mission st')
+        delivery.dropoff.location.postal_code.should.be.equal('94117')
+        done()
+      })
+    })
+    it('should return an Uber delivery object from a product and a potential buyer', function(done) {
+      var product
+      Product.getWithAllRelated(1)
+      .then(p => {
+        product = p
+        return User.findById(3) 
+      })
+      .then(potentialBuyer => {
+        var delivery = uberRUSHController.createDeliveryObj(product, potentialBuyer)
+        delivery.updateInterval.should.be.a('number')
+        delivery.items.should.be.an('array')
+        delivery.items[0].title.should.be.equal('macbook pro')
+        delivery.pickup.should.be.an('object')
+        delivery.pickup.contact.first_name.should.be.equal('brenner')
+        delivery.pickup.contact.phone.number.should.be.equal('+11112223333')
+        delivery.pickup.location.address.should.be.equal('400 baker st')
+        delivery.pickup.location.postal_code.should.be.equal('94117')
+        delivery.dropoff.should.be.an('object')
+        delivery.dropoff.contact.first_name.should.be.equal('Greg')
+        delivery.dropoff.contact.phone.number.should.be.equal('+11112224444')
+        delivery.dropoff.location.address.should.be.equal('556 mission st')
+        delivery.dropoff.location.postal_code.should.be.equal('94117')
+        done()
+      })
+    })
+  })
+
+  describe('Twilio Notification System', function() {
+    describe('uberRUSH status updates', function() {
+      it('should notify buyer and seller when uberRUSH is en route', function(done) {
+        chai.request(server)
+        .post('/uber_webhook')
+        .set('content-type', 'application/json')
+        .send({
+          "meta": {
+            "status": 'en_route_to_pickup',
+            "resource_id": 1
+          }
+        })
+        .end((err, res) => {
+          res.should.have.status(200)
+          res.body.should.be.a('object')
+        })
+        done();
+      })
     })
   })
 })
@@ -113,13 +272,23 @@ describe('API Routes', function() {
         done()
       })
     })
-    xit('should buy a product', function(done) {
+    it('should buy a product', function(done) {
+      this.timeout(5000)
+      var product_id = 2
+      var buyer_id = 2
       chai.request(server)
-      .get('/api/v1/buy?product_id=3&buyer_id=4')
+      .post('/api/v1/buy')
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .send({
+        "product_id": product_id,
+        "buyer_id": buyer_id
+      })
       .end((err, res) => {
         res.should.have.status(200)
-        res.should.be.json
-        // TODO
+        res.body.product_id.should.equal(product_id)
+        res.body.buyer_id.should.equal(buyer_id)
+        res.body.uber_delivery_id.should.be.a('string')
+        res.body.uber_delivery_price.should.be.a('number')
         done()
       })
     })
@@ -186,19 +355,21 @@ describe('API Routes', function() {
         done()
       })
     })
-
-    xit('should return an uberRUSH quote', function(done) {
+    it('should return an uberRUSH quote', function(done) {
       chai.request(server)
-      .get('/api/v1/product/get_quote?product_id=3&buyer_id=4')
+      .get('/api/v1/product/get_quote?product_id=1&buyer_id=3')
       .end((err, res) => {
         res.should.have.status(200)
         res.should.be.json
-        // @TODO
+        const quote = res.body
+        quote.uber_delivery_price.should.be.a('number')
+        quote.pickup_eta.should.be.a('number')
+        quote.dropoff_eta.should.be.a('number')
         done()
       })
     })
-
     it('should return a title of a given image url', function(done) {
+      this.timeout(3000)
       chai.request(server)
       .get('/api/v1/vision?image_links=https://cnet1.cbsistatic.com/img/hu-by7YBD22hiXFqkorB2xKbcdw=/770x578/2016/11/04/b88dcfca-056b-4f74-aeb1-84da826ead0b/apple-macbook-pro-with-touch-bar-13-inch-2016-39.jpg')
       .end((err, res) => {
@@ -211,5 +382,4 @@ describe('API Routes', function() {
 
   })
 })
-
 
