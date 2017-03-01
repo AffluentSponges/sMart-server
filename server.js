@@ -9,6 +9,7 @@ const path = require('path');
 const passportAuth = require('./server/auth/passport');
 const router = require('./server/routes');
 require('./server/models')
+require('./server/controllers/coinbase')
 
 //use .env for port number
 const port = process.env.PORT || 3000;
