@@ -7,7 +7,10 @@ const UberRUSHClient = UberRUSH.createClient({
     client_id: process.env.UBER_RUSH_ID,
     sandbox: true // No couriers will actually be called if set
 })
+
+
 const twilio = require('./twilio');
+
 var controller = {}
 
 controller.createDeliveryObj = function(productWithRelatedData, potentialBuyer) {
@@ -134,7 +137,6 @@ controller.webhook = function(req, res) {
         twilio.sendSms(/* buyer.phone_number */, `S-Mart Alert to ${buyer.username}: Your recently purchased product, ${productName}, is ${status}`);
       });
     });
-
   }
 
   if(status === 'at_pickup') {
@@ -157,6 +159,7 @@ controller.webhook = function(req, res) {
       });
     });
   }
+
   if(status === 'en_route_to_dropoff') {
     /*
     update associated transaction
@@ -183,6 +186,7 @@ controller.webhook = function(req, res) {
       });
     });
   }
+
   if(status === 'at_dropoff') {
     //notify buyer
 
@@ -204,6 +208,7 @@ controller.webhook = function(req, res) {
       });
     });
   }
+
   if(status === 'completed') {
     /*
     update associated transaction
@@ -237,8 +242,8 @@ controller.webhook = function(req, res) {
         twilio.sendSms(/* seller.phone_number */, `S-Mart Alert to ${seller.username}: Your product, ${productName}, has been sold`);
       });
     });
-
   }
+  
   // if(status === 'processing') {
   //   console.log('status: ', req.body)
   // }
