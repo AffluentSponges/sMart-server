@@ -2,18 +2,11 @@ require('dotenv').config();
 const Vision = require('@google-cloud/vision');
 const vision = Vision();
 const axios = require('axios')
+const Tag = require('../models/tag')
 const controller = {};
 
 controller.getImageTitleAndCategory = (req, res) => {
   var url = req.query.image_links
-
-  // vision.detectLogos(url)
-  // .then((results) => {
-  //   const logos = results[0];
-
-  //   console.log('Logos:');
-  //   logos.forEach((logo) => console.log(logo));
-  // });
   axios({
     method: 'post',
     url: 'https://westus.api.cognitive.microsoft.com/vision/v1.0/describe',
@@ -23,15 +16,22 @@ controller.getImageTitleAndCategory = (req, res) => {
     }
   })
   .then(function (response) {
-    var data = {
-      tags: response.data.description.tags,
-      captions: response.data.description.captions[0].text
-    }
-    res.json(data);
+    // console.log(response.data)
+    Tag.where({tag: response.data.description.tags[0]}).fetch()
+    .then(tags => {
+      var category = tags.serialize();
+      var data = {
+        tags: response.data.description.tags,
+        captions: response.data.description.captions[0].text,
+        category_id: category.category_id
+      }
+      res.json(data);
+    })
   })
   .catch(function (error) {
     console.log(error);
   });
+
 }
 
 module.exports = controller;

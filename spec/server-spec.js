@@ -368,10 +368,11 @@ describe('API Routes', function() {
         done()
       })
     })
-    it('should return a title of a given image url', function(done) {
-      this.timeout(3000)
+
+    xit('should return a title of a given image url', function(done) {
+      this.timeout(3000);
       chai.request(server)
-      .get('/api/v1/vision?image_links=https://cnet1.cbsistatic.com/img/hu-by7YBD22hiXFqkorB2xKbcdw=/770x578/2016/11/04/b88dcfca-056b-4f74-aeb1-84da826ead0b/apple-macbook-pro-with-touch-bar-13-inch-2016-39.jpg')
+      .get('/api/v1/vision?image_links=https://store.storeimages.cdn-apple.com/4974/as-images.apple.com/is/image/AppleInc/aos/published/images/m/bp/mbp13/silver/mbp13-silver-select-201610?wid=452&hei=420&fmt=jpeg&qlt=95&op_sharpen=0&resMode=bicub&op_usm=0.5,0.5,0,0&iccEmbed=0&layer=comp&.v=1477352400929')
       .end((err, res) => {
         res.should.have.status(200)
         res.should.be.json
@@ -380,6 +381,16 @@ describe('API Routes', function() {
       })
     }) 
 
+    it('should return Electronics category id from laptop image url', function(done) {
+      this.timeout(3000);
+      chai.request(server)
+      .get('/api/v1/vision?image_links=https://cnet1.cbsistatic.com/img/hu-by7YBD22hiXFqkorB2xKbcdw=/770x578/2016/11/04/b88dcfca-056b-4f74-aeb1-84da826ead0b/apple-macbook-pro-with-touch-bar-13-inch-2016-39.jpg')
+      .end((err, res) => {
+        res.should.have.status(200)
+        res.body.category_id.should.equal(3)
+        done()
+      })
+    })
   })
 })
 
