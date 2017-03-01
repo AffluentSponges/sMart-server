@@ -10,68 +10,62 @@ const UberRUSHClient = UberRUSH.createClient({
 
 const twilio = require('./twilio');
 
+var controller = {}
 
-var createDeliveryObj = function(productWithRelatedData, potentialBuyer) {
-  p = productWithRelatedData
-  b = potentialBuyer
-  
-  p.relations.buyer = b || p.relations.buyer  
+controller.createDeliveryObj = function(productWithRelatedData, potentialBuyer) {
+  p = JSON.parse(JSON.stringify(productWithRelatedData))
+  p.buyer = !!potentialBuyer ? JSON.parse(JSON.stringify(potentialBuyer)) : p.buyer
 
   const deliveryObj = {
     order_reference_id: p.id.toString(),
     item: {
-      title: p.attributes.title,
-      quantity: p.attributes.quantity,
+      title: p.title,
+      quantity: p.quantity,
       is_fragile: false
     },
     pickup: {
       contact: {
-        first_name: p.relations.seller.attributes.first_name,
-        last_name: p.relations.seller.attributes.last_name,
+        first_name: p.seller.first_name,
+        last_name: p.seller.last_name,
         phone: {
-          number: p.relations.seller.attributes.phone_number
+          number: p.seller.phone_number
         }
       },
       location: {
-        address: p.relations.seller.attributes.address,
-        address_2: p.relations.seller.attributes.address_2,
-        city: p.relations.seller.attributes.city,
-        state: p.relations.seller.attributes.state,
-        postal_code: p.relations.seller.attributes.postal_code,
-        country: p.relations.seller.attributes.country
+        address: p.seller.address,
+        address_2: p.seller.address_2,
+        city: p.seller.city,
+        state: p.seller.state,
+        postal_code: p.seller.postal_code,
+        country: p.seller.country
       }
     },
     dropoff: {
       contact: {
-        first_name: p.relations.buyer.attributes.first_name,
-        last_name: p.relations.buyer.attributes.last_name,
+        first_name: p.buyer.first_name,
+        last_name: p.buyer.last_name,
         phone: {
-          number: p.relations.buyer.attributes.phone_number
+          number: p.buyer.phone_number
         }
       },
       location: {
-        address: p.relations.buyer.attributes.address,
-        address_2: p.relations.buyer.attributes.address_2,
-        city: p.relations.buyer.attributes.city,
-        state: p.relations.buyer.attributes.state,
-        postal_code: p.relations.buyer.attributes.postal_code,
-        country: p.relations.buyer.attributes.country
+        address: p.buyer.address,
+        address_2: p.buyer.address_2,
+        city: p.buyer.city,
+        state: p.buyer.state,
+        postal_code: p.buyer.postal_code,
+        country: p.buyer.country
       }
     }
   }
   return UberRUSHClient.createDelivery(deliveryObj)
 }
 
-var controller = {}
-
 controller.quote = function(product, buyer) {
-  console.log('getting Quote')
-  var delivery = createDeliveryObj(product, buyer)
+  var delivery = this.createDeliveryObj(product, buyer)
   //create quote from req
-  console.log(delivery)
   return delivery.quote()
   .then(quotes => {
-    console.log('send quotes')
     //send back delivery fee, est ETA, delivery
     var quote = quotes[0]
 
@@ -93,7 +87,7 @@ controller.requestDelivery = function(req, res) {
 
   Product.where({id: product_id}).fetch({withRelated: ['transaction', 'seller', 'buyer']})
   .then(productWithRelatedData => {
-    var delivery = createDeliveryObj(productWithRelatedData)
+    var delivery = this.createDeliveryObj(productWithRelatedData)
     delivery.confirm()
     res.send(delivery)
   })
