@@ -5,29 +5,14 @@ import { Button, Checkbox, Form, Input, Message, Radio, Select, TextArea, Grid, 
 import Autocomplete from '../components/Autocomplete.jsx'
 import FileUpload from '../components/FileUpload.jsx'
 import axios from 'axios';
-const categories = [
-  'Fashion and Accessories',
-  'Home and Garden',
-  'Electronics',
-  'Baby and Child',
-  'Cars and Motors',
-  'Sports, Leisure and Games',
-  'Movies, Books and Music',
-  'Other'
-];
-
-//{ key: 'hat', text: 'Hat', value: 'hat' }
-
-const products = categories.map(function(category) {
-  return { key: category, text: category, value: category };
-});
 
 class PostItem extends Component {
   constructor(props) {
     super(props)
     this.state = { 
       formData: {
-        title: ''
+        title: '',
+        category: ''
       },
       image_links: '',
       categories: []
@@ -36,12 +21,25 @@ class PostItem extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onFocus = this.onFocus.bind(this);
     this.handleImageUrl = this.handleImageUrl.bind(this);
+    this.handleCategoriesChange = this.handleCategoriesChange.bind(this);
   }
 
   handleChange(e, { value }) {
     console.log(value);
     this.setState({ formData: {title: value }})
   }
+
+  handleCategoriesChange(e, { value }) {
+    console.log(value);
+    this.setState({ formData: {category: value }})
+    // var categoryText = this.state.categories.filter((category) => {
+    //     return category.value === value;
+    //   })[0].text;
+    // this.setState({ 
+    //   formData: {category: value },
+    //   category: categoryText
+    // })
+  }  
 
   handleSubmit(e, { formData }) {
     e.preventDefault()
@@ -79,8 +77,9 @@ class PostItem extends Component {
         }
       })
       .then(function (response) {
-        console.log(response.data.captions);
+        console.log(response.data);
         context.setState({ formData: {title: response.data.captions }});
+        context.setState({ formData: {category: response.data.category_id }}); //category_id
       })
       .catch(function (error) {
         console.log(error);
@@ -91,6 +90,7 @@ class PostItem extends Component {
     var categories = this.props.state.categories.map(function(category) {
       return { key: category.id, text: category.name, value: category.id };
     });
+    console.log(categories);
     this.setState({categories: categories});
     // get users gps location
     // var options = {
@@ -149,7 +149,7 @@ class PostItem extends Component {
               <Form.Input label='Zip' name='zip' placeholder='zip' />
             </Form.Group>
             <Form.Group widths='equal'>
-              <Form.Select label='Category' name='category' options={this.state.categories} placeholder='Choose category...'/>
+              <Form.Select label='Category' name='category' value={this.state.formData.category} onChange={this.handleCategoriesChange} options={this.state.categories} placeholder='Choose category...'/>
               <Form.Input label='Price' name='price' placeholder='$0' />
             </Form.Group>
             <Form.TextArea name='details' label='Details' placeholder='Anything else we should know?(optinal)' rows='3' />
