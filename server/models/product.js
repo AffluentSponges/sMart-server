@@ -2,6 +2,7 @@ const knex = require('../db/knex')
 const bookshelf = require('bookshelf')(knex)
 const ModelBase = require('bookshelf-modelbase')(bookshelf)
 bookshelf.plugin(require('bookshelf-modelbase').pluggable)
+const Transaction = require('./transaction')
 
 const Product = ModelBase.extend({
   tableName: 'products',
@@ -43,10 +44,11 @@ const Product = ModelBase.extend({
   buyProduct: function (product_id, buyer_id) {
     return this.findById(product_id)
     .then(product => {
+      //@TODO if it's already bought, send an error!
       return product.set({buyer_id: buyer_id, sold: true}).save()
     })
     .then(product => {
-      return transaction.addNewTransaction(product)
+      return Transaction.addNewTransaction(product)
     })
   }
 })
