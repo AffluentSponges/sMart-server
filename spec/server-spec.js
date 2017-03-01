@@ -214,6 +214,27 @@ describe('Controllers', function() {
       })
     })
   })
+
+  describe('Twilio Notification System', function() {
+    describe('uberRUSH status updates', function() {
+      it('should notify buyer and seller when uberRUSH is en route', function(done) {
+        chai.request(server)
+        .post('/uber_webhook')
+        .set('content-type', 'application/json')
+        .send({
+          "meta": {
+            "status": 'en_route_to_pickup',
+            "resource_id": 1
+          }
+        })
+        .end((err, res) => {
+          res.should.have.status(200)
+          res.body.should.be.a('object')
+        })
+        done();
+      })
+    })
+  })
 })
 
 describe('API Routes', function() {
@@ -361,5 +382,4 @@ describe('API Routes', function() {
 
   })
 })
-
 
