@@ -116,6 +116,21 @@ controller.webhook = function(req, res) {
 
     notify buyer
     */
+
+    Transaction.getTransactionInfo(delivery_id)
+    .then(function(transactionData) {
+
+        // var product = transactionData.product;
+        // var seller = transactionData.seller;
+        // var buyer = transactionData.buyer;
+  
+        // twilio(buyer.phone_number, `S-Mart Alert to ${buyer.username}: Your recently purchased product, ${product}, is ${status}`);
+        // twilio(seller.phone_number, `S-Mart Alert to ${seller.username}: Your recently sold product, ${product}, is ${status}`);
+      res.send(transactionData);
+
+    });
+
+
   }
   if(status === 'at_pickup') {
     //notify seller
