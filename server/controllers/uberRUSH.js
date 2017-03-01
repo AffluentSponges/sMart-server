@@ -1,4 +1,4 @@
-const {Product, Transaction} = require('../models')
+const {Product, Transaction, User} = require('../models')
 
 const transactionController = require('./transaction')
 const UberRUSH = require('uber-rush')
@@ -7,9 +7,7 @@ const UberRUSHClient = UberRUSH.createClient({
     client_id: process.env.UBER_RUSH_ID,
     sandbox: true // No couriers will actually be called if set
 })
-
 const twilio = require('./twilio');
-
 var controller = {}
 
 controller.createDeliveryObj = function(productWithRelatedData, potentialBuyer) {
@@ -103,7 +101,7 @@ controller.requestDelivery = function(req, res) {
 }
 
 controller.webhook = function(req, res) {
-  console.log('received uber webhook')
+  console.log('received uber webhook', req.body)
 
   var status = req.body.meta.status
   var delivery_id = req.body.meta.resource_id
@@ -119,17 +117,22 @@ controller.webhook = function(req, res) {
     notify buyer
     */
 
+    console.log('STATUS', status);
+
     Transaction.getTransactionInfo(delivery_id)
     .then(function(transactionData) {
+      var product = transactionData.attributes.product_id;
+      var productName = product.title;
 
-        // var product = transactionData.product;
-        // var seller = transactionData.seller;
-        // var buyer = transactionData.buyer;
-  
-        // twilio(buyer.phone_number, `S-Mart Alert to ${buyer.username}: Your recently purchased product, ${product}, is ${status}`);
-        // twilio(seller.phone_number, `S-Mart Alert to ${seller.username}: Your recently sold product, ${product}, is ${status}`);
-      res.send(transactionData);
+      Product.getWithAllRelated(product)
+      .then(function(relatedProductData) {
+        var seller = relatedProductData.relations.seller.attributes;
+        var buyer = relatedProductData.relations.buyer.attributes;
+        var transaction = relatedProductData.relations.transaction.attributes;
 
+        twilio.sendSms(/* seller.phone_number */, `S-Mart Alert to ${seller.username}: Your recently sold product, ${productName}, is ${status}`);
+        twilio.sendSms(/* buyer.phone_number */, `S-Mart Alert to ${buyer.username}: Your recently purchased product, ${productName}, is ${status}`);
+      });
     });
 
   }
@@ -137,6 +140,22 @@ controller.webhook = function(req, res) {
   if(status === 'at_pickup') {
     //notify seller
 
+    console.log('STATUS', status);
+
+    Transaction.getTransactionInfo(delivery_id)
+    .then(function(transactionData) {
+      var product = transactionData.attributes.product_id;
+      var productName = product.title;
+
+      Product.getWithAllRelated(product)
+      .then(function(relatedProductData) {
+        var seller = relatedProductData.relations.seller.attributes;
+        var buyer = relatedProductData.relations.buyer.attributes;
+        var transaction = relatedProductData.relations.transaction.attributes;
+
+        twilio.sendSms(/* seller.phone_number */, `S-Mart Alert to ${seller.username}: Your recently sold product, ${productName}, is ${status.split('_').join(' ')}`);
+      });
+    });
   }
   if(status === 'en_route_to_dropoff') {
     /*
@@ -147,11 +166,43 @@ controller.webhook = function(req, res) {
     notify buyer
     */
 
+    console.log('STATUS', status);
 
+    Transaction.getTransactionInfo(delivery_id)
+    .then(function(transactionData) {
+      var product = transactionData.attributes.product_id;
+      var productName = product.title;
+
+      Product.getWithAllRelated(product)
+      .then(function(relatedProductData) {
+        var seller = relatedProductData.relations.seller.attributes;
+        var buyer = relatedProductData.relations.buyer.attributes;
+        var transaction = relatedProductData.relations.transaction.attributes;
+
+        twilio.sendSms(/* buyer.phone_number */, `S-Mart Alert to ${buyer.username}: Your recently purchased product, ${productName}, is ${status.split('_').join(' ')}`);
+      });
+    });
   }
   if(status === 'at_dropoff') {
     //notify buyer
 
+    console.log('STATUS', status);
+
+    Transaction.getTransactionInfo(delivery_id)
+    .then(function(transactionData) {
+      var product = transactionData.attributes.product_id;
+      var productName = product.title;
+
+      Product.getWithAllRelated(product)
+      .then(function(relatedProductData) {
+        var seller = relatedProductData.relations.seller.attributes;
+        var buyer = relatedProductData.relations.buyer.attributes;
+        var transaction = relatedProductData.relations.transaction.attributes;
+
+        twilio.sendSms(/* seller.phone_number */, `S-Mart Alert to ${seller.username}: Your recently sold product, ${productName}, is ${status.split('_').join(' ')}`);
+        twilio.sendSms(/* buyer.phone_number */, `S-Mart Alert to ${buyer.username}: Your recently purchased product, ${productName}, is ${status.split('_').join(' ')}`);
+      });
+    });
   }
   if(status === 'completed') {
     /*
@@ -169,6 +220,23 @@ controller.webhook = function(req, res) {
     //notify seller
 
     */
+
+    console.log('STATUS', status);
+
+    Transaction.getTransactionInfo(delivery_id)
+    .then(function(transactionData) {
+      var product = transactionData.attributes.product_id;
+      var productName = product.title;
+
+      Product.getWithAllRelated(product)
+      .then(function(relatedProductData) {
+        var seller = relatedProductData.relations.seller.attributes;
+        var buyer = relatedProductData.relations.buyer.attributes;
+        var transaction = relatedProductData.relations.transaction.attributes;
+
+        twilio.sendSms(/* seller.phone_number */, `S-Mart Alert to ${seller.username}: Your product, ${productName}, has been sold`);
+      });
+    });
 
   }
   // if(status === 'processing') {
