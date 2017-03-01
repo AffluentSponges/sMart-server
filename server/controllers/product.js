@@ -17,6 +17,19 @@ controller.getOne = function (req, res) {
   })
 }
 
+// controller.attempt_purchase = function(req, res) {
+//   const product_id = req.body.product_id
+//   const attempted_buyer_id = req.body.buyer_id
+
+//   Product.attemptPurchase(product_id, attempted_buyer_id)
+//   .then(product => {
+//     if(product.attributes.attempted_buyer_id !== attempted_buyer_id) {
+//       res.send({message: 'Someone already bought this item'})
+//     }
+//     else {}
+//   })
+// }
+
 controller.buy = function(req, res, next) {
 
   const product_id = req.body.product_id

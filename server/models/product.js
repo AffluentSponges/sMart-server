@@ -17,6 +17,11 @@ const Product = ModelBase.extend({
     return this.belongsTo(User, 'buyer_id')
   },
 
+  attempted_buyer: function() {
+    const User = require('./user')
+    return this.belongsTo(User, 'attempted_buyer_id')
+  },
+
   category: function() {
     const Category = require('./category')
     return this.belongsTo(Category)

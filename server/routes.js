@@ -46,10 +46,11 @@ router.get('/api/v1/getuserprofile', userController.getUserProfile); //@TODO cha
 router.get('/api/v1/product/get_quote', productController.quote)
 
 router.post('/api/v1/postitem', productController.post); //@TODO change to /product
+router.post('/api/v1/attempt_purchase', productController.attempt_purchase)
+router.post('/api/v1/buy', productController.buy, uberRUSHController.requestDelivery)
 
 //@TODO TEST:
 router.post('/api/v1/postcontactinfo', userController.setContactInfo); //@TODO change to /user
-router.post('/api/v1/buy', productController.buy, uberRUSHController.requestDelivery)
 router.post('/uber_webhook', uberRUSHController.webhook)
 router.post('/upload', upload, s3Handler)
 
