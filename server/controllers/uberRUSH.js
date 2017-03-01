@@ -133,17 +133,10 @@ controller.webhook = function(req, res) {
     });
 
   }
-  
+
   if(status === 'at_pickup') {
     //notify seller
-    Transaction.where({ uber_delivery_id: delivery_id })
-    .fetch({ withRelated: ['product', 'seller'] })
-    .then((transactionData) => {
-      // var product = transactionData.product;
-      // var seller = transactionData.seller;
 
-      // twilio(seller.phone_number, `S-Mart Alert to ${seller.username}: Your recently sold product, ${product}, is ${status}`);
-    });
   }
   if(status === 'en_route_to_dropoff') {
     /*
@@ -154,27 +147,11 @@ controller.webhook = function(req, res) {
     notify buyer
     */
 
-    Transaction.where({ uber_delivery_id: delivery_id })
-    .fetch({ withRelated: ['product', 'buyer'] })
-    .then((transactionData) => {
-      // var product = transactionData.product;
-      // var buyer = transactionData.buyer;
-
-      // twilio(buyer.phone_number, `S-Mart Alert to ${buyer.username}: Your recently purchased product, ${product}, is ${status}`);
-    });
 
   }
   if(status === 'at_dropoff') {
     //notify buyer
 
-    Transaction.where({ uber_delivery_id: delivery_id })
-    .fetch({ withRelated: ['product', 'buyer'] })
-    .then((transactionData) => {
-      // var product = transactionData.product;
-      // var buyer = transactionData.buyer;
-
-      // twilio(buyer.phone_number, `S-Mart Alert to ${buyer.username}: Your recently purchased product, ${product}, is ${status}`);
-    });
   }
   if(status === 'completed') {
     /*
@@ -193,16 +170,6 @@ controller.webhook = function(req, res) {
 
     */
 
-    Transaction.where({ uber_delivery_id: delivery_id })
-    .fetch({ withRelated: ['product', 'buyer', 'seller'] })
-    .then((transactionData) => {
-      // var product = transactionData.product;
-      // var seller = transactionData.seller;
-      // var buyer = transactionData.buyer;
-
-      // twilio(buyer.phone_number, `S-Mart Alert to ${buyer.username}: Your recently purchased product, ${product}, is ${status}`);
-      // twilio(seller.phone_number, `S-Mart Alert to ${seller.username}: Your recently sold product, ${product}, is ${status}`);
-    });
   }
   // if(status === 'processing') {
   //   console.log('status: ', req.body)
