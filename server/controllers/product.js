@@ -24,7 +24,7 @@ controller.buy = function(req, res, next) {
 
   Product.buyProduct(product_id, buyer_id)
   .then(transaction => {
-    console.log('TRANSACTION: ', transaction)
+    //@TODO if this gets passed an error, don't do the next()!!!
     next()
   })
   .catch(err => {

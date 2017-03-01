@@ -75,6 +75,15 @@ describe('Model Methods (Read only)', function() {
 })
 
 describe('Model Methods (Insert/Update)', function() {
+  after(function(done) {
+    init('test')
+    .then(() => {
+      return seed('test')
+    })
+    .then(() => {
+      done()
+    })
+  })
   describe('Product Methods', function() {
     it('should buy a product (update 1 product, insert 1 transaction)', function(done) {
       var product_id = 2
@@ -99,16 +108,10 @@ describe('Model Methods (Insert/Update)', function() {
         transaction.buyer_id.should.equal(buyer.id)
         transaction.product_id.should.equal(product.id)
         transaction.sale_price.should.equal(product.asking_price)
-        transaction.status.should.equal('processing_buyer_payment')
+        transaction.status.should.equal('received_payment')
         done()
         
       })
-    })
-  })
-  describe('Transaction Methods', function() {
-    xit('should add a new transaction to the specified product', function(done) {
-      //TODO
-      done()
     })
   })
 })
@@ -198,13 +201,23 @@ describe('API Routes', function() {
         done()
       })
     })
-    xit('should buy a product', function(done) {
+    it('should buy a product', function(done) {
+      this.timeout(5000)
+      var product_id = 2
+      var buyer_id = 2
       chai.request(server)
-      .get('/api/v1/buy?product_id=3&buyer_id=4')
+      .post('/api/v1/buy')
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .send({
+        "product_id": product_id,
+        "buyer_id": buyer_id
+      })
       .end((err, res) => {
         res.should.have.status(200)
-        res.should.be.json
-        // TODO
+        res.body.product_id.should.equal(product_id)
+        res.body.buyer_id.should.equal(buyer_id)
+        res.body.uber_delivery_id.should.be.a('string')
+        res.body.uber_delivery_price.should.be.a('number')
         done()
       })
     })

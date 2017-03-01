@@ -1,4 +1,4 @@
-const {Product} = require('../models')
+const {Product, Transaction} = require('../models')
 
 const transactionController = require('./transaction')
 const UberRUSH = require('uber-rush')
@@ -79,25 +79,25 @@ controller.quote = function(product, buyer) {
 }
 
 controller.requestDelivery = function(req, res) {
-  console.log('buy uberRUSH')
-
   var product_id = req.body.product_id
 
   Product.getWithAllRelated(product_id)
   .then(productWithRelatedData => {
-    var delivery = this.createDeliveryObj(productWithRelatedData)
-    delivery.confirm()
-    res.send(delivery)
+    var delivery = controller.createDeliveryObj(productWithRelatedData)
+    return delivery.confirm()
   })
-}
-
-controller.confirmDelivery = function(req, res) {
-  //   .then (() => {
-  //   return delivery.confirm()
-  // })
-  // .then(confirmation => {
-  //   console.log(confirmation)
-  // })
+  .then(confirmedDelivery => {
+    var options = {
+      uber_delivery_id: confirmedDelivery.delivery_id,
+      uber_delivery_price: confirmedDelivery.fee,
+      est_pickup_time_and_date: confirmedDelivery.pickup.eta,
+      est_deliver_time_and_date: confirmedDelivery.dropoff.eta
+    }
+    return Transaction.updateByProductId(product_id, options)
+  })
+  .then(transaction => {
+    res.send(transaction)
+  })
 }
 
 controller.webhook = function(req, res) {
@@ -149,33 +149,33 @@ controller.webhook = function(req, res) {
 
     */
   }
-  if(status === 'processing') {
-    console.log('status: ', req.body)
-  }
-  if(status === 'no_couriers_available') {
-    console.log('status: ', status) 
-  }
-  if(status === 'scheduled') {
-    console.log('status: ', status)
-  }
-  if(status === 'client_canceled') {
-    console.log('status: ', status)
-  }
-  if(status === 'returning') {
-    console.log('status: ', status)
-  }
-  if(status === 'returned') {
-    console.log('status: ', status)
-  }
-  if(status === 'unable_to_return') {
-    console.log('status: ', status)
-  }
-  if(status === 'unable_to_deliver') {
-    console.log('status: ', status)
-  }
-  if(status === 'unknown') {
-    console.log('status: ', status)
-  }
+  // if(status === 'processing') {
+  //   console.log('status: ', req.body)
+  // }
+  // if(status === 'no_couriers_available') {
+  //   console.log('status: ', status) 
+  // }
+  // if(status === 'scheduled') {
+  //   console.log('status: ', status)
+  // }
+  // if(status === 'client_canceled') {
+  //   console.log('status: ', status)
+  // }
+  // if(status === 'returning') {
+  //   console.log('status: ', status)
+  // }
+  // if(status === 'returned') {
+  //   console.log('status: ', status)
+  // }
+  // if(status === 'unable_to_return') {
+  //   console.log('status: ', status)
+  // }
+  // if(status === 'unable_to_deliver') {
+  //   console.log('status: ', status)
+  // }
+  // if(status === 'unknown') {
+  //   console.log('status: ', status)
+  // }
 }
 
 module.exports = controller

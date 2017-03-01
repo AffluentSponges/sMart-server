@@ -44,6 +44,7 @@ const Product = ModelBase.extend({
   buyProduct: function (product_id, buyer_id) {
     return this.findById(product_id)
     .then(product => {
+      //@TODO if it's already bought, send an error!
       return product.set({buyer_id: buyer_id, sold: true}).save()
     })
     .then(product => {
