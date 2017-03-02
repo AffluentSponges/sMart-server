@@ -102,11 +102,11 @@ controller.requestDelivery = function(req, res) {
 
 controller.webhook = function(req, res) {
   console.log('received uber webhook', req.body)
-
+  var statusChange = req.body.event_type === 'deliveries.status_changed';
   var status = req.body.meta.status
   var delivery_id = req.body.meta.resource_id
 
-  if(status === 'en_route_to_pickup') {
+  if(status === 'en_route_to_pickup' && statusChange) {
     /*
     update associated transaction
       est_pickup_time_and_date
@@ -121,14 +121,14 @@ controller.webhook = function(req, res) {
     transactionController.deliverNotifications(delivery_id, status);
   }
 
-  if(status === 'at_pickup') {
+  if(status === 'at_pickup' && statusChange) {
     //notify seller
 
     console.log('STATUS', status);
     transactionController.deliverNotifications(delivery_id, status);
   }
 
-  if(status === 'en_route_to_dropoff') {
+  if(status === 'en_route_to_dropoff' && statusChange) {
     /*
     update associated transaction
       actual_pickup_time_and_date
@@ -141,14 +141,14 @@ controller.webhook = function(req, res) {
     transactionController.deliverNotifications(delivery_id, status);
   }
 
-  if(status === 'at_dropoff') {
+  if(status === 'at_dropoff' && statusChange) {
     //notify buyer
 
     console.log('STATUS', status);
     transactionController.deliverNotifications(delivery_id, status);
   }
 
-  if(status === 'completed') {
+  if(status === 'completed' && statusChange) {
     /*
     update associated transaction
       actual_delivery_time_and_date
@@ -197,7 +197,6 @@ controller.webhook = function(req, res) {
   //   console.log('status: ', status)
   // }
 
-  res.end();
 }
 
 module.exports = controller

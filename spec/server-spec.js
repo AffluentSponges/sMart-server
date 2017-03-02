@@ -3,6 +3,7 @@ process.env.NODE_ENV = 'test'
 const chai = require('chai')
 const should = chai.should()
 const chaiHttp = require('chai-http')
+const session = require('supertest-session');
 const server = require('../server')
 const {userController,
        productController,
@@ -18,8 +19,12 @@ const init = require('../server/db/init')
 const seed = require('../server/db/seed')
 const knex = require('knex')
 chai.use(chaiHttp)
+var testSession = null;
 
 before(function(done) {
+  // create test session 
+  testSession = session(server);
+
   init('test')
   .then(() => {
     return seed('test')
@@ -28,6 +33,17 @@ before(function(done) {
     done()
   })
 })
+
+// describe('login, registration, and auth with sessions', function() {
+//   it ('should sign in with google', function(done) {
+//     testSession.get('/login')
+//     .
+//     .send({ username: 'smarttest403', password: 'Test123123' })
+//     .expect(200)
+//     done()
+//   })
+
+// })
 
 describe('Model Methods (Read only)', function() {
   describe('Product Methods', function() {
@@ -238,7 +254,7 @@ describe('Controllers', function() {
   })
 
   describe('Coinbase', function() {
-    it.only('should create a new btc wallet address', function(done) {
+    it('should create a new btc wallet address', function(done) {
       coinbaseController.createAddress()
       .then(address => {
         address.address.should.be.a('string')
@@ -253,13 +269,61 @@ describe('Controllers', function() {
 
   describe('Twilio Notification System', function() {
     describe('uberRUSH status updates', function() {
-      it('uber_webhook should have status 200', function(done) {
+      it('Status: "en_route_to_pickup" should have status 200', function(done) {
         chai.request(server)
         .post('/uber_webhook')
         .set('content-type', 'application/json')
         .send({
           "meta": {
             "status": "en_route_to_pickup",
+            "resource_id": 1
+          }
+        })
+        .end((err, res) => {
+          res.should.have.status(200)
+          res.body.should.be.a('object')
+        })
+        done();
+      })
+      it('Status: "at_pickup" should have status 200', function(done) {
+        chai.request(server)
+        .post('/uber_webhook')
+        .set('content-type', 'application/json')
+        .send({
+          "meta": {
+            "status": "at_pickup",
+            "resource_id": 1
+          }
+        })
+        .end((err, res) => {
+          res.should.have.status(200)
+          res.body.should.be.a('object')
+        })
+        done();
+      })
+      it('Status: "en_route_to_dropoff" should have status 200', function(done) {
+        chai.request(server)
+        .post('/uber_webhook')
+        .set('content-type', 'application/json')
+        .send({
+          "meta": {
+            "status": "en_route_to_dropoff",
+            "resource_id": 1
+          }
+        })
+        .end((err, res) => {
+          res.should.have.status(200)
+          res.body.should.be.a('object')
+        })
+        done();
+      })
+      it('Status: "at_dropoff" should have status 200', function(done) {
+        chai.request(server)
+        .post('/uber_webhook')
+        .set('content-type', 'application/json')
+        .send({
+          "meta": {
+            "status": "at_dropoff",
             "resource_id": 1
           }
         })
@@ -363,6 +427,8 @@ describe('API Routes', function() {
   })
 
   describe('GET ROUTES', function() {
+    it('should')
+
     it('should return the single product just posted', function(done) {
       chai.request(server)
       .get('/api/v1/product?id=' + product_id)
