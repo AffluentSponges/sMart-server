@@ -8,7 +8,8 @@ const {userController,
        productController,
        categoryController,
        transactionController,
-       uberRUSHController} = require('../server/controllers')
+       uberRUSHController,
+       coinbaseController} = require('../server/controllers')
 const {User,
        Product,
        Category,
@@ -231,6 +232,27 @@ describe('Controllers', function() {
         delivery.dropoff.contact.phone.number.should.be.equal('+11112224444')
         delivery.dropoff.location.address.should.be.equal('556 mission st')
         delivery.dropoff.location.postal_code.should.be.equal('94117')
+        done()
+      })
+    })
+  })
+
+  describe('Coinbase', function() {
+    it.only('should create a new btc wallet address', function(done) {
+      coinbaseController.createAddress()
+      .then(address => {
+        // address.accountid.should.equal(process.env.COINBASE_BTC_ACCOUNT)
+        // console.log('address: ', address.address)
+        // console.log("account id:", address.account.id)
+        // console.log("account name:", address.account.name)
+        // console.log("type:", address.account.type)
+        // console.log("currency:", address.account.currency)
+
+        address.address.should.be.a('string')
+        address.account.id.should.equal(process.env.COINBASE_BTC_ACCOUNT)
+        address.account.name.should.equal('BTC Wallet')
+        address.account.type.should.equal('wallet')
+        address.account.currency.should.equal('BTC')
         done()
       })
     })
