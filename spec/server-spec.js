@@ -5,6 +5,7 @@ const should = chai.should()
 const chaiHttp = require('chai-http')
 const session = require('supertest-session');
 const server = require('../server')
+const GooglePassport = require('passport-google-oauth20');
 const {userController,
        productController,
        categoryController,
@@ -34,16 +35,11 @@ before(function(done) {
   })
 })
 
-// describe('login, registration, and auth with sessions', function() {
-//   it ('should sign in with google', function(done) {
-//     testSession.get('/login')
-//     .
-//     .send({ username: 'smarttest403', password: 'Test123123' })
-//     .expect(200)
-//     done()
-//   })
+describe('login, registration, and auth with sessions', function() {
+  
+})
 
-// })
+
 
 describe('Model Methods (Read only)', function() {
   describe('Product Methods', function() {
