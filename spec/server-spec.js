@@ -241,13 +241,6 @@ describe('Controllers', function() {
     it.only('should create a new btc wallet address', function(done) {
       coinbaseController.createAddress()
       .then(address => {
-        // address.accountid.should.equal(process.env.COINBASE_BTC_ACCOUNT)
-        // console.log('address: ', address.address)
-        // console.log("account id:", address.account.id)
-        // console.log("account name:", address.account.name)
-        // console.log("type:", address.account.type)
-        // console.log("currency:", address.account.currency)
-
         address.address.should.be.a('string')
         address.account.id.should.equal(process.env.COINBASE_BTC_ACCOUNT)
         address.account.name.should.equal('BTC Wallet')
