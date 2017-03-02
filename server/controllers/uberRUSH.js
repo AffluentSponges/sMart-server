@@ -104,7 +104,7 @@ controller.requestDelivery = function(req, res) {
 }
 
 controller.webhook = function(req, res) {
-  console.log('received uber webhook', req.body)
+  // console.log('received uber webhook', req.body)
 
   var status = req.body.meta.status
   var delivery_id = req.body.meta.resource_id
@@ -120,7 +120,7 @@ controller.webhook = function(req, res) {
     notify buyer
     */
 
-    console.log('STATUS', status);
+    // console.log('STATUS', status);
 
     Transaction.getTransactionInfo(delivery_id)
     .then(function(transactionData) {
@@ -137,7 +137,7 @@ controller.webhook = function(req, res) {
   if(status === 'at_pickup') {
     //notify seller
 
-    console.log('STATUS', status);
+    // console.log('STATUS', status);
 
     Transaction.getTransactionInfo(delivery_id)
     .then(function(transactionData) {
@@ -160,7 +160,7 @@ controller.webhook = function(req, res) {
     notify buyer
     */
 
-    console.log('STATUS', status);
+    // console.log('STATUS', status);
 
     Transaction.getTransactionInfo(delivery_id)
     .then(function(transactionData) {
@@ -178,7 +178,7 @@ controller.webhook = function(req, res) {
   if(status === 'at_dropoff') {
     //notify buyer
 
-    console.log('STATUS', status);
+    // console.log('STATUS', status);
 
     Transaction.getTransactionInfo(delivery_id)
     .then(function(transactionData) {
@@ -210,7 +210,7 @@ controller.webhook = function(req, res) {
 
     */
 
-    console.log('STATUS', status);
+    // console.log('STATUS', status);
 
     Transaction.getTransactionInfo(delivery_id)
     .then(function(transactionData) {

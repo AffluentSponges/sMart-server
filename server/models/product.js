@@ -46,7 +46,7 @@ const Product = ModelBase.extend({
     return this.where({seller_id: seller_id}).fetchAll()
   },
 
-  attempt_purchase: function(product_id, attempted_buyer_id) {
+  attemptPurchase: function(product_id, attempted_buyer_id) {
     return this.findById(product_id)
     .then(product => {
       return product.attributes.attempted_buyer_id

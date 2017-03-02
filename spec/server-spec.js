@@ -85,10 +85,10 @@ describe('Model Methods (Insert/Update)', function() {
     })
   })
   describe('Product Methods', function() {
-    it.only('should update a product with an attempted_buyer_id', function(done) {
+    it('should update a product with an attempted_buyer_id', function(done) {
       var product_id = 2
       var attempted_buyer_id = 4
-      Product.attempt_purchase(product_id, attempted_buyer_id)
+      Product.attemptPurchase(product_id, attempted_buyer_id)
       .then(p => {
         product = JSON.parse(JSON.stringify(p))
         product.attempted_buyer_id.should.equal(attempted_buyer_id)
@@ -96,10 +96,10 @@ describe('Model Methods (Insert/Update)', function() {
         done()
       })
     })
-    it.only('should not update a product if it already has an attempted_buyer_id', function(done) {
+    it('should not update a product if it already has an attempted_buyer_id', function(done) {
       var product_id = 2
       var attempted_buyer_id = 3
-      Product.attempt_purchase(product_id, attempted_buyer_id)
+      Product.attemptPurchase(product_id, attempted_buyer_id)
       .then(p => {
         product = JSON.parse(JSON.stringify(p))
         product.attempted_buyer_id.should.not.equal(attempted_buyer_id)
@@ -290,6 +290,38 @@ describe('API Routes', function() {
         res.body.should.have.property('id')
         res.body.id.should.be.an('number')
         res.should.have.status(200)
+        done()
+      })
+    })
+    it('should initiate a purchase (attempt)', function(done) {
+      var product_id = 2
+      var buyer_id = 2
+      chai.request(server)
+      .post('/api/v1/attempt_purchase')
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .send({
+        "product_id": product_id,
+        "buyer_id": buyer_id
+      })
+      .end((err, res) => {
+        res.should.have.status(200)
+        res.body.message.should.equal('waiting for coinbase payment')
+        done()
+      })
+    })
+    it('should initiate a purchase (attempt) & fail', function(done) {
+      var product_id = 2
+      var buyer_id = 2
+      chai.request(server)
+      .post('/api/v1/attempt_purchase')
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .send({
+        "product_id": product_id,
+        "buyer_id": buyer_id
+      })
+      .end((err, res) => {
+        res.should.have.status(200)
+        res.body.message.should.equal('Someone already bought this item')
         done()
       })
     })

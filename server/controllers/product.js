@@ -17,7 +17,7 @@ controller.getOne = function (req, res) {
   })
 }
 
-controller.attempt_purchase = function(req, res) {
+controller.attemptPurchase = function(req, res) {
   const product_id = req.body.product_id
   const attempted_buyer_id = req.body.buyer_id
 
