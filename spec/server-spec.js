@@ -223,7 +223,7 @@ describe('Controllers', function() {
         .set('content-type', 'application/json')
         .send({
           "meta": {
-            "status": 'en_route_to_pickup',
+            "status": "en_route_to_pickup",
             "resource_id": 1
           }
         })
