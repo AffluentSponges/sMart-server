@@ -1,6 +1,31 @@
 import React from 'react';
-import { Dimmer, Loader, Grid, Image, Segment, Divider, Button, Container } from 'semantic-ui-react'
+import { Dimmer, Loader, Grid, Image, Segment, Divider, Button, Container, Header, Icon, Modal, Input } from 'semantic-ui-react'
 import axios from 'axios';
+import ReactSVG from 'react-svg'
+import Qr from '../components/Qr.jsx'
+
+const LoaderExampleInline = () => (
+  <Loader active inline />
+)
+//<Icon name='checkmark' />
+const ModalExampleCloseIcon = (props) => (
+  <Modal size='small' trigger={<Button size='huge' className='buy' color='red' onClick={props.checkPayment}>
+                    Buy now!
+                  </Button>} closeIcon='close'>
+    <Header icon='payment' content='Send exactly 1000BTC to this address' />
+    <Modal.Content>
+      <Grid centered>
+        <Grid.Column width={10}>
+          <Qr />
+          <p>{'13W7JGnycCzLLWYg2dqJw8ZcnLFtjh7wsU'}</p>
+        </Grid.Column>
+      </Grid>
+    </Modal.Content>
+    <Modal.Actions>
+      {props.qrButton}
+    </Modal.Actions>
+  </Modal>
+)
 
 class ItemDetail extends React.Component {
   constructor(props) {
@@ -13,23 +38,13 @@ class ItemDetail extends React.Component {
         pickup_eta: '',
         uber_delivery_price: ''
       },
-      seller: ''
+      seller: '',
+      isPaid: false
     }
+    this.checkPayment = this.checkPayment.bind(this);
   }
 
   componentDidMount() {
-    // Performing Multiple Requests simultaneously
-    // Requests will be executed in parallel...
-    // axios.all([
-    //     axios.get('https://api.github.com/users/codeheaven-io');
-    //     axios.get('https://api.github.com/users/codeheaven-io/repos')
-    //   ])
-    //   .then(axios.spread(function (userResponse, reposResponse) {
-    //     //... but this callback will be executed only when both requests are complete.
-    //     console.log('User', userResponse.data);
-    //     console.log('Repositories', reposResponse.data);
-    //   }));
-
     var context = this;
     axios.get('/api/v1/product', {
       params: {
@@ -37,7 +52,7 @@ class ItemDetail extends React.Component {
       }
     })
     .then(function (response) {
-      console.log(response);
+      console.log(response.data);
       context.setState({thisProduct: response.data});
       axios.get('/api/v1/getuserprofile', {
           params: {
@@ -55,6 +70,7 @@ class ItemDetail extends React.Component {
     .catch(function (error) {
       console.log(error);
     });
+
     axios.get('/api/v1/product/get_quote', {
       params: {
         product_id: this.props.params.postId,
@@ -69,17 +85,44 @@ class ItemDetail extends React.Component {
     .catch(function (error) {
       console.log(error);
     });
-  // ?product_id=3& buyer_id=4  '/api/v1/product/get_quote'
+  }
+
+  checkPayment() {
+    var context = this;
+    var pulling = () => {
+      axios.get('/api/v1/payment', {
+          params: {
+            id: context.state.thisProduct.id
+          }
+        })
+        .then(function (response) {
+          console.log(response);
+          if (response.data.paid === true) {
+            clearInterval(intervalID);
+            context.setState({isPaid: true})
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+    var intervalID = window.setInterval(pulling, 2000);
+
   }
 
   render() {
-    // let _this = this;
-    // let postId = this.props.params.postId;
-    // let itemObj = this.props.items.filter(function (item) {
-    //   return item.postId == _this.props.params.postId;
-    // })[0];
-    // let temp = JSON.stringify(itemObj);
     var dimmer = !this.state.uber.dropoff_eta;
+    const isPaid = this.state.isPaid;
+    var qrButton;
+    if (isPaid) {
+      qrButton = <Button color='green'>
+                   Your Payment confirmed
+                 </Button>
+    } else {
+      qrButton = <Button color='grey'>
+                   <Loader active inline /> Waing for Payment
+                 </Button>
+    }
     var imgSrc;
     if (this.state.thisProduct.image_links) {
       imgSrc = this.state.thisProduct.image_links[0];
@@ -122,9 +165,7 @@ class ItemDetail extends React.Component {
                 </Grid.Row>
               </Container>                       
               <Grid.Row>
-                <Button size='huge' className='buy' color='red'>
-                  Buy now!
-                </Button>
+                <ModalExampleCloseIcon qrButton={qrButton}checkPayment={this.checkPayment}/> 
               </Grid.Row>
             </Grid>
           </Segment>
@@ -142,3 +183,20 @@ class ItemDetail extends React.Component {
 }
 
 export default ItemDetail;
+
+
+// Performing Multiple Requests simultaneously
+// Requests will be executed in parallel...
+// axios.all([
+//     axios.get('https://api.github.com/users/codeheaven-io');
+//     axios.get('https://api.github.com/users/codeheaven-io/repos')
+//   ])
+//   .then(axios.spread(function (userResponse, reposResponse) {
+//     //... but this callback will be executed only when both requests are complete.
+//     console.log('User', userResponse.data);
+//     console.log('Repositories', reposResponse.data);
+//   }));
+
+
+
+

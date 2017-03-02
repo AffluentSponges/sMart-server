@@ -32,3 +32,7 @@ a {
 .ItemElement_Container {
   margin-bottom: 15px !important;
 }
+
+.paymentModal {
+  width: 400px !important;
+}
