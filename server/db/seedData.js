@@ -206,7 +206,8 @@ seedData.transactionArray = [
     buyer_id: 3,
     product_id: 4,
     sale_price: 7,
-    status: 'buyer_paid'
+    status: 'buyer_paid',
+    uber_delivery_id: 1
   }
 ]
 
