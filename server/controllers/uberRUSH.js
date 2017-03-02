@@ -8,9 +8,6 @@ const UberRUSHClient = UberRUSH.createClient({
     sandbox: true // No couriers will actually be called if set
 })
 
-
-const twilio = require('./twilio');
-
 var controller = {}
 
 controller.createDeliveryObj = function(productWithRelatedData, potentialBuyer) {
@@ -119,37 +116,16 @@ controller.webhook = function(req, res) {
 
     notify buyer
     */
-
     console.log('STATUS', status);
-
-    Transaction.getTransactionInfo(delivery_id)
-    .then(function(transactionData) {
-      var product = transactionData.relations.product.attributes;
-      var seller = transactionData.relations.seller.attributes;
-      var buyer = transactionData.relations.buyer.attributes;
-      var transaction = transactionData.attributes;
-
-      twilio.sendSms(seller.phone_number, `S-Mart Alert to ${seller.username}: Your recently sold product, ${product.title}, is ${status.split('_').join(' ')}`);
-      twilio.sendSms(buyer.phone_number, `S-Mart Alert to ${buyer.username}: Your recently purchased product, ${product.title}, is ${status.split('_').join(' ')}`);
-    });
-  }
+    transactionController.deliverNotifications(delivery_id, status);
+}
 
   if(status === 'at_pickup') {
     //notify seller
 
     console.log('STATUS', status);
-
-    Transaction.getTransactionInfo(delivery_id)
-    .then(function(transactionData) {
-      var product = transactionData.relations.product.attributes;
-      var seller = transactionData.relations.seller.attributes;
-      var buyer = transactionData.relations.buyer.attributes;
-      var transaction = transactionData.attributes;
-
-      twilio.sendSms(seller.phone_number, `S-Mart Alert to ${seller.username}: Your recently sold product, ${product.title}, is ${status.split('_').join(' ')}`);
-      twilio.sendSms(buyer.phone_number, `S-Mart Alert to ${buyer.username}: Your recently purchased product, ${product.title}, is ${status.split('_').join(' ')}`);
-    });
-  }
+    transactionController.deliverNotifications(delivery_id, status);
+}
 
   if(status === 'en_route_to_dropoff') {
     /*
@@ -161,36 +137,14 @@ controller.webhook = function(req, res) {
     */
 
     console.log('STATUS', status);
-
-    Transaction.getTransactionInfo(delivery_id)
-    .then(function(transactionData) {
-      var product = transactionData.relations.product.attributes;
-      var seller = transactionData.relations.seller.attributes;
-      var buyer = transactionData.relations.buyer.attributes;
-      var transaction = transactionData.attributes;
-
-      twilio.sendSms(seller.phone_number, `S-Mart Alert to ${seller.username}: Your recently sold product, ${product.title}, is ${status.split('_').join(' ')}`);
-      twilio.sendSms(buyer.phone_number, `S-Mart Alert to ${buyer.username}: Your recently purchased product, ${product.title}, is ${status.split('_').join(' ')}`);
-    });  
-
+    transactionController.deliverNotifications(delivery_id, status);
   }
 
   if(status === 'at_dropoff') {
     //notify buyer
 
     console.log('STATUS', status);
-
-    Transaction.getTransactionInfo(delivery_id)
-    .then(function(transactionData) {
-      var product = transactionData.relations.product.attributes;
-      var seller = transactionData.relations.seller.attributes;
-      var buyer = transactionData.relations.buyer.attributes;
-      var transaction = transactionData.attributes;
-
-      twilio.sendSms(seller.phone_number, `S-Mart Alert to ${seller.username}: Your recently sold product, ${product.title}, is ${status.split('_').join(' ')}`);
-      twilio.sendSms(buyer.phone_number, `S-Mart Alert to ${buyer.username}: Your recently purchased product, ${product.title}, is ${status.split('_').join(' ')}`);
-    });  
-
+    transactionController.deliverNotifications(delivery_id, status);
   }
 
   if(status === 'completed') {
@@ -211,17 +165,7 @@ controller.webhook = function(req, res) {
     */
 
     console.log('STATUS', status);
-
-    Transaction.getTransactionInfo(delivery_id)
-    .then(function(transactionData) {
-      var product = transactionData.relations.product.attributes;
-      var seller = transactionData.relations.seller.attributes;
-      var buyer = transactionData.relations.buyer.attributes;
-      var transaction = transactionData.attributes;
-
-      twilio.sendSms(seller.phone_number, `S-Mart Alert to ${seller.username}: Your recently sold product, ${product.title}, is ${status.split('_').join(' ')}`);
-      twilio.sendSms(buyer.phone_number, `S-Mart Alert to ${buyer.username}: Your recently purchased product, ${product.title}, is ${status.split('_').join(' ')}`);
-    });  
+    transactionController.deliverNotifications(delivery_id, status)
   }
 
   // if(status === 'processing') {

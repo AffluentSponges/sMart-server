@@ -217,7 +217,7 @@ describe('Controllers', function() {
 
   describe('Twilio Notification System', function() {
     describe('uberRUSH status updates', function() {
-      it('should notify buyer and seller when uberRUSH is en route', function(done) {
+      it('uber_webhook should have status 200', function(done) {
         chai.request(server)
         .post('/uber_webhook')
         .set('content-type', 'application/json')
