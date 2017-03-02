@@ -11,17 +11,11 @@ const Transaction = ModelBase.extend({
     return this.belongsTo(User, 'buyer_id')
   },
 
-<<<<<<< HEAD
-  // seller: function() {
-  //   const User = require('./user')
-  //   return this.belongsTo(User, 'seller_id')
-  // },
-=======
   seller: function() {
     const User = require('./user')
-    return this.belongsTo(User, 'seller_id')
+    const Product = require('./product')
+    return this.belongsTo(User, 'seller_id').through(Product)
   },
->>>>>>> 6b600d7b937274e9907499e720f74dbee143ccbc
 
   product: function() {
     const Product = require('./product')
@@ -46,11 +40,7 @@ const Transaction = ModelBase.extend({
 
   getTransactionInfo: function(delivery_id) {
     return this.where({ uber_delivery_id: delivery_id })
-<<<<<<< HEAD
-    .fetch({ withRelated: ['buyer', 'product']})
-=======
     .fetch({ withRelated: ['buyer', 'seller', 'product']})
->>>>>>> 6b600d7b937274e9907499e720f74dbee143ccbc
   }
 
 });

@@ -124,18 +124,13 @@ controller.webhook = function(req, res) {
 
     Transaction.getTransactionInfo(delivery_id)
     .then(function(transactionData) {
-      var product = transactionData.attributes.product_id;
-      var productName = product.title;
+      var product = transactionData.relations.product.attributes;
+      var seller = transactionData.relations.seller.attributes;
+      var buyer = transactionData.relations.buyer.attributes;
+      var transaction = transactionData.attributes;
 
-      Product.getWithAllRelated(product)
-      .then(function(relatedProductData) {
-        var seller = relatedProductData.relations.seller.attributes;
-        var buyer = relatedProductData.relations.buyer.attributes;
-        var transaction = relatedProductData.relations.transaction.attributes;
-
-        twilio.sendSms(/* seller.phone_number */, `S-Mart Alert to ${seller.username}: Your recently sold product, ${productName}, is ${status}`);
-        twilio.sendSms(/* buyer.phone_number */, `S-Mart Alert to ${buyer.username}: Your recently purchased product, ${productName}, is ${status}`);
-      });
+      twilio.sendSms(seller.phone_number, `S-Mart Alert to ${seller.username}: Your recently sold product, ${product.title}, is ${status.split('_').join(' ')}`);
+      twilio.sendSms(buyer.phone_number, `S-Mart Alert to ${buyer.username}: Your recently purchased product, ${product.title}, is ${status.split('_').join(' ')}`);
     });
   }
 
@@ -146,17 +141,13 @@ controller.webhook = function(req, res) {
 
     Transaction.getTransactionInfo(delivery_id)
     .then(function(transactionData) {
-      var product = transactionData.attributes.product_id;
-      var productName = product.title;
+      var product = transactionData.relations.product.attributes;
+      var seller = transactionData.relations.seller.attributes;
+      var buyer = transactionData.relations.buyer.attributes;
+      var transaction = transactionData.attributes;
 
-      Product.getWithAllRelated(product)
-      .then(function(relatedProductData) {
-        var seller = relatedProductData.relations.seller.attributes;
-        var buyer = relatedProductData.relations.buyer.attributes;
-        var transaction = relatedProductData.relations.transaction.attributes;
-
-        twilio.sendSms(/* seller.phone_number */, `S-Mart Alert to ${seller.username}: Your recently sold product, ${productName}, is ${status.split('_').join(' ')}`);
-      });
+      twilio.sendSms(seller.phone_number, `S-Mart Alert to ${seller.username}: Your recently sold product, ${product.title}, is ${status.split('_').join(' ')}`);
+      twilio.sendSms(buyer.phone_number, `S-Mart Alert to ${buyer.username}: Your recently purchased product, ${product.title}, is ${status.split('_').join(' ')}`);
     });
   }
 
@@ -173,18 +164,15 @@ controller.webhook = function(req, res) {
 
     Transaction.getTransactionInfo(delivery_id)
     .then(function(transactionData) {
-      var product = transactionData.attributes.product_id;
-      var productName = product.title;
+      var product = transactionData.relations.product.attributes;
+      var seller = transactionData.relations.seller.attributes;
+      var buyer = transactionData.relations.buyer.attributes;
+      var transaction = transactionData.attributes;
 
-      Product.getWithAllRelated(product)
-      .then(function(relatedProductData) {
-        var seller = relatedProductData.relations.seller.attributes;
-        var buyer = relatedProductData.relations.buyer.attributes;
-        var transaction = relatedProductData.relations.transaction.attributes;
+      twilio.sendSms(seller.phone_number, `S-Mart Alert to ${seller.username}: Your recently sold product, ${product.title}, is ${status.split('_').join(' ')}`);
+      twilio.sendSms(buyer.phone_number, `S-Mart Alert to ${buyer.username}: Your recently purchased product, ${product.title}, is ${status.split('_').join(' ')}`);
+    });  
 
-        twilio.sendSms(/* buyer.phone_number */, `S-Mart Alert to ${buyer.username}: Your recently purchased product, ${productName}, is ${status.split('_').join(' ')}`);
-      });
-    });
   }
 
   if(status === 'at_dropoff') {
@@ -194,19 +182,15 @@ controller.webhook = function(req, res) {
 
     Transaction.getTransactionInfo(delivery_id)
     .then(function(transactionData) {
-      var product = transactionData.attributes.product_id;
-      var productName = product.title;
+      var product = transactionData.relations.product.attributes;
+      var seller = transactionData.relations.seller.attributes;
+      var buyer = transactionData.relations.buyer.attributes;
+      var transaction = transactionData.attributes;
 
-      Product.getWithAllRelated(product)
-      .then(function(relatedProductData) {
-        var seller = relatedProductData.relations.seller.attributes;
-        var buyer = relatedProductData.relations.buyer.attributes;
-        var transaction = relatedProductData.relations.transaction.attributes;
+      twilio.sendSms(seller.phone_number, `S-Mart Alert to ${seller.username}: Your recently sold product, ${product.title}, is ${status.split('_').join(' ')}`);
+      twilio.sendSms(buyer.phone_number, `S-Mart Alert to ${buyer.username}: Your recently purchased product, ${product.title}, is ${status.split('_').join(' ')}`);
+    });  
 
-        twilio.sendSms(/* seller.phone_number */, `S-Mart Alert to ${seller.username}: Your recently sold product, ${productName}, is ${status.split('_').join(' ')}`);
-        twilio.sendSms(/* buyer.phone_number */, `S-Mart Alert to ${buyer.username}: Your recently purchased product, ${productName}, is ${status.split('_').join(' ')}`);
-      });
-    });
   }
 
   if(status === 'completed') {
@@ -230,20 +214,16 @@ controller.webhook = function(req, res) {
 
     Transaction.getTransactionInfo(delivery_id)
     .then(function(transactionData) {
-      var product = transactionData.attributes.product_id;
-      var productName = product.title;
+      var product = transactionData.relations.product.attributes;
+      var seller = transactionData.relations.seller.attributes;
+      var buyer = transactionData.relations.buyer.attributes;
+      var transaction = transactionData.attributes;
 
-      Product.getWithAllRelated(product)
-      .then(function(relatedProductData) {
-        var seller = relatedProductData.relations.seller.attributes;
-        var buyer = relatedProductData.relations.buyer.attributes;
-        var transaction = relatedProductData.relations.transaction.attributes;
-
-        twilio.sendSms(/* seller.phone_number */, `S-Mart Alert to ${seller.username}: Your product, ${productName}, has been sold`);
-      });
-    });
+      twilio.sendSms(seller.phone_number, `S-Mart Alert to ${seller.username}: Your recently sold product, ${product.title}, is ${status.split('_').join(' ')}`);
+      twilio.sendSms(buyer.phone_number, `S-Mart Alert to ${buyer.username}: Your recently purchased product, ${product.title}, is ${status.split('_').join(' ')}`);
+    });  
   }
-  
+
   // if(status === 'processing') {
   //   console.log('status: ', req.body)
   // }
@@ -271,6 +251,8 @@ controller.webhook = function(req, res) {
   // if(status === 'unknown') {
   //   console.log('status: ', status)
   // }
+
+  res.end();
 }
 
 module.exports = controller
