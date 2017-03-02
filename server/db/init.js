@@ -87,6 +87,7 @@ module.exports = function(env) {
             p.boolean('sold').defaultTo('false')
             p.timestamp('created_at').notNullable().defaultTo(knex.raw('now()'))
             p.timestamp('updated_at').notNullable().defaultTo(knex.raw('now()'))
+            p.string('bitcoin_address')
             // p.dateTime('preferred_time_and_date')
           })
   })
