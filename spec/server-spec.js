@@ -237,23 +237,23 @@ describe('Controllers', function() {
     })
   })
 
-  describe('Coinbase', function() {
-    it.only('should create a new btc wallet address', function(done) {
-      coinbaseController.createAddress()
-      .then(address => {
-        address.address.should.be.a('string')
-        address.account.id.should.equal(process.env.COINBASE_BTC_ACCOUNT)
-        address.account.name.should.equal('BTC Wallet')
-        address.account.type.should.equal('wallet')
-        address.account.currency.should.equal('BTC')
-        done()
-      })
-    })
-  })
+  // describe('Coinbase', function() {
+  //   it.only('should create a new btc wallet address', function(done) {
+  //     coinbaseController.createAddress()
+  //     .then(address => {
+  //       address.address.should.be.a('string')
+  //       address.account.id.should.equal(process.env.COINBASE_BTC_ACCOUNT)
+  //       address.account.name.should.equal('BTC Wallet')
+  //       address.account.type.should.equal('wallet')
+  //       address.account.currency.should.equal('BTC')
+  //       done()
+  //     })
+  //   })
+  // })
 
   describe('Twilio Notification System', function() {
     describe('uberRUSH status updates', function() {
-      it('should notify buyer and seller when uberRUSH is en route', function(done) {
+      it('uber_webhook should have status 200', function(done) {
         chai.request(server)
         .post('/uber_webhook')
         .set('content-type', 'application/json')
@@ -361,6 +361,7 @@ describe('API Routes', function() {
       })
     })
   })
+
   describe('GET ROUTES', function() {
     it('should return the single product just posted', function(done) {
       chai.request(server)
