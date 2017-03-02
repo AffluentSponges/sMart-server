@@ -237,19 +237,19 @@ describe('Controllers', function() {
     })
   })
 
-  // describe('Coinbase', function() {
-  //   it.only('should create a new btc wallet address', function(done) {
-  //     coinbaseController.createAddress()
-  //     .then(address => {
-  //       address.address.should.be.a('string')
-  //       address.account.id.should.equal(process.env.COINBASE_BTC_ACCOUNT)
-  //       address.account.name.should.equal('BTC Wallet')
-  //       address.account.type.should.equal('wallet')
-  //       address.account.currency.should.equal('BTC')
-  //       done()
-  //     })
-  //   })
-  // })
+  describe('Coinbase', function() {
+    it.only('should create a new btc wallet address', function(done) {
+      coinbaseController.createAddress()
+      .then(address => {
+        address.address.should.be.a('string')
+        address.account.id.should.equal(process.env.COINBASE_BTC_ACCOUNT)
+        // address.account.name.should.equal('My Wallet')
+        address.account.type.should.equal('wallet')
+        address.account.currency.should.equal('BTC')
+        done()
+      })
+    })
+  })
 
   describe('Twilio Notification System', function() {
     describe('uberRUSH status updates', function() {
