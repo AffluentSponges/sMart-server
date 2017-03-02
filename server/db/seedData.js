@@ -107,6 +107,29 @@ seedData.categoryArray = [
   }
 ]
 
+seedData.tagArray = [
+  {
+    id: 1,
+    tag: 'laptop',
+    category_id: 3 
+  },
+  {
+    id: 2,
+    tag: 'computer',
+    category_id: 3 
+  },
+  {
+    id: 3,
+    tag: 'keyboard',
+    category_id: 3 
+  },
+  {
+    id: 4,
+    tag: 'mouse',
+    category_id: 3 
+  }
+]
+
 seedData.productArray = [
   {
     id: 1,
