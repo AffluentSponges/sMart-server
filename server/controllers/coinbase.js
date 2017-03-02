@@ -5,7 +5,7 @@ var client = new Client({'apiKey': process.env.COINBASE_KEY, 'apiSecret': proces
 
 //happens once when you start up the server
 client.getAccounts({}, function(err, accounts) {
-  console.log(accounts)
+  // console.log(accounts)
   accounts.forEach(function(acct) {
     console.log('my bal: ' + acct.balance.amount + ' for ' + acct.name);
   });

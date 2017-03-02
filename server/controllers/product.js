@@ -17,18 +17,20 @@ controller.getOne = function (req, res) {
   })
 }
 
-// controller.attempt_purchase = function(req, res) {
-//   const product_id = req.body.product_id
-//   const attempted_buyer_id = req.body.buyer_id
+controller.attempt_purchase = function(req, res) {
+  const product_id = req.body.product_id
+  const attempted_buyer_id = req.body.buyer_id
 
-//   Product.attemptPurchase(product_id, attempted_buyer_id)
-//   .then(product => {
-//     if(product.attributes.attempted_buyer_id !== attempted_buyer_id) {
-//       res.send({message: 'Someone already bought this item'})
-//     }
-//     else {}
-//   })
-// }
+  Product.attemptPurchase(product_id, attempted_buyer_id)
+  .then(product => {
+    if(product.attributes.attempted_buyer_id !== attempted_buyer_id) {
+      res.send({message: 'Someone already bought this item'})
+    }
+    else {
+      res.send({message: 'waiting for coinbase payment'})
+    }
+  })
+}
 
 controller.buy = function(req, res, next) {
 
@@ -68,6 +70,7 @@ controller.quote = function(req, res, next) {
 controller.post = function(req, res) {
   Product.create(req.body)
   .then(result => {
+
     res.send({id: result.attributes.id})
   }).catch(err => {
     console.log(err)

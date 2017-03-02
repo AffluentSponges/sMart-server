@@ -85,6 +85,27 @@ describe('Model Methods (Insert/Update)', function() {
     })
   })
   describe('Product Methods', function() {
+    it.only('should update a product with an attempted_buyer_id', function(done) {
+      var product_id = 2
+      var attempted_buyer_id = 4
+      Product.attempt_purchase(product_id, attempted_buyer_id)
+      .then(p => {
+        product = JSON.parse(JSON.stringify(p))
+        product.attempted_buyer_id.should.equal(attempted_buyer_id)
+        should.equal(product.sold, null)
+        done()
+      })
+    })
+    it.only('should not update a product if it already has an attempted_buyer_id', function(done) {
+      var product_id = 2
+      var attempted_buyer_id = 3
+      Product.attempt_purchase(product_id, attempted_buyer_id)
+      .then(p => {
+        product = JSON.parse(JSON.stringify(p))
+        product.attempted_buyer_id.should.not.equal(attempted_buyer_id)
+        done()
+      })
+    })
     it('should buy a product (update 1 product, insert 1 transaction)', function(done) {
       var product_id = 2
       var buyer_id   = 4
