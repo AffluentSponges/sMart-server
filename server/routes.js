@@ -4,7 +4,7 @@ const passport = require('passport');
 var categoryController = require('./controllers/category')
 var productController = require('./controllers/product')
 var uberRUSHController = require('./controllers/uberRUSH')
-var coinbaseController = require('./controllers/coinbase')
+// var coinbaseController = require('./controllers/coinbase')
 var userController = require('./controllers/user');
 var upload = require('./s3/upload')
 var s3Handler = require('./s3/s3Handler')
@@ -53,10 +53,20 @@ router.post('/api/v1/buy', productController.buy, uberRUSHController.requestDeli
 //@TODO TEST:
 router.post('/api/v1/postcontactinfo', userController.setContactInfo); //@TODO change to /user
 router.post('/uber_webhook', uberRUSHController.webhook)
-router.post('/coinbase_webhook', coinbaseController.webhook)
+// router.post('/coinbase_webhook', coinbaseController.webhook)
 router.post('/upload', upload, s3Handler)
 
+var cnt = 0;
 router.get('/api/v1/vision', vision.getImageTitleAndCategory)
+router.get('/api/v1/payment', function(req, res) {
+  console.log(req.query);
+  if (cnt < 5) {
+    res.send('');  
+  } else {
+    res.json({paid: true});
+  }
+  cnt++;
+})
 
 /* ## NOT IN MVP ## */
 // router.post('/api/v1/make_bid', /**/)
