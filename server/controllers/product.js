@@ -1,6 +1,7 @@
 const Product = require('../models/product')
 const {User} = require('../models')
 const uberRUSH = require('./uberRUSH')
+const coinbase = require('./coinbase')
 var controller = {}
 
 controller.getAll = function (req, res) {
@@ -14,6 +15,21 @@ controller.getOne = function (req, res) {
   Product.findById(req.query.id)
   .then(product => {
     res.json(product)
+  })
+}
+
+controller.attemptPurchase = function(req, res) {
+  const product_id = req.body.product_id
+  const attempted_buyer_id = req.body.buyer_id
+
+  Product.attemptPurchase(product_id, attempted_buyer_id)
+  .then(product => {
+    if(product.attributes.attempted_buyer_id !== attempted_buyer_id) {
+      res.send({message: 'Someone already bought this item'})
+    }
+    else {
+      res.send({message: 'waiting for coinbase payment'})
+    }
   })
 }
 
@@ -53,12 +69,20 @@ controller.quote = function(req, res, next) {
 }
 
 controller.post = function(req, res) {
+  var product;
   Product.create(req.body)
-  .then(result => {
-    res.send({id: result.attributes.id})
-  }).catch(err => {
-    console.log(err)
-    res.end(JSON.stringify(err))
+  .then( p => {
+    product = p
+    return coinbase.createAddress()
+  })
+  .then(address => {
+    var options = {
+      bitcoin_address: address.address,
+    }
+    return product.set(options).save()
+  })
+  .then(p => {
+    res.send({id: p.attributes.id})
   })
 }
 

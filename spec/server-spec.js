@@ -8,7 +8,8 @@ const {userController,
        productController,
        categoryController,
        transactionController,
-       uberRUSHController} = require('../server/controllers')
+       uberRUSHController,
+       coinbaseController} = require('../server/controllers')
 const {User,
        Product,
        Category,
@@ -85,6 +86,27 @@ describe('Model Methods (Insert/Update)', function() {
     })
   })
   describe('Product Methods', function() {
+    it('should update a product with an attempted_buyer_id', function(done) {
+      var product_id = 2
+      var attempted_buyer_id = 4
+      Product.attemptPurchase(product_id, attempted_buyer_id)
+      .then(p => {
+        product = JSON.parse(JSON.stringify(p))
+        product.attempted_buyer_id.should.equal(attempted_buyer_id)
+        should.equal(product.sold, null)
+        done()
+      })
+    })
+    it('should not update a product if it already has an attempted_buyer_id', function(done) {
+      var product_id = 2
+      var attempted_buyer_id = 3
+      Product.attemptPurchase(product_id, attempted_buyer_id)
+      .then(p => {
+        product = JSON.parse(JSON.stringify(p))
+        product.attempted_buyer_id.should.not.equal(attempted_buyer_id)
+        done()
+      })
+    })
     it('should buy a product (update 1 product, insert 1 transaction)', function(done) {
       var product_id = 2
       var buyer_id   = 4
@@ -215,6 +237,20 @@ describe('Controllers', function() {
     })
   })
 
+  describe('Coinbase', function() {
+    it.only('should create a new btc wallet address', function(done) {
+      coinbaseController.createAddress()
+      .then(address => {
+        address.address.should.be.a('string')
+        address.account.id.should.equal(process.env.COINBASE_BTC_ACCOUNT)
+        address.account.name.should.equal('BTC Wallet')
+        address.account.type.should.equal('wallet')
+        address.account.currency.should.equal('BTC')
+        done()
+      })
+    })
+  })
+
   describe('Twilio Notification System', function() {
     describe('uberRUSH status updates', function() {
       it('uber_webhook should have status 200', function(done) {
@@ -269,6 +305,38 @@ describe('API Routes', function() {
         res.body.should.have.property('id')
         res.body.id.should.be.an('number')
         res.should.have.status(200)
+        done()
+      })
+    })
+    it('should initiate a purchase (attempt)', function(done) {
+      var product_id = 2
+      var buyer_id = 2
+      chai.request(server)
+      .post('/api/v1/attempt_purchase')
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .send({
+        "product_id": product_id,
+        "buyer_id": buyer_id
+      })
+      .end((err, res) => {
+        res.should.have.status(200)
+        res.body.message.should.equal('waiting for coinbase payment')
+        done()
+      })
+    })
+    it('should initiate a purchase (attempt) & fail', function(done) {
+      var product_id = 2
+      var buyer_id = 2
+      chai.request(server)
+      .post('/api/v1/attempt_purchase')
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .send({
+        "product_id": product_id,
+        "buyer_id": buyer_id
+      })
+      .end((err, res) => {
+        res.should.have.status(200)
+        res.body.message.should.equal('Someone already bought this item')
         done()
       })
     })

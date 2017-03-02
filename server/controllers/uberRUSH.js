@@ -116,16 +116,17 @@ controller.webhook = function(req, res) {
 
     notify buyer
     */
+
     console.log('STATUS', status);
     transactionController.deliverNotifications(delivery_id, status);
-}
+  }
 
   if(status === 'at_pickup') {
     //notify seller
 
     console.log('STATUS', status);
     transactionController.deliverNotifications(delivery_id, status);
-}
+  }
 
   if(status === 'en_route_to_dropoff') {
     /*

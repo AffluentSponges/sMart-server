@@ -17,6 +17,11 @@ const Product = ModelBase.extend({
     return this.belongsTo(User, 'buyer_id')
   },
 
+  attempted_buyer: function() {
+    const User = require('./user')
+    return this.belongsTo(User, 'attempted_buyer_id')
+  },
+
   category: function() {
     const Category = require('./category')
     return this.belongsTo(Category)
@@ -39,6 +44,15 @@ const Product = ModelBase.extend({
 
   getAllBySellerId: function(seller_id) {
     return this.where({seller_id: seller_id}).fetchAll()
+  },
+
+  attemptPurchase: function(product_id, attempted_buyer_id) {
+    return this.findById(product_id)
+    .then(product => {
+      return product.attributes.attempted_buyer_id
+        ? product
+        : product.set({attempted_buyer_id: attempted_buyer_id, sold: null}).save()
+    })
   },
 
   buyProduct: function (product_id, buyer_id) {
