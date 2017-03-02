@@ -16,6 +16,8 @@ const {User,
 const init = require('../server/db/init')
 const seed = require('../server/db/seed')
 const knex = require('knex')
+const coinbase = require('../server/controllers/coinbase')
+
 chai.use(chaiHttp)
 
 before(function(done) {
@@ -27,7 +29,17 @@ before(function(done) {
     done()
   })
 })
-
+xdescribe('Coinbase methods', function() {
+  describe('Send BTC', function() {
+    it('should send BTC to an address', function(done) {
+      coinbase.sendBTC('1LYbfZzJN45HYocUJxkK5WDNhxB5MN27XK', '0.0001')
+      .then(tx => {
+        tx.should.be.an('object')
+        done()
+      })
+    })
+  })
+})
 describe('Model Methods (Read only)', function() {
   describe('Product Methods', function() {
     it('should return a product with its related seller', function(done) {
