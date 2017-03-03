@@ -1,4 +1,4 @@
-const {Product, Transaction} = require('../models')
+const {Product, Transaction, User} = require('../models')
 
 const transactionController = require('./transaction')
 const UberRUSH = require('uber-rush')
@@ -103,7 +103,7 @@ controller.requestDelivery = function(req, res) {
 }
 
 controller.webhook = function(req, res) {
-  console.log('received uber webhook')
+  console.log('received uber webhook', req.body)
 
   var status = req.body.meta.status
   var delivery_id = req.body.meta.resource_id
@@ -119,29 +119,16 @@ controller.webhook = function(req, res) {
     notify buyer
     */
 
-    Transaction.where({ uber_delivery_id: delivery_id })
-    .fetch({ withRelated: ['product', 'buyer', 'seller'] })
-    .then((transactionData) => {
-      // var product = transactionData.product;
-      // var seller = transactionData.seller;
-      // var buyer = transactionData.buyer;
-
-      // twilio(buyer.phone_number, `S-Mart Alert to ${buyer.username}: Your recently purchased product, ${product}, is ${status}`);
-      // twilio(seller.phone_number, `S-Mart Alert to ${seller.username}: Your recently sold product, ${product}, is ${status}`);
-    });
-
+    console.log('STATUS', status);
+    transactionController.deliverNotifications(delivery_id, status);
   }
+
   if(status === 'at_pickup') {
     //notify seller
-    Transaction.where({ uber_delivery_id: delivery_id })
-    .fetch({ withRelated: ['product', 'seller'] })
-    .then((transactionData) => {
-      // var product = transactionData.product;
-      // var seller = transactionData.seller;
-
-      // twilio(seller.phone_number, `S-Mart Alert to ${seller.username}: Your recently sold product, ${product}, is ${status}`);
-    });
+    console.log('STATUS', status);
+    transactionController.deliverNotifications(delivery_id, status);
   }
+
   if(status === 'en_route_to_dropoff') {
     /*
     update associated transaction
@@ -151,28 +138,17 @@ controller.webhook = function(req, res) {
     notify buyer
     */
 
-    Transaction.where({ uber_delivery_id: delivery_id })
-    .fetch({ withRelated: ['product', 'buyer'] })
-    .then((transactionData) => {
-      // var product = transactionData.product;
-      // var buyer = transactionData.buyer;
-
-      // twilio(buyer.phone_number, `S-Mart Alert to ${buyer.username}: Your recently purchased product, ${product}, is ${status}`);
-    });
-
+    console.log('STATUS', status);
+    transactionController.deliverNotifications(delivery_id, status);
   }
+
   if(status === 'at_dropoff') {
     //notify buyer
 
-    Transaction.where({ uber_delivery_id: delivery_id })
-    .fetch({ withRelated: ['product', 'buyer'] })
-    .then((transactionData) => {
-      // var product = transactionData.product;
-      // var buyer = transactionData.buyer;
-
-      // twilio(buyer.phone_number, `S-Mart Alert to ${buyer.username}: Your recently purchased product, ${product}, is ${status}`);
-    });
+    console.log('STATUS', status);
+    transactionController.deliverNotifications(delivery_id, status);
   }
+
   if(status === 'completed') {
     /*
     update associated transaction
@@ -190,17 +166,10 @@ controller.webhook = function(req, res) {
 
     */
 
-    Transaction.where({ uber_delivery_id: delivery_id })
-    .fetch({ withRelated: ['product', 'buyer', 'seller'] })
-    .then((transactionData) => {
-      // var product = transactionData.product;
-      // var seller = transactionData.seller;
-      // var buyer = transactionData.buyer;
-
-      // twilio(buyer.phone_number, `S-Mart Alert to ${buyer.username}: Your recently purchased product, ${product}, is ${status}`);
-      // twilio(seller.phone_number, `S-Mart Alert to ${seller.username}: Your recently sold product, ${product}, is ${status}`);
-    });
+    console.log('STATUS', status);
+    transactionController.deliverNotifications(delivery_id, status)
   }
+
   // if(status === 'processing') {
   //   console.log('status: ', req.body)
   // }

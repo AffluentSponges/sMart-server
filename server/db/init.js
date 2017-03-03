@@ -16,6 +16,9 @@ module.exports = function(env) {
   .then(() => {return knex.schema.hasTable('products')})
   .then(exists => {return exists ? knex.schema.dropTable('products') : null})
 
+  .then(() => {return knex.schema.hasTable('tags')})
+  .then(exists => {return exists ? knex.schema.dropTable('tags') : null})
+
   .then(() => {return knex.schema.hasTable('categories')})
   .then(exists => {return exists ? knex.schema.dropTable('categories') : null})
 
@@ -58,6 +61,13 @@ module.exports = function(env) {
           })
   })
   .then(() => {
+    return knex.schema.createTable('tags', t => {
+            t.increments().unique()
+            t.string('tag')
+            t.integer('category_id').references('id').inTable('categories')
+          })
+  })
+  .then(() => {
     return knex.schema.createTable('products', p => {
             p.increments()
             p.integer('seller_id').references('id').inTable('users').notNullable()
@@ -77,6 +87,7 @@ module.exports = function(env) {
             p.boolean('sold').defaultTo('false')
             p.timestamp('created_at').notNullable().defaultTo(knex.raw('now()'))
             p.timestamp('updated_at').notNullable().defaultTo(knex.raw('now()'))
+            p.string('bitcoin_address')
             // p.dateTime('preferred_time_and_date')
           })
   })

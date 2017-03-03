@@ -8,7 +8,8 @@ module.exports = function(env, initialzing) {
     usersArray,
     categoryArray,
     productArray,
-    transactionArray
+    transactionArray,
+    tagArray
   } = require('./seedData')
 
   //drops all tables becuase transactions is related to all the others
@@ -41,6 +42,11 @@ module.exports = function(env, initialzing) {
     var categories = insertArray(categoryArray, 'categories', 'name')
     categories.push(fixSequenceIds(categoryArray, 'categories'))
     return Promise.all(categories)
+  })
+  .then(() => {
+    var tags = insertArray(tagArray, 'tags', 'tag')
+    tags.push(fixSequenceIds(tagArray, 'tags'))
+    return Promise.all(tags)
   })
   .then(() => {
     var products = insertArray(productArray, 'products', 'title')
