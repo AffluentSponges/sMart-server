@@ -135,6 +135,8 @@ seedData.productArray = [
     id: 1,
     seller_id: 1,
     buyer_id: null,
+    attempted_buyer_id: 4,
+    bitcoin_address: '1DRjzNVA8CsLAL74TdsZvk6ezdvPPtixhW',
     category_id: 1,
     title: 'macbook pro',
     description: 'Lorem ipsum dolor sit amet, an cum graecis concludaturque. Nam habeo dictas ex, harum officiis incorrupte in eum. Sint tacimates vis id, error ludus torquatos eam ne, populo oporteat voluptaria at duo. Mea antiopam neglegentur ei, in quo cibo nonumy, congue impetus suavitate quo ea. Ex mea primis numquam periculis, meis labitur fabulas no nec, est mediocrem pertinacia no.',
