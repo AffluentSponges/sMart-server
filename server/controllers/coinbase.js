@@ -44,6 +44,8 @@ function sendBTCAsync (account, sellerAddress, amount) {
     client.getAccount(process.env.COINBASE_BTC_ACCOUNT, function(err, account) {
       account.sendMoney({'to': sellerAddress,
                         'amount': amount,
+                        'currency': 'BTC',
+                        'idem': String(Math.ceil(Math.random() * 1000000000))}, 
                         'currency': 'BTC'}, 
         function(err, tx) {
           if(err) {
@@ -60,6 +62,20 @@ controller.sendBTC = function(sellerAddress, amount) {
   return getAccountAysnc(process.env.COINBASE_BTC_ACCOUNT)
   .then(account => {
     return sendBTCAsync(account, sellerAddress, amount)
+  })
+}
+
+function convertCurrencyAsync (account, USD) {
+  return new Promise(function(resolve, reject) { 
+    client.getExchangeRates({'currency': 'BTC'}, function(err, rates) {
+      resolve((USD / rates.data.rates.USD).toFixed(8))
+    }); 
+  });
+}
+controller.convertCurrency = function(USD) {
+  return getAccountAysnc(process.env.COINBASE_BTC_ACCOUNT)
+  .then(account => {
+    return convertCurrencyAsync(account, USD)
   })
 }
 
