@@ -36,17 +36,6 @@ controller.attemptPurchase = function(req, res) {
         res.send({message: 'waiting for coinbase payment',
                   BTC: bitcoinAmount})
       }
-  .then(product => {
-    if(product.attributes.attempted_buyer_id !== attempted_buyer_id) {
-      res.send({message: 'Someone already bought this item',
-                status: 'sold'
-      })
-    }
-    else {
-      res.send({message: 'waiting for coinbase payment',
-                status: 'pending'
-      })
-    }
   })
 };
 

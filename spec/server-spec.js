@@ -260,7 +260,7 @@ describe('Controllers', function() {
       .then(address => {
         address.address.should.be.a('string')
         address.account.id.should.equal(process.env.COINBASE_BTC_ACCOUNT)
-        address.account.name.should.equal('BTC Wallet')
+        address.account.name.should.equal('My Wallet')
         address.account.type.should.equal('wallet')
         address.account.currency.should.equal('BTC')
         done()
@@ -366,7 +366,6 @@ describe('API Routes', function() {
         "buyer_id": buyer_id
       })
       .end((err, res) => {
-        console.log(res)
         res.should.have.status(200)
         res.body.message.should.equal('waiting for coinbase payment')
         res.body.BTC.should.be.a('string')

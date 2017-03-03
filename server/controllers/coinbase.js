@@ -83,7 +83,7 @@ function sendBTCAsync (account, sellerAddress, amount) {
       account.sendMoney({'to': sellerAddress,
                         'amount': amount,
                         'currency': 'BTC',
-                        'idem': String(Math.ceil(Math.random() * 1000000000))}, 
+                        'idem': String(Math.ceil(Math.random() * 1000000000)), 
                         'currency': 'BTC'}, 
         function(err, tx) {
           if(err) {
@@ -104,7 +104,6 @@ controller.sendBTC = function(sellerAddress, amount) {
 }
 
 controller.convertCurrency = function(USD) {
-function convertCurrencyAsync (account, USD) {
   return new Promise(function(resolve, reject) { 
     client.getExchangeRates({'currency': 'BTC'}, function(err, rates) {
       resolve((USD / rates.data.rates.USD).toFixed(8))
@@ -112,16 +111,7 @@ function convertCurrencyAsync (account, USD) {
   });
 }
 
-<<<<<<< HEAD
-=======
-controller.convertCurrency = function(USD) {
-  return getAccountAysnc(process.env.COINBASE_BTC_ACCOUNT)
-  .then(account => {
-    return convertCurrencyAsync(account, USD)
-  })
-}
 
->>>>>>> 78c5bac1f3ddb518c121c5327f64f865b1437295
 controller.webhook = function(req, res) {
   if(req.body.type === 'wallet:addresses:new-payment') {
     controller.acceptPayment(req.body)
