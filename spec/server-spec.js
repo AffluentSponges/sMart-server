@@ -30,26 +30,7 @@ before(function(done) {
     done()
   })
 })
-describe('Coinbase methods', function() {
-  xdescribe('Send BTC', function() {
-    it('should send BTC to an address', function(done) {
-      coinbase.sendBTC('1LYbfZzJN45HYocUJxkK5WDNhxB5MN27XK', '0.0001')
-      .then(tx => {
-        tx.should.be.an('object')
-        done()
-      })
-    })
-  })
-  describe('Convert Currency', function() {
-    it('should convert USD to BTC', function(done) {
-      coinbase.convertCurrency(1000)
-      .then(tx => {
-        tx.should.be.a('string')
-        done()
-      })
-    })
-  })
-})
+
 describe('Model Methods (Read only)', function() {
   describe('Product Methods', function() {
     it('should return a product with its related seller', function(done) {
@@ -297,6 +278,24 @@ describe('Controllers', function() {
         })
       })
     })
+  xdescribe('Send BTC', function() {
+    it('should send BTC to an address', function(done) {
+      coinbase.sendBTC('1LYbfZzJN45HYocUJxkK5WDNhxB5MN27XK', '0.0001')
+      .then(tx => {
+        tx.should.be.an('object')
+        done()
+      })
+    })
+  })
+  describe('Convert Currency', function() {
+    it('should convert USD to BTC', function(done) {
+      coinbase.convertCurrency(1000)
+      .then(tx => {
+        tx.should.be.a('string')
+        done()
+      })
+    })
+  })
   })
   describe('Twilio Notification System', function() {
     describe('uberRUSH status updates', function() {
