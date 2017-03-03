@@ -8,12 +8,12 @@ const {User,
 var Client = require('coinbase').Client;
 var client = new Client({'apiKey': process.env.COINBASE_KEY, 'apiSecret': process.env.COINBASE_SECRET});
 
-//happens once when you start up the server
+// happens once when you start up the server
 // client.getAccounts({}, function(err, accounts) {
-  // console.log(accounts)
-  // accounts.forEach(function(acct) {
-  //   console.log('my bal: ' + acct.balance.amount + ' for ' + acct.name);
-  // });
+//   console.log(accounts)
+//   accounts.forEach(function(acct) {
+//     console.log('my bal: ' + acct.balance.amount + ' for ' + acct.name);
+//   });
 // });
 
 // client.getNotification('d9cc3ee5-567e-5f8d-a031-11194e103d99', function(err, notification) {
@@ -26,6 +26,7 @@ var client = new Client({'apiKey': process.env.COINBASE_KEY, 'apiSecret': proces
 //     console.log(tx)
 //   })
 // })
+
 
 controller = {}
 
@@ -76,6 +77,47 @@ controller.acceptPayment = function(data) {
   })
 }
 
+function sendBTCAsync (account, sellerAddress, amount) {
+  return new Promise(function(resolve, reject) { 
+    client.getAccount(process.env.COINBASE_BTC_ACCOUNT, function(err, account) {
+      account.sendMoney({'to': sellerAddress,
+                        'amount': amount,
+                        'currency': 'BTC',
+                        'idem': String(Math.ceil(Math.random() * 1000000000))}, 
+                        'currency': 'BTC'}, 
+        function(err, tx) {
+          if(err) {
+            console.log(err) 
+          } else {
+            console.log('sent ฿!');
+          }
+          resolve(tx)
+        });
+    });
+  });
+}
+controller.sendBTC = function(sellerAddress, amount) {
+  return getAccountAysnc(process.env.COINBASE_BTC_ACCOUNT)
+  .then(account => {
+    return sendBTCAsync(account, sellerAddress, amount)
+  })
+}
+
+function convertCurrencyAsync (account, USD) {
+  return new Promise(function(resolve, reject) { 
+    client.getExchangeRates({'currency': 'BTC'}, function(err, rates) {
+      resolve((USD / rates.data.rates.USD).toFixed(8))
+    }); 
+  });
+}
+
+controller.convertCurrency = function(USD) {
+  return getAccountAysnc(process.env.COINBASE_BTC_ACCOUNT)
+  .then(account => {
+    return convertCurrencyAsync(account, USD)
+  })
+}
+
 controller.webhook = function(req, res) {
   if(req.body.type === 'wallet:addresses:new-payment') {
     controller.acceptPayment(req.body)
@@ -86,3 +128,4 @@ controller.webhook = function(req, res) {
 }
 
 module.exports = controller
+

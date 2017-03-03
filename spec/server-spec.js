@@ -17,6 +17,8 @@ const {User,
 const init = require('../server/db/init')
 const seed = require('../server/db/seed')
 const knex = require('knex')
+const coinbase = require('../server/controllers/coinbase')
+
 chai.use(chaiHttp)
 
 before(function(done) {
@@ -28,7 +30,17 @@ before(function(done) {
     done()
   })
 })
-
+xdescribe('Coinbase methods', function() {
+  describe('Send BTC', function() {
+    it('should send BTC to an address', function(done) {
+      coinbase.sendBTC('1LYbfZzJN45HYocUJxkK5WDNhxB5MN27XK', '0.0001')
+      .then(tx => {
+        tx.should.be.an('object')
+        done()
+      })
+    })
+  })
+})
 describe('Model Methods (Read only)', function() {
   describe('Product Methods', function() {
     it('should return a product with its related seller', function(done) {
@@ -197,7 +209,6 @@ describe('Controllers', function() {
       })
     })
   })
-
   describe('Coinbase', function() {
     var data = {
       "id": "d9cc3ee5-567e-5f8d-a031-11194e103d99",
@@ -278,10 +289,9 @@ describe('Controllers', function() {
       })
     })
   })
-
   describe('Twilio Notification System', function() {
     describe('uberRUSH status updates', function() {
-      it('should notify buyer and seller when uberRUSH is en route', function(done) {
+      it('uber_webhook should have status 200', function(done) {
         chai.request(server)
         .post('/uber_webhook')
         .set('content-type', 'application/json')
@@ -369,6 +379,7 @@ describe('API Routes', function() {
       })
     })
   })
+
   describe('GET ROUTES', function() {
     it('should return the single product just posted', function(done) {
       chai.request(server)
@@ -470,3 +481,15 @@ describe('API Routes', function() {
   })
 })
 
+describe('Twilio messaging system', function() {
+  describe('uberRUSH delivery status', function() {
+    it('should fetch buyer, seller and product given an uber delivery ID', function() {
+      Transaction.where({ uber_delivery_id: delivery_id})
+    })
+
+    it('should deliver message "on route to pickup"', function(done) {
+
+      done()
+    });
+  })
+});
