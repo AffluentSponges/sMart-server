@@ -47,7 +47,7 @@ const Product = ModelBase.extend({
   },
 
   attemptPurchase: function(product_id, attempted_buyer_id) {
-    return this.findById(product_id)
+    return this.getWithSeller(product_id)
     .then(product => {
       return product.attributes.attempted_buyer_id
         ? product

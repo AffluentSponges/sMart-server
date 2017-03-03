@@ -20,30 +20,38 @@ controller.getOne = function (req, res) {
 
 controller.attemptPurchase = function(req, res) {
   const product_id = req.body.product_id
-  const attempted_buyer_id = req.body.buyer_ids
-  var product;
+  const attempted_buyer_id = req.body.buyer_id
+  
+  var product
 
   Product.attemptPurchase(product_id, attempted_buyer_id)
   .then(p => {
     product = p;
-    return coinbase.convertCurrency(p.attributes.asking_price)
-  }).then( bitcoinAmount => {
-      if(product.attributes.attempted_buyer_id !== attempted_buyer_id) {
-        res.send({
-          message: 'Someone already bought this item'
-        })
-      } else {
-        res.send({message: 'waiting for coinbase payment',
-                  BTC: bitcoinAmount})
-      }
+    return User.findById(attempted_buyer_id)
+  })
+  .then(buyer => {
+    return uberRUSH.quote(product, buyer)
+  })
+  .then(delivery => {
+    var totalPrice = parseInt(product.attributes.asking_price) + delivery.uber_delivery_price
+    return coinbase.convertCurrency(totalPrice)
+  })
+  .then(bitcoinAmount => {
+    if(product.attributes.attempted_buyer_id !== attempted_buyer_id) {
+      res.send({
+        message: 'Someone already bought this item'
+      })
+    } else {
+      res.send({message: 'waiting for coinbase payment',
+                BTC: bitcoinAmount})
+    }
   })
 };
 
 
-controller.quote = function(req, res, next) {
+controller.quote = function(req, res) {
   const product_id = req.query.product_id
   const buyer_id = req.query.buyer_id
-  console.log(product_id, buyer_id)
   if (req.query.buyer_id === undefined) {
     var data = {
         dropoff_eta: 10,
@@ -54,7 +62,7 @@ controller.quote = function(req, res, next) {
     return;
   }
 
-  var product = null
+  var product
 
   Product.getWithSeller(product_id)
   .then(p => {
