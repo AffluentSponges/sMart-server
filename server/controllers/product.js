@@ -1,6 +1,7 @@
 const Product = require('../models/product')
 const {User} = require('../models')
 const uberRUSH = require('./uberRUSH')
+const coinbase = require('./coinbase')
 var controller = {}
 
 controller.getAll = function (req, res) {
@@ -68,13 +69,20 @@ controller.quote = function(req, res, next) {
 }
 
 controller.post = function(req, res) {
+  var product;
   Product.create(req.body)
-  .then(result => {
-
-    res.send({id: result.attributes.id})
-  }).catch(err => {
-    console.log(err)
-    res.end(JSON.stringify(err))
+  .then( p => {
+    product = p
+    return coinbase.createAddress()
+  })
+  .then(address => {
+    var options = {
+      bitcoin_address: address.address,
+    }
+    return product.set(options).save()
+  })
+  .then(p => {
+    res.send({id: p.attributes.id})
   })
 }
 
