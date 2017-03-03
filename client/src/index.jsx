@@ -17,7 +17,6 @@ import Header from './components/Header.jsx';
 import CategoriesNav from './components/CategoriesNav.jsx';
 import ItemElement from './components/ItemElement.jsx';
 import ItemList from './components/ItemList.jsx';
-import data from './data.jsx'
 import auth from './auth/auth.js'
 import axios from 'axios';
 
@@ -152,7 +151,7 @@ class App extends React.Component {
 ReactDOM.render(
   <Router history={browserHistory}>
     <Route path="/" component={App}>
-      <IndexRoute component = {Home} />
+      <IndexRoute component = {Home}/>
       <Route path="login" component={Login}/>
       <Route path="signup" component={Signup}/>
       <Route path="x/:category" component={Category}/>
