@@ -79,23 +79,17 @@ controller.acceptPayment = function(data) {
 
 function sendBTCAsync (account, sellerAddress, amount) {
   return new Promise(function(resolve, reject) { 
-    client.getAccount(process.env.COINBASE_BTC_ACCOUNT, function(err, account) {
-      account.sendMoney({'to': sellerAddress,
-                        'amount': amount,
-                        'currency': 'BTC',
-                        'idem': String(Math.ceil(Math.random() * 1000000000)), 
-                        'currency': 'BTC'}, 
-        function(err, tx) {
-          if(err) {
-            console.log(err) 
-          } else {
-            console.log('sent ฿!');
-          }
-          resolve(tx)
-        });
-    });
-  });
+    account.sendMoney({
+      to: sellerAddress,
+      amount: amount,
+      currency: 'BTC'
+    }, function(err, tx) {
+      if(err !== null) return reject(err);
+      resolve(tx)
+    })
+  })
 }
+
 controller.sendBTC = function(sellerAddress, amount) {
   return getAccountAysnc(process.env.COINBASE_BTC_ACCOUNT)
   .then(account => {

@@ -1,3 +1,8 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
 body {
   background: #f7f4f4;
 }
@@ -8,10 +13,7 @@ body {
 
 ul {
   list-style-type: none !important;
-}
-
-a {
-    text-decoration: none !important;
+  all: none !important;
 }
 
 .socialLogin {
@@ -39,4 +41,16 @@ a {
 
 a {
   all: none !important;
+}
+
+.jumbotron {
+  height: 270px !important;
+  background-image: url("https://us.letgo.com/assets-3/bundles/site/img/intersticial-bg.png") !important;
+  background-repeat: repeat !important;
+  border-radius: 0 !important;
+}
+
+.categoryList {
+  padding-left: 20px !important;
+  
 }
