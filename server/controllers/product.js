@@ -25,10 +25,14 @@ controller.attemptPurchase = function(req, res) {
   Product.attemptPurchase(product_id, attempted_buyer_id)
   .then(product => {
     if(product.attributes.attempted_buyer_id !== attempted_buyer_id) {
-      res.send({message: 'Someone already bought this item'})
+      res.send({message: 'Someone already bought this item',
+                status: 'sold'
+      })
     }
     else {
-      res.send({message: 'waiting for coinbase payment'})
+      res.send({message: 'waiting for coinbase payment',
+                status: 'pending'
+      })
     }
   })
 }
@@ -52,6 +56,16 @@ controller.buy = function(req, res, next) {
 controller.quote = function(req, res, next) {
   const product_id = req.query.product_id
   const buyer_id = req.query.buyer_id
+  console.log(product_id, buyer_id)
+  if (req.query.buyer_id === undefined) {
+    var data = {
+        dropoff_eta: 10,
+        pickup_eta: 10,
+        uber_delivery_price: '6'
+      };
+    res.send(data)
+    return;
+  }
 
   var product = null
 
@@ -90,6 +104,26 @@ controller.getUserProducts = function(req, res) {
   Product.getAllBySellerId(req.query.seller_id)
   .then(products => {
     res.json(products)
+  })
+};
+
+var cnt = 0;
+controller.isPaid = function(req, res) {
+  Product.findById(req.query.id)
+  .then(product => {
+    var thisProduct = product.serialize();
+    if (thisProduct.buyer_id === req.query.id && thisProduct.sold) {
+
+    }
+    console.log(thisProduct.buyer_id, thisProduct.sold);
+
+    if (cnt < 5) {
+      res.send('');  
+    } else {
+      res.json({paid: true});
+    }
+    cnt++;
+
   })
 };
 
