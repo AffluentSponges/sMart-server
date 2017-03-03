@@ -233,7 +233,7 @@ describe('Controllers', function() {
         }
       }
     // ^I like to shrink this to one line
-    it('should send BTC to an address', function(done) {
+    xit('should send BTC to an address', function(done) {
       coinbaseController.sendBTC('1LYbfZzJN45HYocUJxkK5WDNhxB5MN27XK', '0.0001')
       .then(tx => {
         tx.should.be.an('object')
