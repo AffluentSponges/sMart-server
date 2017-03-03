@@ -56,23 +56,16 @@ router.post('/uber_webhook', uberRUSHController.webhook)
 // router.post('/coinbase_webhook', coinbaseController.webhook)
 router.post('/upload', upload, s3Handler)
 
-var cnt = 0;
 router.get('/api/v1/vision', vision.getImageTitleAndCategory)
-router.get('/api/v1/payment', function(req, res) {
-  console.log(req.query);
-  if (cnt < 5) {
-    res.send('');  
-  } else {
-    res.json({paid: true});
-  }
-  cnt++;
-})
+router.get('/api/v1/payment', productController.isPaid)
 
 /* ## NOT IN MVP ## */
 // router.post('/api/v1/make_bid', /**/)
 //?product_id=3 & user_id=4 & offer_price = 100.50
 //delete an item
 
+//to check random things during dev
+router.post('/api/v1/dev', (req, res) => {console.log(req.body); res.end('done')})
 router.get('*', (req, res, next) => {
   res.sendFile(path.resolve(__dirname, '../client/public/index.html'));
 });
