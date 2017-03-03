@@ -89,6 +89,7 @@ describe('Model Methods (Read only)', function() {
 })
 
 describe('Model Methods (Insert/Update)', function() {
+  this.timeout(5000)
   after(function(done) {
     init('test')
     .then(() => {
@@ -246,6 +247,13 @@ describe('Controllers', function() {
         }
       }
     // ^I like to shrink this to one line
+    it('should convert USD to BTC', function(done) {
+      coinbaseController.convertCurrency(1000)
+      .then(tx => {
+        tx.should.be.a('string')
+        done()
+      })
+    })
     xit('should send BTC to an address', function(done) {
       coinbaseController.sendBTC('1LYbfZzJN45HYocUJxkK5WDNhxB5MN27XK', '0.0001')
       .then(tx => {
@@ -295,24 +303,6 @@ describe('Controllers', function() {
         })
       })
     })
-  xdescribe('Send BTC', function() {
-    it('should send BTC to an address', function(done) {
-      coinbase.sendBTC('1LYbfZzJN45HYocUJxkK5WDNhxB5MN27XK', '0.0001')
-      .then(tx => {
-        tx.should.be.an('object')
-        done()
-      })
-    })
-  })
-  describe('Convert Currency', function() {
-    it('should convert USD to BTC', function(done) {
-      coinbase.convertCurrency(1000)
-      .then(tx => {
-        tx.should.be.a('string')
-        done()
-      })
-    })
-  })
   })
   describe('Twilio Notification System', function() {
     describe('uberRUSH status updates', function() {
@@ -385,6 +375,7 @@ describe('Controllers', function() {
 })
 
 describe('API Routes', function() {
+  this.timeout(5000)
   var product_id;
   after(function(done) {
     init('test')
@@ -455,8 +446,6 @@ describe('API Routes', function() {
   })
 
   describe('GET ROUTES', function() {
-    it('should')
-
     it('should return the single product just posted', function(done) {
       chai.request(server)
       .get('/api/v1/product?id=' + product_id)
@@ -533,7 +522,6 @@ describe('API Routes', function() {
     })
 
     xit('should return a title of a given image url', function(done) {
-      this.timeout(3000);
       chai.request(server)
       .get('/api/v1/vision?image_links=https://store.storeimages.cdn-apple.com/4974/as-images.apple.com/is/image/AppleInc/aos/published/images/m/bp/mbp13/silver/mbp13-silver-select-201610?wid=452&hei=420&fmt=jpeg&qlt=95&op_sharpen=0&resMode=bicub&op_usm=0.5,0.5,0,0&iccEmbed=0&layer=comp&.v=1477352400929')
       .end((err, res) => {
@@ -545,7 +533,6 @@ describe('API Routes', function() {
     }) 
 
     xit('should return Electronics category id from laptop image url', function(done) {
-      this.timeout(3000);
       chai.request(server)
       .get('/api/v1/vision?image_links=https://cnet1.cbsistatic.com/img/hu-by7YBD22hiXFqkorB2xKbcdw=/770x578/2016/11/04/b88dcfca-056b-4f74-aeb1-84da826ead0b/apple-macbook-pro-with-touch-bar-13-inch-2016-39.jpg')
       .end((err, res) => {
