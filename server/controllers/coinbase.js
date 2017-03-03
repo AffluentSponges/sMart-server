@@ -46,6 +46,7 @@ function sendBTCAsync (account, sellerAddress, amount) {
                         'amount': amount,
                         'currency': 'BTC',
                         'idem': String(Math.ceil(Math.random() * 1000000000))}, 
+                        'currency': 'BTC'}, 
         function(err, tx) {
           if(err) {
             console.log(err) 
@@ -78,6 +79,7 @@ controller.convertCurrency = function(USD) {
   })
 }
 controller.convertCurrency(10.99)
+
 controller.webhook = function(req, res) {
   console.log('coinbase ping')
 }

@@ -475,3 +475,15 @@ describe('API Routes', function() {
   })
 })
 
+describe('Twilio messaging system', function() {
+  describe('uberRUSH delivery status', function() {
+    it('should fetch buyer, seller and product given an uber delivery ID', function() {
+      Transaction.where({ uber_delivery_id: delivery_id})
+    })
+
+    it('should deliver message "on route to pickup"', function(done) {
+
+      done()
+    });
+  })
+});

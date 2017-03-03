@@ -8,6 +8,8 @@ const UberRUSHClient = UberRUSH.createClient({
     sandbox: true // No couriers will actually be called if set
 })
 
+const twilio = require('./twilio');
+
 var controller = {}
 
 controller.createDeliveryObj = function(productWithRelatedData, potentialBuyer) {
@@ -123,7 +125,6 @@ controller.webhook = function(req, res) {
 
   if(status === 'at_pickup') {
     //notify seller
-
     console.log('STATUS', status);
     transactionController.deliverNotifications(delivery_id, status);
   }
@@ -196,8 +197,6 @@ controller.webhook = function(req, res) {
   // if(status === 'unknown') {
   //   console.log('status: ', status)
   // }
-
-  res.end();
 }
 
 module.exports = controller
