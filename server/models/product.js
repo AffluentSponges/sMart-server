@@ -61,17 +61,6 @@ const Product = ModelBase.extend({
       //if it's already purchased, send an error!
       return product.set({buyer_id: product.attributes.attempted_buyer_id, sold: true}).save()
     })
-  },
-
-  buyProduct: function (product_id, buyer_id) {
-    return this.findById(product_id)
-    .then(product => {
-      //@TODO if it's already bought, send an error!
-      return product.set({buyer_id: buyer_id, sold: true}).save()
-    })
-    .then(product => {
-      return Transaction.addNewTransaction(product)
-    })
   }
 })
 module.exports = Product

@@ -107,34 +107,6 @@ describe('Model Methods (Insert/Update)', function() {
         done()
       })
     })
-    xit('should buy a product (update 1 product, insert 1 transaction)', function(done) {
-      var product_id = 2
-      var buyer_id   = 4
-      var product
-      var buyer
-      var transaction
-
-      User.findById(buyer_id)
-      .then(b => {
-        buyer = JSON.parse(JSON.stringify(b))
-        return Product.buyProduct(product_id, buyer_id)
-      })
-      .then(t => {
-        transaction = JSON.parse(JSON.stringify(t))
-        return Product.findById(product_id)
-      })
-      .then(p => {
-        product = JSON.parse(JSON.stringify(p))
-        product.buyer_id.should.equal(buyer.id)
-        product.sold.should.equal(true)
-        transaction.buyer_id.should.equal(buyer.id)
-        transaction.product_id.should.equal(product.id)
-        transaction.sale_price.should.equal(product.asking_price)
-        transaction.status.should.equal('received_payment')
-        done()
-        
-      })
-    })
     it('should complete a purchase of a product given a btc address', function(done) {
       var bitcoin_address = '1DRjzNVA8CsLAL74TdsZvk6ezdvPPtixhW'
       Product.completePurchase(bitcoin_address)
@@ -227,6 +199,42 @@ describe('Controllers', function() {
   })
 
   describe('Coinbase', function() {
+    var data = {
+      "id": "d9cc3ee5-567e-5f8d-a031-11194e103d99",
+      "type": "wallet:addresses:new-payment",
+      "data": 
+       { "id": "6c6e3a77-5f34-5bdd-b2fa-fc2840ae87eb",
+         "address": "1DRjzNVA8CsLAL74TdsZvk6ezdvPPtixhW",
+         "name": null,
+         "created_at": "2017-03-01T18:43:39Z",
+         "updated_at": "2017-03-01T18:43:39Z",
+         "network": "bitcoin",
+         "resource": "address",
+         "resource_path": "/v2/accounts/e57d688a-424b-5758-9318-481f2bef8dc3/addresses/6c6e3a77-5f34-5bdd-b2fa-fc2840ae87eb" },
+      "user": 
+       { "id": "7ad3ae13-82f5-58a0-a4e3-84044f7ceec3",
+         "resource": "user",
+         "resource_path": "/v2/users/7ad3ae13-82f5-58a0-a4e3-84044f7ceec3" },
+      "account": 
+       { "id": "e57d688a-424b-5758-9318-481f2bef8dc3",
+         "resource": "account",
+         "resource_path": "/v2/accounts/e57d688a-424b-5758-9318-481f2bef8dc3" },
+      "delivery_attempts": 0,
+      "created_at": "2017-03-01T18:44:10Z",
+      "resource": "notification",
+      "resource_path": "/v2/notifications/d9cc3ee5-567e-5f8d-a031-11194e103d99",
+      "additional_data": 
+       { "hash": "ba95c9dd9a2faebe63025a29ec1dc077ae5ee6dc5b065ae0978dcb5cc13fd6ce",
+         "amount": { "amount": "0.00008287", "currency": "BTC" },
+         "transaction": 
+          { "id": "13f07688-c6dc-539d-aacc-5c08288b1481",
+            "resource": "transaction",
+            "resource_path": "/v2/accounts/e57d688a-424b-5758-9318-481f2bef8dc3/transactions/13f07688-c6dc-539d-aacc-5c08288b1481"
+          }
+        }
+      }
+    // ^I like to shrink this to one line
+
     it('should create a new btc wallet address', function(done) {
       coinbaseController.createAddress()
       .then(address => {
@@ -239,41 +247,6 @@ describe('Controllers', function() {
       })
     })
     it('should pull out only useful data from the webhook payload for new-payment', function(done) {
-      var data = {
-        id: 'd9cc3ee5-567e-5f8d-a031-11194e103d99',
-        type: 'wallet:addresses:new-payment',
-        data: 
-         { id: '6c6e3a77-5f34-5bdd-b2fa-fc2840ae87eb',
-           address: '1DRjzNVA8CsLAL74TdsZvk6ezdvPPtixhW',
-           name: null,
-           created_at: '2017-03-01T18:43:39Z',
-           updated_at: '2017-03-01T18:43:39Z',
-           network: 'bitcoin',
-           resource: 'address',
-           resource_path: '/v2/accounts/e57d688a-424b-5758-9318-481f2bef8dc3/addresses/6c6e3a77-5f34-5bdd-b2fa-fc2840ae87eb' },
-        user: 
-         { id: '7ad3ae13-82f5-58a0-a4e3-84044f7ceec3',
-           resource: 'user',
-           resource_path: '/v2/users/7ad3ae13-82f5-58a0-a4e3-84044f7ceec3' },
-        account: 
-         { id: 'e57d688a-424b-5758-9318-481f2bef8dc3',
-           resource: 'account',
-           resource_path: '/v2/accounts/e57d688a-424b-5758-9318-481f2bef8dc3' },
-        delivery_attempts: 0,
-        created_at: '2017-03-01T18:44:10Z',
-        resource: 'notification',
-        resource_path: '/v2/notifications/d9cc3ee5-567e-5f8d-a031-11194e103d99',
-        additional_data: 
-         { hash: 'ba95c9dd9a2faebe63025a29ec1dc077ae5ee6dc5b065ae0978dcb5cc13fd6ce',
-           amount: { amount: '0.00008287', currency: 'BTC' },
-           transaction: 
-            { id: '13f07688-c6dc-539d-aacc-5c08288b1481',
-              resource: 'transaction',
-              resource_path: '/v2/accounts/e57d688a-424b-5758-9318-481f2bef8dc3/transactions/13f07688-c6dc-539d-aacc-5c08288b1481'
-            }
-          }
-        }
-      //if you expand that ^ it's.. a lot. I like to click the arrow on the left to keep it shunk up
       var info = coinbaseController.prunePayload(data)
       info.coinbase_address_id.should.equal(data.data.id)
       info.amount.should.equal(data.additional_data.amount.amount)
@@ -281,7 +254,29 @@ describe('Controllers', function() {
       info.coinbase_transaction_id.should.equal(data.additional_data.transaction.id)
       done()
     })
-    it('should trigger the buying process via webhook')
+    it('should trigger the buying process via webhook for new-payment', function(done) {
+      chai.request(server)
+      .post('/coinbase_webhook')
+      .set('content-type', 'application/json')
+      .send(data)
+      .end((err, res) => {
+        Transaction.getWithAllRelated(res.body.id)
+        .then(t => {
+          transaction = JSON.parse(JSON.stringify(t))
+          transaction.buyer_id.should.not.be.null
+          transaction.coinbase_address_id.should.equal(data.data.id)
+          transaction.coinbase_transaction_id.should.equal(data.additional_data.transaction.id)
+          transaction.currency.should.equal(data.additional_data.amount.currency)
+          transaction.amount.should.equal(data.additional_data.amount.amount)
+          transaction.status.should.equal('received_payment')
+          transaction.uber_delivery_id.should.be.a('string')
+          transaction.product.bitcoin_address.should.equal(data.data.address)
+          transaction.product.sold.should.equal(true)
+          transaction.product.buyer_id.should.not.be.null
+          done()
+        })
+      })
+    })
   })
 
   describe('Twilio Notification System', function() {
@@ -370,26 +365,6 @@ describe('API Routes', function() {
       .end((err, res) => {
         res.should.have.status(200)
         res.body.message.should.equal('Someone already bought this item')
-        done()
-      })
-    })
-    xit('should buy a product', function(done) {
-      this.timeout(5000)
-      var product_id = 2
-      var buyer_id = 2
-      chai.request(server)
-      .post('/api/v1/buy')
-      .set('content-type', 'application/x-www-form-urlencoded')
-      .send({
-        "product_id": product_id,
-        "buyer_id": buyer_id
-      })
-      .end((err, res) => {
-        res.should.have.status(200)
-        res.body.product_id.should.equal(product_id)
-        res.body.buyer_id.should.equal(buyer_id)
-        res.body.uber_delivery_id.should.be.a('string')
-        res.body.uber_delivery_price.should.be.a('number')
         done()
       })
     })

@@ -82,8 +82,7 @@ controller.quote = function(product, buyer) {
 }
 
 controller.requestDelivery = function(product_id) {
-
-  Product.getWithAllRelated(product_id)
+  return Product.getWithAllRelated(product_id)
   .then(productWithRelatedData => {
     var delivery = controller.createDeliveryObj(productWithRelatedData)
     return delivery.confirm()

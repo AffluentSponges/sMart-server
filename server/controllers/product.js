@@ -33,22 +33,6 @@ controller.attemptPurchase = function(req, res) {
   })
 }
 
-controller.buy = function(req, res, next) {
-
-  const product_id = req.body.product_id
-  const buyer_id = req.body.buyer_id
-
-  Product.buyProduct(product_id, buyer_id)
-  .then(transaction => {
-    //@TODO if this gets passed an error, don't do the next()!!!
-    next()
-  })
-  .catch(err => {
-    console.log('PRODUCT CONTROLLER BUY ERROR')
-    console.log(err)
-  })
-}
-
 controller.quote = function(req, res, next) {
   const product_id = req.query.product_id
   const buyer_id = req.query.buyer_id

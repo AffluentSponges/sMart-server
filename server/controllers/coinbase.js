@@ -66,25 +66,22 @@ controller.prunePayload = function(data) {
 
 controller.acceptPayment = function(data) {
   var bitcoin_address = data.data.address
-  var info = controller.prunePayload(data)
-
-  Product.completePurchase(bitcoin_address)
+  var info = this.prunePayload(data)
+  return Product.completePurchase(bitcoin_address)
   .then(product => {
     return Transaction.addNewTransaction(product, info)
   })
   .then(transaction => {
     return uberRUSHController.requestDelivery(transaction.attributes.product_id)
   })
-  .then(transaction => {
-    var t = JSON.parse(JSON.stringify(transaction))
-    console.log(t)
-  })
 }
 
 controller.webhook = function(req, res) {
-
   if(req.body.type === 'wallet:addresses:new-payment') {
     controller.acceptPayment(req.body)
+    .then(transaction => {
+      res.json(transaction)
+    })
   }
 }
 

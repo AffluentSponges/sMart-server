@@ -23,16 +23,6 @@ const Transaction = ModelBase.extend({
   }
   
 }, {
-  // addNewTransaction: function(product) {
-  //   var date = new Date()
-  //   date = date.toUTCString()
-  //   return this.upsert({product_id: product.id}, {
-  //     buyer_id: product.attributes.buyer_id,
-  //     sale_price: product.attributes.asking_price,
-  //     status: 'received_payment',
-  //     sale_time_and_date: date
-  //   })
-  // },
 
   addNewTransaction: function(product, info) {
     var date = new Date()
@@ -57,6 +47,10 @@ const Transaction = ModelBase.extend({
   getTransactionInfo: function(delivery_id) {
     return this.where({ uber_delivery_id: delivery_id })
     .fetch({ withRelated: ['buyer', 'seller', 'product']})
+  },
+
+  getWithAllRelated: function(id) {
+    return this.where({id: id}).fetch({withRelated: ['seller', 'buyer', 'product']})
   }
 
 });
