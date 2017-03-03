@@ -55,6 +55,14 @@ const Product = ModelBase.extend({
     })
   },
 
+  completePurchase: function(bitcoin_address) {
+    return this.findOne({bitcoin_address: bitcoin_address})
+    .then(product => {
+      //if it's already purchased, send an error!
+      return product.set({buyer_id: product.attributes.attempted_buyer_id, sold: true}).save()
+    })
+  },
+
   buyProduct: function (product_id, buyer_id) {
     return this.findById(product_id)
     .then(product => {

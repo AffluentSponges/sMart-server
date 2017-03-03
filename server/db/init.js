@@ -115,6 +115,10 @@ module.exports = function(env) {
             t.integer('buyer_id').references('id').inTable('users').notNullable() //buyer
             t.integer('product_id').references('id').inTable('products').notNullable()
             t.decimal('sale_price')
+            t.string('coinbase_address_id')
+            t.string('coinbase_transaction_id')
+            t.string('currency')
+            t.decimal('amount', 16, 8)
             t.string('status') //buyer_paid, product_in_transit, seller_paid_out (should be enum but oh well)
             t.string('uber_delivery_id').unique()
             // t.decimal('uber_delivery_quote')

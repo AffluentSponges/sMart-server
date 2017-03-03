@@ -81,8 +81,7 @@ controller.quote = function(product, buyer) {
   })
 }
 
-controller.requestDelivery = function(req, res) {
-  var product_id = req.body.product_id
+controller.requestDelivery = function(product_id) {
 
   Product.getWithAllRelated(product_id)
   .then(productWithRelatedData => {
@@ -97,9 +96,6 @@ controller.requestDelivery = function(req, res) {
       est_deliver_time_and_date: confirmedDelivery.dropoff.eta
     }
     return Transaction.updateByProductId(product_id, options)
-  })
-  .then(transaction => {
-    res.send(transaction)
   })
 }
 

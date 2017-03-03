@@ -135,6 +135,8 @@ seedData.productArray = [
     id: 1,
     seller_id: 1,
     buyer_id: null,
+    attempted_buyer_id: 4,
+    bitcoin_address: '1DRjzNVA8CsLAL74TdsZvk6ezdvPPtixhW',
     category_id: 1,
     title: 'macbook pro',
     description: 'very old. still works though',
