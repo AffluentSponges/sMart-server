@@ -1,6 +1,33 @@
 import React from 'react';
-import { Dimmer, Loader, Grid, Image, Segment, Divider, Button, Container } from 'semantic-ui-react'
+import { Link } from 'react-router';
+import { Dimmer, Loader, Grid, Image, Segment, Divider, Button, Container, Header, Icon, Modal, Input } from 'semantic-ui-react'
 import axios from 'axios';
+import ReactSVG from 'react-svg'
+import Qr from '../components/Qr.jsx'
+import qr from 'qr-image';
+
+const LoaderExampleInline = () => (
+  <Loader active inline />
+)
+//<Icon name='checkmark' />
+const ModalExampleCloseIcon = (props) => (
+  <Modal size='small' trigger={<Button size='huge' className='buy' color='red' onClick={props.checkPayment}>
+                    {props.buttonText}
+                  </Button>} closeIcon='close'>
+    <Header icon='payment' content='Send exactly 1000BTC to this address' />
+    <Modal.Content>
+      <Grid centered>
+        <Grid.Column width={10}>
+          <Qr qr_svg={props.qr_svg}/>
+          <p>{'13W7JGnycCzLLWYg2dqJw8ZcnLFtjh7wsU'}</p>
+        </Grid.Column>
+      </Grid>
+    </Modal.Content>
+    <Modal.Actions>
+      {props.qrButton}
+    </Modal.Actions>
+  </Modal>
+)
 
 class ItemDetail extends React.Component {
   constructor(props) {
@@ -13,23 +40,15 @@ class ItemDetail extends React.Component {
         pickup_eta: '',
         uber_delivery_price: ''
       },
-      seller: ''
+      seller: '',
+      isPaid: false,
+      wallet: '13W7JGnycCzLLWYg2dqJw8ZcnLFtjh7wsU'
     }
+    this.checkPayment = this.checkPayment.bind(this);
   }
 
   componentDidMount() {
-    // Performing Multiple Requests simultaneously
-    // Requests will be executed in parallel...
-    // axios.all([
-    //     axios.get('https://api.github.com/users/codeheaven-io');
-    //     axios.get('https://api.github.com/users/codeheaven-io/repos')
-    //   ])
-    //   .then(axios.spread(function (userResponse, reposResponse) {
-    //     //... but this callback will be executed only when both requests are complete.
-    //     console.log('User', userResponse.data);
-    //     console.log('Repositories', reposResponse.data);
-    //   }));
-
+    // get users gps location
     var context = this;
     axios.get('/api/v1/product', {
       params: {
@@ -37,7 +56,7 @@ class ItemDetail extends React.Component {
       }
     })
     .then(function (response) {
-      console.log(response);
+      console.log('/api/v1/product', response.data);
       context.setState({thisProduct: response.data});
       axios.get('/api/v1/getuserprofile', {
           params: {
@@ -45,7 +64,6 @@ class ItemDetail extends React.Component {
           }
         })
         .then(function (response) {
-          console.log('/api/v1/getuserprofile', response.data);
           context.setState({seller: response.data})
         })
         .catch(function (error) {
@@ -55,6 +73,7 @@ class ItemDetail extends React.Component {
     .catch(function (error) {
       console.log(error);
     });
+
     axios.get('/api/v1/product/get_quote', {
       params: {
         product_id: this.props.params.postId,
@@ -62,24 +81,113 @@ class ItemDetail extends React.Component {
       }
     })
     .then(function (response) {
-      console.log(response);
+      console.log(response.data);
       context.setState({uber: response.data});
-      console.log('context.state', context.state)
     })
     .catch(function (error) {
       console.log(error);
     });
-  // ?product_id=3& buyer_id=4  '/api/v1/product/get_quote'
+  }
+
+  checkPayment() {
+    var context = this;
+    var intervalID;
+    axios.post('/api/v1/attempt_purchase', {
+        product_id: context.state.thisProduct.id,
+        buyer_id: context.props.state.user.id
+      })
+      .then(function (response) {
+        console.log('/api/v1/attempt_purchase', response.data);
+        if (response.data.status === 'pending') {
+          intervalID = window.setInterval(pulling, 2000);
+        } else {
+
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+    var pulling = () => {
+      axios.get('/api/v1/payment', {
+          params: {
+            id: context.state.thisProduct.id,
+            buyer_id: context.props.state.user.id
+          }
+        })
+        .then(function (response) {
+          if (response.data.paid === true) {
+            clearInterval(intervalID);
+            context.setState({isPaid: true})
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
   }
 
   render() {
-    // let _this = this;
-    // let postId = this.props.params.postId;
-    // let itemObj = this.props.items.filter(function (item) {
-    //   return item.postId == _this.props.params.postId;
-    // })[0];
-    // let temp = JSON.stringify(itemObj);
+    var qr_svg = qr.svgObject(this.state.wallet).path;
     var dimmer = !this.state.uber.dropoff_eta;
+    const isPaid = this.state.isPaid;
+    var qrButton;
+
+    if (isPaid) {
+      qrButton = <Button color='green'>
+                   Your Payment confirmed
+                 </Button>
+    } else {
+      qrButton = <Button color='grey'>
+                   <Loader active inline /> Waing for Payment
+                 </Button>
+    }
+
+
+
+    if (this.state.thisProduct.buyer_id) {
+      var buyButton = <Button size='huge' className='buy' color='grey'>
+                        Sold out
+                      </Button> 
+    } else if (this.state.thisProduct.attempted_buyer_id) {
+      if (this.state.thisProduct.attempted_buyer_id === this.props.state.user.id) {
+        var buyButton = <ModalExampleCloseIcon qr_svg={qr_svg} qrButton={qrButton} checkPayment={this.checkPayment} buttonText='Wating for payment'/>
+      } else {
+        var buyButton = <Button size='huge' className='buy' color='grey'>
+                          Sale Pending
+                        </Button>
+      }
+    } else if (this.props.state.loggedIn) {
+      var buyButton = <ModalExampleCloseIcon qr_svg={qr_svg}qrButton={qrButton} checkPayment={this.checkPayment}  buttonText='Buy now!'/> 
+    } else {
+      var buyButton = <a href='/login'>
+                        <Button size='huge' className='buy' color='red'> Buy now! </Button>
+                      </a>
+    }
+
+    if (this.props.state.loggedIn) {
+      var uberDetail = <Container>
+                          <Dimmer active={dimmer}>
+                            <Loader />
+                          </Dimmer>
+                          <Grid.Row>
+                            <h2>{`UberRUSH fee is $${this.state.uber.uber_delivery_price}`}</h2>
+                          </Grid.Row>
+                          <Grid.Row>
+                            <h2>You will get this in</h2>
+                          </Grid.Row>   
+                          <Grid.Row>
+                            <h2>{`${this.state.uber.dropoff_eta + this.state.uber.pickup_eta} mins`}</h2>
+                          </Grid.Row>
+                        </Container>
+    } else {
+      var uberDetail = <Container>
+                          <Grid.Row>
+                            <h2>Login is required for checking </h2>
+                            <h2>UberRUSH fee and ETA</h2>
+                          </Grid.Row>   
+                        </Container>
+    }
     var imgSrc;
     if (this.state.thisProduct.image_links) {
       imgSrc = this.state.thisProduct.image_links[0];
@@ -107,24 +215,9 @@ class ItemDetail extends React.Component {
                 <h2>{this.state.thisProduct.title}</h2>
               </Grid.Row>
               <Divider horizontal>Uber</Divider>
-              <Container>
-                <Dimmer active={dimmer}>
-                  <Loader />
-                </Dimmer>
-                <Grid.Row>
-                  <h2>{`UberRUSH fee is $${this.state.uber.uber_delivery_price}`}</h2>
-                </Grid.Row>
-                <Grid.Row>
-                  <h2>You will get this in</h2>
-                </Grid.Row>   
-                <Grid.Row>
-                  <h2>{`${this.state.uber.dropoff_eta + this.state.uber.pickup_eta} mins`}</h2>
-                </Grid.Row>
-              </Container>                       
+              {uberDetail}                      
               <Grid.Row>
-                <Button size='huge' className='buy' color='red'>
-                  Buy now!
-                </Button>
+                {buyButton}
               </Grid.Row>
             </Grid>
           </Segment>
@@ -132,6 +225,11 @@ class ItemDetail extends React.Component {
           <Segment>
             <Grid.Row>
               <h3>{this.state.seller.first_name + ' ' + this.state.seller.last_name}</h3>
+            </Grid.Row>
+            <Grid.Row>
+              <Button size='medium' className='buy' color='green'>
+                Chat with {this.state.seller.first_name}
+              </Button> 
             </Grid.Row>
           </Segment>
         </Grid.Column>
@@ -142,3 +240,20 @@ class ItemDetail extends React.Component {
 }
 
 export default ItemDetail;
+
+
+// Performing Multiple Requests simultaneously
+// Requests will be executed in parallel...
+// axios.all([
+//     axios.get('https://api.github.com/users/codeheaven-io');
+//     axios.get('https://api.github.com/users/codeheaven-io/repos')
+//   ])
+//   .then(axios.spread(function (userResponse, reposResponse) {
+//     //... but this callback will be executed only when both requests are complete.
+//     console.log('User', userResponse.data);
+//     console.log('Repositories', reposResponse.data);
+//   }));
+
+
+
+

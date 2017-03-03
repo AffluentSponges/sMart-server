@@ -1,15 +1,32 @@
 require('dotenv').config()
+const uberRUSHController = require('./uberRUSH')
+const {User,
+       Product,
+       Category,
+       Transaction} = require('../models')
 
 var Client = require('coinbase').Client;
 var client = new Client({'apiKey': process.env.COINBASE_KEY, 'apiSecret': process.env.COINBASE_SECRET});
 
-//happens once when you start up the server
+// happens once when you start up the server
 // client.getAccounts({}, function(err, accounts) {
 //   console.log(accounts)
 //   accounts.forEach(function(acct) {
 //     console.log('my bal: ' + acct.balance.amount + ' for ' + acct.name);
 //   });
 // });
+
+// client.getNotification('d9cc3ee5-567e-5f8d-a031-11194e103d99', function(err, notification) {
+//   console.log(notification);
+// });
+
+// getAccountAysnc(process.env.COINBASE_BTC_ACCOUNT)
+// .then(account => {
+//   account.getTransaction('13f07688-c6dc-539d-aacc-5c08288b1481', function(err, tx) {
+//     console.log(tx)
+//   })
+// })
+
 
 controller = {}
 
@@ -39,13 +56,34 @@ controller.createAddress = function() {
   })
 }
 
+controller.prunePayload = function(data) {
+  return {
+    coinbase_address_id: data.data.id,
+    amount: data.additional_data.amount.amount,
+    currency: data.additional_data.amount.currency,
+    coinbase_transaction_id: data.additional_data.transaction.id
+  }
+}
+
+controller.acceptPayment = function(data) {
+  var bitcoin_address = data.data.address
+  var info = this.prunePayload(data)
+  return Product.completePurchase(bitcoin_address)
+  .then(product => {
+    return Transaction.addNewTransaction(product, info)
+  })
+  .then(transaction => {
+    return uberRUSHController.requestDelivery(transaction.attributes.product_id)
+  })
+}
+
 function sendBTCAsync (account, sellerAddress, amount) {
   return new Promise(function(resolve, reject) { 
     client.getAccount(process.env.COINBASE_BTC_ACCOUNT, function(err, account) {
       account.sendMoney({'to': sellerAddress,
                         'amount': amount,
                         'currency': 'BTC',
-                        'idem': String(Math.ceil(Math.random() * 1000000000)), 
+                        'idem': String(Math.ceil(Math.random() * 1000000000))}, 
                         'currency': 'BTC'}, 
         function(err, tx) {
           if(err) {
@@ -66,6 +104,7 @@ controller.sendBTC = function(sellerAddress, amount) {
 }
 
 controller.convertCurrency = function(USD) {
+function convertCurrencyAsync (account, USD) {
   return new Promise(function(resolve, reject) { 
     client.getExchangeRates({'currency': 'BTC'}, function(err, rates) {
       resolve((USD / rates.data.rates.USD).toFixed(8))
@@ -73,8 +112,23 @@ controller.convertCurrency = function(USD) {
   });
 }
 
+<<<<<<< HEAD
+=======
+controller.convertCurrency = function(USD) {
+  return getAccountAysnc(process.env.COINBASE_BTC_ACCOUNT)
+  .then(account => {
+    return convertCurrencyAsync(account, USD)
+  })
+}
+
+>>>>>>> 78c5bac1f3ddb518c121c5327f64f865b1437295
 controller.webhook = function(req, res) {
-  console.log('coinbase ping')
+  if(req.body.type === 'wallet:addresses:new-payment') {
+    controller.acceptPayment(req.body)
+    .then(transaction => {
+      res.json(transaction)
+    })
+  }
 }
 
 module.exports = controller
