@@ -30,12 +30,21 @@ before(function(done) {
     done()
   })
 })
-xdescribe('Coinbase methods', function() {
-  describe('Send BTC', function() {
+describe('Coinbase methods', function() {
+  xdescribe('Send BTC', function() {
     it('should send BTC to an address', function(done) {
       coinbase.sendBTC('1LYbfZzJN45HYocUJxkK5WDNhxB5MN27XK', '0.0001')
       .then(tx => {
         tx.should.be.an('object')
+        done()
+      })
+    })
+  })
+  describe('Convert Currency', function() {
+    it('should convert USD to BTC', function(done) {
+      coinbase.convertCurrency(1000)
+      .then(tx => {
+        tx.should.be.a('string')
         done()
       })
     })
@@ -331,8 +340,10 @@ describe('API Routes', function() {
         "buyer_id": buyer_id
       })
       .end((err, res) => {
+        console.log(res)
         res.should.have.status(200)
         res.body.message.should.equal('waiting for coinbase payment')
+        res.body.BTC.should.be.a('string')
         done()
       })
     })
