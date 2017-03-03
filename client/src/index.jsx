@@ -138,6 +138,7 @@ class App extends React.Component {
     return (
       <div>
         <Header appState={this.state} items={this.state.items} loggedIn={this.state.loggedIn} logout={this.logout} axiosSignin={this.axiosSignin}/>
+        <div className='space'></div>
         {React.cloneElement(this.props.children, {
           items: this.state.items,
           currentCategoryHandler: this.currentCategoryHandler,
