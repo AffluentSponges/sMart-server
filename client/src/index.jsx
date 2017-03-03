@@ -17,7 +17,6 @@ import Header from './components/Header.jsx';
 import CategoriesNav from './components/CategoriesNav.jsx';
 import ItemElement from './components/ItemElement.jsx';
 import ItemList from './components/ItemList.jsx';
-import data from './data.jsx'
 import auth from './auth/auth.js'
 import axios from 'axios';
 
@@ -77,7 +76,35 @@ class App extends React.Component {
     })
     .catch(function (error) {
       console.log(error);
-    }); 
+    });
+
+    var options = {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 0
+    };
+    function success(pos) {
+      var crd = pos.coords;
+      axios.post('/api/v1/dev', {
+          Latitude: crd.latitude,
+          Longitude: crd.longitude,
+          accuracy_meters: crd.accuracy
+        })
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      console.log('Your current position is:');
+      console.log(`Latitude : ${crd.latitude}`);
+      console.log(`Longitude: ${crd.longitude}`);
+      console.log(`More or less ${crd.accuracy} meters.`);
+    };
+    function error(err) {
+      console.warn(`ERROR(${err.code}): ${err.message}`);
+    };
+    navigator.geolocation.getCurrentPosition(success, error, options);
   }
 
   currentCategoryHandler(categoryName) {
@@ -124,7 +151,7 @@ class App extends React.Component {
 ReactDOM.render(
   <Router history={browserHistory}>
     <Route path="/" component={App}>
-      <IndexRoute component = {Home} />
+      <IndexRoute component = {Home}/>
       <Route path="login" component={Login}/>
       <Route path="signup" component={Signup}/>
       <Route path="x/:category" component={Category}/>

@@ -2,6 +2,7 @@ import React from 'react';
 import CategoriesNav from '../components/CategoriesNav.jsx';
 import ItemList from '../components/ItemList.jsx';
 import axios from 'axios';
+import Jumbotron from '../components/Jumbotron.jsx';
 
 class Category extends React.Component {
   constructor(props) {
@@ -31,8 +32,8 @@ class Category extends React.Component {
 
     return (
       <div>
-        <CategoriesNav state={this.props.state} currentCategoryHandler={this.props.currentCategoryHandler}/>
-        <ItemList items={this.props.state.currentCategoryItems}/>
+        <Jumbotron />
+        <ItemList items={this.props.state.currentCategoryItems} state={this.props.state} currentCategoryHandler={this.props.currentCategoryHandler}/>
       </div>
     );
   }

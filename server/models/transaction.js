@@ -23,14 +23,20 @@ const Transaction = ModelBase.extend({
   }
   
 }, {
-  addNewTransaction: function(product) {
+
+  addNewTransaction: function(product, info) {
     var date = new Date()
     date = date.toUTCString()
-    return this.upsert({product_id: product.id}, {
+    return this.create({
+      product_id: product.id,
       buyer_id: product.attributes.buyer_id,
       sale_price: product.attributes.asking_price,
       status: 'received_payment',
-      sale_time_and_date: date
+      sale_time_and_date: date,
+      coinbase_address_id: info.coinbase_address_id,
+      currency: info.currency,
+      amount: info.amount,
+      coinbase_transaction_id: info.coinbase_transaction_id
     })
   },
 
@@ -41,6 +47,10 @@ const Transaction = ModelBase.extend({
   getTransactionInfo: function(delivery_id) {
     return this.where({ uber_delivery_id: delivery_id })
     .fetch({ withRelated: ['buyer', 'seller', 'product']})
+  },
+
+  getWithAllRelated: function(id) {
+    return this.where({id: id}).fetch({withRelated: ['seller', 'buyer', 'product']})
   }
 
 });

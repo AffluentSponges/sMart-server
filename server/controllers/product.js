@@ -20,38 +20,39 @@ controller.getOne = function (req, res) {
 
 controller.attemptPurchase = function(req, res) {
   const product_id = req.body.product_id
-  const attempted_buyer_id = req.body.buyer_id
+  const attempted_buyer_id = req.body.buyer_ids
+  var product;
 
   Product.attemptPurchase(product_id, attempted_buyer_id)
-  .then(product => {
-    if(product.attributes.attempted_buyer_id !== attempted_buyer_id) {
-      res.send({message: 'Someone already bought this item'})
-    }
-    else {
-      res.send({message: 'waiting for coinbase payment'})
-    }
+  .then(p => {
+    product = p;
+    return coinbase.convertCurrency(p.attributes.asking_price)
+  }).then( bitcoinAmount => {
+      if(product.attributes.attempted_buyer_id !== attempted_buyer_id) {
+        res.send({
+          message: 'Someone already bought this item'
+        })
+      } else {
+        res.send({message: 'waiting for coinbase payment',
+                  BTC: bitcoinAmount})
+      }
   })
-}
+};
 
-controller.buy = function(req, res, next) {
-
-  const product_id = req.body.product_id
-  const buyer_id = req.body.buyer_id
-
-  Product.buyProduct(product_id, buyer_id)
-  .then(transaction => {
-    //@TODO if this gets passed an error, don't do the next()!!!
-    next()
-  })
-  .catch(err => {
-    console.log('PRODUCT CONTROLLER BUY ERROR')
-    console.log(err)
-  })
-}
 
 controller.quote = function(req, res, next) {
   const product_id = req.query.product_id
   const buyer_id = req.query.buyer_id
+  console.log(product_id, buyer_id)
+  if (req.query.buyer_id === undefined) {
+    var data = {
+        dropoff_eta: 10,
+        pickup_eta: 10,
+        uber_delivery_price: '6'
+      };
+    res.send(data)
+    return;
+  }
 
   var product = null
 
@@ -90,6 +91,26 @@ controller.getUserProducts = function(req, res) {
   Product.getAllBySellerId(req.query.seller_id)
   .then(products => {
     res.json(products)
+  })
+};
+
+var cnt = 0;
+controller.isPaid = function(req, res) {
+  Product.findById(req.query.id)
+  .then(product => {
+    var thisProduct = product.serialize();
+    if (thisProduct.buyer_id === req.query.id && thisProduct.sold) {
+
+    }
+    console.log(thisProduct.buyer_id, thisProduct.sold);
+
+    if (cnt < 5) {
+      res.send('');  
+    } else {
+      res.json({paid: true});
+    }
+    cnt++;
+
   })
 };
 
