@@ -36,3 +36,7 @@ a {
 .paymentModal {
   width: 400px !important;
 }
+
+a {
+  all: none !important;
+}
