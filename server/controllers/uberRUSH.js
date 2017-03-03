@@ -116,15 +116,11 @@ controller.webhook = function(req, res) {
 
     notify buyer
     */
-
-    console.log('STATUS', status);
     transactionController.deliverNotifications(delivery_id, status);
   }
 
   if(status === 'at_pickup' && statusChange) {
     //notify seller
-
-    console.log('STATUS', status);
     transactionController.deliverNotifications(delivery_id, status);
   }
 
@@ -136,15 +132,11 @@ controller.webhook = function(req, res) {
 
     notify buyer
     */
-
-    console.log('STATUS', status);
     transactionController.deliverNotifications(delivery_id, status);
   }
 
   if(status === 'at_dropoff' && statusChange) {
     //notify buyer
-
-    console.log('STATUS', status);
     transactionController.deliverNotifications(delivery_id, status);
   }
 
@@ -164,8 +156,6 @@ controller.webhook = function(req, res) {
     //notify seller
 
     */
-
-    console.log('STATUS', status);
     transactionController.deliverNotifications(delivery_id, status)
   }
 
