@@ -81,6 +81,7 @@ class ItemDetail extends React.Component {
       }
     })
     .then(function (response) {
+      console.log(response.data);
       context.setState({uber: response.data});
     })
     .catch(function (error) {
