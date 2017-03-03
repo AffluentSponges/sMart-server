@@ -116,4 +116,3 @@ controller.webhook = function(req, res) {
 }
 
 module.exports = controller
-
