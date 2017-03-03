@@ -78,7 +78,6 @@ controller.convertCurrency = function(USD) {
     return convertCurrencyAsync(account, USD)
   })
 }
-controller.convertCurrency(10.99)
 
 controller.webhook = function(req, res) {
   console.log('coinbase ping')
