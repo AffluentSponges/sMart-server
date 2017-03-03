@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { Segment } from 'semantic-ui-react'
+import { Segment, Divider } from 'semantic-ui-react'
 
 const CategoryList = ({active, children, to, currentCategoryHandler}) => (
     <li>
@@ -18,8 +18,9 @@ class CategoriesNav extends React.Component {
   render() {
     return (
       <Segment>
-        <ul className="row">
+        <ul className="">
           <h5>Categories</h5>
+          <Divider />
           {this.props.state.categories.map((category)=>{
             return <CategoryList to={`/x/${category.id}`} key={category.id} currentCategoryHandler={this.props.currentCategoryHandler}>{category.name}</CategoryList>
           })}
