@@ -18,7 +18,7 @@ class Header extends React.Component {
     console.log('this.props.loggedIn', this.props.loggedIn);
 
     return (
-      <Menu>
+      <Menu fixed='top'>
         <Menu.Item as={Link} to='/'name='smart' active={activeItem === 'smart'} onClick={this.handleItemClick}>SMart</Menu.Item>
         <Menu.Menu position='right'>
           {this.props.loggedIn ? (

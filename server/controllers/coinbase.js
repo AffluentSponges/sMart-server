@@ -95,7 +95,17 @@ function sendBTCAsync (account, sellerAddress, amount) {
         });
     });
   });
+    account.sendMoney({
+      to: sellerAddress,
+      amount: amount,
+      currency: 'BTC'
+    }, function(err, tx) {
+      if(err !== null) return reject(err);
+      resolve(tx)
+    })
 }
+
+
 controller.sendBTC = function(sellerAddress, amount) {
   return getAccountAysnc(process.env.COINBASE_BTC_ACCOUNT)
   .then(account => {

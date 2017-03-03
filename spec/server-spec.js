@@ -17,8 +17,6 @@ const {User,
 const init = require('../server/db/init')
 const seed = require('../server/db/seed')
 const knex = require('knex')
-const coinbase = require('../server/controllers/coinbase')
-
 chai.use(chaiHttp)
 
 before(function(done) {
@@ -30,7 +28,6 @@ before(function(done) {
     done()
   })
 })
-
 describe('Model Methods (Read only)', function() {
   describe('Product Methods', function() {
     it('should return a product with its related seller', function(done) {
@@ -235,7 +232,13 @@ describe('Controllers', function() {
         }
       }
     // ^I like to shrink this to one line
-
+    xit('should send BTC to an address', function(done) {
+      coinbaseController.sendBTC('1LYbfZzJN45HYocUJxkK5WDNhxB5MN27XK', '0.0001')
+      .then(tx => {
+        tx.should.be.an('object')
+        done()
+      })
+    })
     it('should create a new btc wallet address', function(done) {
       coinbaseController.createAddress()
       .then(address => {
@@ -279,8 +282,8 @@ describe('Controllers', function() {
       })
     })
   xdescribe('Send BTC', function() {
-    it('should send BTC to an address', function(done) {
-      coinbase.sendBTC('1LYbfZzJN45HYocUJxkK5WDNhxB5MN27XK', '0.0001')
+    xit('should send BTC to an address', function(done) {
+      coinbaseController.sendBTC('1LYbfZzJN45HYocUJxkK5WDNhxB5MN27XK', '0.0001')
       .then(tx => {
         tx.should.be.an('object')
         done()
@@ -289,7 +292,7 @@ describe('Controllers', function() {
   })
   describe('Convert Currency', function() {
     it('should convert USD to BTC', function(done) {
-      coinbase.convertCurrency(1000)
+      coinbaseController.convertCurrency(1000)
       .then(tx => {
         tx.should.be.a('string')
         done()
@@ -490,15 +493,15 @@ describe('API Routes', function() {
   })
 })
 
-describe('Twilio messaging system', function() {
-  describe('uberRUSH delivery status', function() {
-    it('should fetch buyer, seller and product given an uber delivery ID', function() {
-      Transaction.where({ uber_delivery_id: delivery_id})
-    })
+// describe('Twilio messaging system', function() {
+//   describe('uberRUSH delivery status', function() {
+//     it('should fetch buyer, seller and product given an uber delivery ID', function() {
+//       Transaction.where({ uber_delivery_id: delivery_id})
+//     })
 
-    it('should deliver message "on route to pickup"', function(done) {
+//     it('should deliver message "on route to pickup"', function(done) {
 
-      done()
-    });
-  })
-});
+//       done()
+//     });
+//   })
+// });
