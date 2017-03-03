@@ -123,10 +123,7 @@ controller.webhook = function(req, res) {
 
   if(status === 'at_pickup' && statusChange) {
     //notify seller
-<<<<<<< HEAD
 
-=======
->>>>>>> 2f30e95a0c9bf06e6579d2452d0bb49df19d6826
     console.log('STATUS', status);
     transactionController.deliverNotifications(delivery_id, status);
   }
