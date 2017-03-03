@@ -45,6 +45,7 @@ router.get('/api/v1/categories', categoryController.getAll)
 router.get('/api/v1/getuserproducts', productController.getUserProducts); 
 router.get('/api/v1/getuserprofile', userController.getUserProfile); //@TODO change to /user
 router.get('/api/v1/product/get_quote', productController.quote)
+// router.get('/api/v1/exchangeCurrency', coinbaseController)
 
 router.post('/api/v1/postitem', productController.post); //@TODO change to /product
 router.post('/api/v1/attempt_purchase', productController.attemptPurchase)

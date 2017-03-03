@@ -97,7 +97,7 @@ controller.sendBTC = function(sellerAddress, amount) {
   })
 }
 
-function convertCurrencyAsync (account, USD) {
+controller.convertCurrency = function(USD) {
   return new Promise(function(resolve, reject) { 
     client.getExchangeRates({'currency': 'BTC'}, function(err, rates) {
       resolve((USD / rates.data.rates.USD).toFixed(8))
@@ -105,12 +105,6 @@ function convertCurrencyAsync (account, USD) {
   });
 }
 
-controller.convertCurrency = function(USD) {
-  return getAccountAysnc(process.env.COINBASE_BTC_ACCOUNT)
-  .then(account => {
-    return convertCurrencyAsync(account, USD)
-  })
-}
 
 controller.webhook = function(req, res) {
   if(req.body.type === 'wallet:addresses:new-payment') {

@@ -20,22 +20,25 @@ controller.getOne = function (req, res) {
 
 controller.attemptPurchase = function(req, res) {
   const product_id = req.body.product_id
-  const attempted_buyer_id = req.body.buyer_id
+  const attempted_buyer_id = req.body.buyer_ids
+  var product;
 
   Product.attemptPurchase(product_id, attempted_buyer_id)
-  .then(product => {
-    if(product.attributes.attempted_buyer_id !== attempted_buyer_id) {
-      res.send({message: 'Someone already bought this item',
-                status: 'sold'
-      })
-    }
-    else {
-      res.send({message: 'waiting for coinbase payment',
-                status: 'pending'
-      })
-    }
+  .then(p => {
+    product = p;
+    return coinbase.convertCurrency(p.attributes.asking_price)
+  }).then( bitcoinAmount => {
+      if(product.attributes.attempted_buyer_id !== attempted_buyer_id) {
+        res.send({
+          message: 'Someone already bought this item'
+        })
+      } else {
+        res.send({message: 'waiting for coinbase payment',
+                  BTC: bitcoinAmount})
+      }
   })
-}
+};
+
 
 controller.quote = function(req, res, next) {
   const product_id = req.query.product_id
