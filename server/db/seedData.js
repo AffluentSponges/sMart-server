@@ -141,6 +141,7 @@ seedData.productArray = [
     title: 'macbook pro',
     description: 'Lorem ipsum dolor sit amet, an cum graecis concludaturque. Nam habeo dictas ex, harum officiis incorrupte in eum. Sint tacimates vis id, error ludus torquatos eam ne, populo oporteat voluptaria at duo. Mea antiopam neglegentur ei, in quo cibo nonumy, congue impetus suavitate quo ea. Ex mea primis numquam periculis, meis labitur fabulas no nec, est mediocrem pertinacia no.',
     asking_price: 200.343,
+    total_price_btc: 0.16,
     address: '400 baker st',
     postal_code: '94117',
     // preferred_time_and_date: 'February 22 12:30:00 2017 PST',
