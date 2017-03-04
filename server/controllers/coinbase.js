@@ -9,23 +9,23 @@ var Client = require('coinbase').Client;
 var client = new Client({'apiKey': process.env.COINBASE_KEY, 'apiSecret': process.env.COINBASE_SECRET});
 
 // happens once when you start up the server
-client.getAccounts({}, function(err, accounts) {
-  console.log(accounts)
-  accounts.forEach(function(acct) {
-    console.log('my bal: ' + acct.balance.amount + ' for ' + acct.name);
-  });
-});
+// client.getAccounts({}, function(err, accounts) {
+//   console.log(accounts)
+//   accounts.forEach(function(acct) {
+//     console.log('my bal: ' + acct.balance.amount + ' for ' + acct.name);
+//   });
+// });
 
-client.getNotification('d9cc3ee5-567e-5f8d-a031-11194e103d99', function(err, notification) {
-  console.log(notification);
-});
+// client.getNotification('d9cc3ee5-567e-5f8d-a031-11194e103d99', function(err, notification) {
+//   console.log(notification);
+// });
 
-getAccountAysnc(process.env.COINBASE_BTC_ACCOUNT)
-.then(account => {
-  account.getTransaction('13f07688-c6dc-539d-aacc-5c08288b1481', function(err, tx) {
-    console.log(tx)
-  })
-})
+// getAccountAysnc(process.env.COINBASE_BTC_ACCOUNT)
+// .then(account => {
+//   account.getTransaction('13f07688-c6dc-539d-aacc-5c08288b1481', function(err, tx) {
+//     console.log(tx)
+//   })
+// })
 
 
 controller = {}
