@@ -1,5 +1,5 @@
 require('dotenv').config()
-const uberRUSHController = require('./uberRUSH')
+const uberRUSHController = require('./uberRUSH.js')
 const {User,
        Product,
        Category,
@@ -9,23 +9,23 @@ var Client = require('coinbase').Client;
 var client = new Client({'apiKey': process.env.COINBASE_KEY, 'apiSecret': process.env.COINBASE_SECRET});
 
 // happens once when you start up the server
-// client.getAccounts({}, function(err, accounts) {
-//   console.log(accounts)
-//   accounts.forEach(function(acct) {
-//     console.log('my bal: ' + acct.balance.amount + ' for ' + acct.name);
-//   });
-// });
+client.getAccounts({}, function(err, accounts) {
+  console.log(accounts)
+  accounts.forEach(function(acct) {
+    console.log('my bal: ' + acct.balance.amount + ' for ' + acct.name);
+  });
+});
 
-// client.getNotification('d9cc3ee5-567e-5f8d-a031-11194e103d99', function(err, notification) {
-//   console.log(notification);
-// });
+client.getNotification('d9cc3ee5-567e-5f8d-a031-11194e103d99', function(err, notification) {
+  console.log(notification);
+});
 
-// getAccountAysnc(process.env.COINBASE_BTC_ACCOUNT)
-// .then(account => {
-//   account.getTransaction('13f07688-c6dc-539d-aacc-5c08288b1481', function(err, tx) {
-//     console.log(tx)
-//   })
-// })
+getAccountAysnc(process.env.COINBASE_BTC_ACCOUNT)
+.then(account => {
+  account.getTransaction('13f07688-c6dc-539d-aacc-5c08288b1481', function(err, tx) {
+    console.log(tx)
+  })
+})
 
 
 controller = {}
@@ -73,7 +73,8 @@ controller.acceptPayment = function(data) {
     return Transaction.addNewTransaction(product, info)
   })
   .then(transaction => {
-    return uberRUSHController.requestDelivery(transaction.attributes.product_id)
+    // console.log('UBER RUSH CONTROLLER', uberRUSHController.requestDelivery, JSON.stringify(uberRUSHController), require('./uberRUSH'))
+    return require('./uberRUSH').requestDelivery(transaction.attributes.product_id)
   })
 }
 

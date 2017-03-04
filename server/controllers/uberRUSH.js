@@ -1,5 +1,5 @@
 const {Product, Transaction, User} = require('../models')
-
+const coinbaseController = require('./coinbase');
 const transactionController = require('./transaction')
 const UberRUSH = require('uber-rush')
 const UberRUSHClient = UberRUSH.createClient({
@@ -97,11 +97,11 @@ controller.requestDelivery = function(product_id) {
 
 controller.webhook = function(req, res) {
   // console.log('received uber webhook', req.body)
-  var statusChange = req.body.event_type === 'deliveries.status_changed';
+  var statusChange = req.body.event_type;
   var status = req.body.meta.status
   var delivery_id = req.body.meta.resource_id
 
-  if(status === 'en_route_to_pickup' && statusChange) {
+  if(status === 'en_route_to_pickup') {
     /*
     update associated transaction
       est_pickup_time_and_date
@@ -114,12 +114,12 @@ controller.webhook = function(req, res) {
     transactionController.deliverNotifications(delivery_id, status);
   }
 
-  if(status === 'at_pickup' && statusChange) {
+  if(status === 'at_pickup') {
     //notify seller
     transactionController.deliverNotifications(delivery_id, status);
   }
 
-  if(status === 'en_route_to_dropoff' && statusChange) {
+  if(status === 'en_route_to_dropoff') {
     /*
     update associated transaction
       actual_pickup_time_and_date
@@ -130,12 +130,12 @@ controller.webhook = function(req, res) {
     transactionController.deliverNotifications(delivery_id, status);
   }
 
-  if(status === 'at_dropoff' && statusChange) {
+  if(status === 'at_dropoff') {
     //notify buyer
     transactionController.deliverNotifications(delivery_id, status);
   }
 
-  if(status === 'completed' && statusChange) {
+  if(status === 'completed') {
     /*
     update associated transaction
       actual_delivery_time_and_date
@@ -151,7 +151,10 @@ controller.webhook = function(req, res) {
     //notify seller
 
     */
-    transactionController.deliverNotifications(delivery_id, status)
+
+    transactionController.completeTransaction(delivery_id);
+
+    transactionController.deliverNotifications(delivery_id, status);
   }
 
   // if(status === 'processing') {
