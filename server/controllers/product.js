@@ -45,6 +45,7 @@ controller.attemptPurchase = function(req, res) {
       res.send({message: 'waiting for coinbase payment',
                 BTC: bitcoinAmount})
     }
+    product.set({total_price_btc: bitcoinAmount}).save()
   })
 };
 
