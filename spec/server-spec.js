@@ -19,7 +19,6 @@ const {User,
 const init = require('../server/db/init')
 const seed = require('../server/db/seed')
 const knex = require('knex')
-
 chai.use(chaiHttp)
 var testSession = null;
 
@@ -266,6 +265,7 @@ describe('Controllers', function() {
       .then(address => {
         address.address.should.be.a('string')
         address.account.id.should.equal(process.env.COINBASE_BTC_ACCOUNT)
+        address.account.name.should.equal('My Wallet')
         // address.account.name.should.equal('My Wallet')
         address.account.type.should.equal('wallet')
         address.account.currency.should.equal('BTC')
@@ -303,22 +303,43 @@ describe('Controllers', function() {
         })
       })
     })
-    it('should fail the buying process via webhook for new-payment due to not enough btc', function(done) {
-      //change it to not enough btc
-      data.additional_data.amount.amount = 0.01234
-      chai.request(server)
-      .post('/coinbase_webhook')
-      .set('content-type', 'application/json')
-      .send(data)
-      .end((err, res) => {
-        // console.log(res.body)
-        res.body.message.should.equal('error, not enough btc...')
-        //change it back
-        data.additional_data.amount.amount = 1.123456789
-        done()
-      })
-    })
   })
+  // describe('Send BTC', function() {
+  //   xit('should send BTC to an address', function(done) {
+  //     coinbaseController.sendBTC('1LYbfZzJN45HYocUJxkK5WDNhxB5MN27XK', '0.0001')
+  //   xit('should send BTC to an address', function(done) {
+  //     coinbase.sendBTC('1LYbfZzJN45HYocUJxkK5WDNhxB5MN27XK', '0.0001')
+  //     .then(tx => {
+  //       // console.log(tx)
+  //       tx.should.be.an('object')
+  //       done()
+  //     })
+  //   })
+  // })
+  // describe('Convert Currency', function() {
+  //   it('should convert USD to BTC', function(done) {
+  //     coinbaseController.convertCurrency(1000)
+  //     .then(tx => {
+  //       // console.log(tx)
+  //       tx.should.be.a('string')
+  //     })
+  //   })
+  //   it('should fail the buying process via webhook for new-payment due to not enough btc', function(done) {
+  //     //change it to not enough btc
+  //     data.additional_data.amount.amount = 0.01234
+  //     chai.request(server)
+  //     .post('/coinbase_webhook')
+  //     .set('content-type', 'application/json')
+  //     .send(data)
+  //     .end((err, res) => {
+  //       // console.log(res.body)
+  //       res.body.message.should.equal('error, not enough btc...')
+  //       //change it back
+  //       data.additional_data.amount.amount = 1.123456789
+  //       done()
+  //     })
+  //   })
+  // })
   describe('Twilio Notification System', function() {
     describe('uberRUSH status updates', function() {
       it('Status: "en_route_to_pickup" should have status 200', function(done) {

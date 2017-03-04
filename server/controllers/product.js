@@ -27,6 +27,18 @@ controller.attemptPurchase = function(req, res) {
   Product.attemptPurchase(product_id, attempted_buyer_id)
   .then(p => {
     product = p;
+    return coinbase.convertCurrency(p.attributes.asking_price)
+  }).then( bitcoinAmount => {
+      if(product.attributes.attempted_buyer_id !== attempted_buyer_id) {
+        res.send({
+          message: 'Someone already bought this item'
+        })
+      } else {
+        res.send({
+          message: 'waiting for coinbase payment',
+          BTC: bitcoinAmount
+        })
+      }
     return User.findById(attempted_buyer_id)
   })
   .then(buyer => {
@@ -108,6 +120,17 @@ controller.isPaid = function(req, res) {
   Product.findById(req.query.id)
   .then(product => {
     var thisProduct = product.serialize();
+    if (thisProduct.buyer_id === req.query.id && thisProduct.sold) {
+
+    }
+    // console.log(thisProduct.buyer_id, thisProduct.sold);
+
+    if (cnt < 5) {
+      res.send('');  
+    } else {
+      res.json({paid: true});
+    }
+    cnt++;
     if (thisProduct.buyer_id === req.query.id) {
       res.json({paid: true});
     }
