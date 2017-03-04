@@ -280,7 +280,7 @@ describe('Controllers', function() {
       info.coinbase_transaction_id.should.equal(data.additional_data.transaction.id)
       done()
     })
-    it('should trigger the buying process via webhook for new-payment', function(done) {
+    it.only('should trigger the buying process via webhook for new-payment', function(done) {
       chai.request(server)
       .post('/coinbase_webhook')
       .set('content-type', 'application/json')
@@ -299,6 +299,7 @@ describe('Controllers', function() {
           transaction.product.bitcoin_address.should.equal(data.data.address)
           transaction.product.sold.should.equal(true)
           transaction.product.buyer_id.should.not.be.null
+          console.log(transaction.uber_delivery_id)
           done()
         })
       })
