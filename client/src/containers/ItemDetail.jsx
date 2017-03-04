@@ -10,16 +10,21 @@ const LoaderExampleInline = () => (
   <Loader active inline />
 )
 //<Icon name='checkmark' />
+const LoaderForBTC = () => (
+  <Loader active inline />
+)
 const ModalExampleCloseIcon = (props) => (
   <Modal size='small' trigger={<Button size='huge' className='buy' color='red' onClick={props.checkPayment}>
                     {props.buttonText}
                   </Button>} closeIcon='close'>
-    <Header icon='payment' content='Send exactly 1000BTC to this address' />
+    {props.btc.length > 0 ? 
+      <Header icon='payment' content={`Send exactly ${props.btc}BTC to this address`} />
+      :<Header icon='payment' content={`Send exactly ${'0.0'}BTC to this address`}></Header>}
     <Modal.Content>
       <Grid centered>
         <Grid.Column width={10}>
           <Qr qr_svg={props.qr_svg}/>
-          <p>{'13W7JGnycCzLLWYg2dqJw8ZcnLFtjh7wsU'}</p>
+          <p>{props.bitcoin_address}</p>
         </Grid.Column>
       </Grid>
     </Modal.Content>
@@ -42,7 +47,8 @@ class ItemDetail extends React.Component {
       },
       seller: '',
       isPaid: false,
-      wallet: '13W7JGnycCzLLWYg2dqJw8ZcnLFtjh7wsU'
+      wallet: '13W7JGnycCzLLWYg2dqJw8ZcnLFtjh7wsU',
+      currentBTC: ''
     }
     this.checkPayment = this.checkPayment.bind(this);
   }
@@ -99,6 +105,8 @@ class ItemDetail extends React.Component {
       .then(function (response) {
         console.log('/api/v1/attempt_purchase', response.data);
         if (response.data.status === 'pending') {
+          console.log('response.data.status === pending');
+          context.setState({currentBTC: response.data.BTC})
           intervalID = window.setInterval(pulling, 2000);
         } else {
 
@@ -128,7 +136,8 @@ class ItemDetail extends React.Component {
   }
 
   render() {
-    var qr_svg = qr.svgObject(this.state.wallet).path;
+    const qr_svg = qr.svgObject(this.state.wallet).path;
+    const bitcoin_address = this.state.thisProduct.bitcoin_address;
     var dimmer = !this.state.uber.dropoff_eta;
     const isPaid = this.state.isPaid;
     var qrButton;
@@ -151,14 +160,14 @@ class ItemDetail extends React.Component {
                       </Button> 
     } else if (this.state.thisProduct.attempted_buyer_id) {
       if (this.state.thisProduct.attempted_buyer_id === this.props.state.user.id) {
-        var buyButton = <ModalExampleCloseIcon qr_svg={qr_svg} qrButton={qrButton} checkPayment={this.checkPayment} buttonText='Wating for payment'/>
+        var buyButton = <ModalExampleCloseIcon bitcoin_address={bitcoin_address} btc={this.state.currentBTC} qr_svg={qr_svg} qrButton={qrButton} checkPayment={this.checkPayment} buttonText='Wating for payment'/>
       } else {
         var buyButton = <Button size='huge' className='buy' color='grey'>
                           Sale Pending
                         </Button>
       }
     } else if (this.props.state.loggedIn) {
-      var buyButton = <ModalExampleCloseIcon qr_svg={qr_svg}qrButton={qrButton} checkPayment={this.checkPayment}  buttonText='Buy now!'/> 
+      var buyButton = <ModalExampleCloseIcon bitcoin_address={bitcoin_address} btc={this.state.currentBTC} qr_svg={qr_svg}qrButton={qrButton} checkPayment={this.checkPayment}  buttonText='Buy now!'/> 
     } else {
       var buyButton = <a href='/login'>
                         <Button size='huge' className='buy' color='red'> Buy now! </Button>

@@ -23,36 +23,65 @@ class ItemList extends React.Component {
       columns[target].push(this.props.items[i]);
     }
     return (
-      <Grid relaxed columns={4} doubling>
-        <Grid.Column>
-          <CategoriesNav state={this.props.state} currentCategoryHandler={this.props.currentCategoryHandler}/>
-          {columns[0].map((item)=>
-              <Container className='ItemElement_Container' key={item.id} as={Link} to={'/i/' + item.id}>
-                <ItemElement key={item.id} item={item} />
-              </Container>
-          )} 
-        </Grid.Column> 
-        <Grid.Column>
-          {columns[1].map((item)=>
-              <Container className='ItemElement_Container' key={item.id} as={Link} to={'/i/' + item.id}>
-                <ItemElement key={item.id} item={item} />
-              </Container>
-          )} 
-        </Grid.Column>  
-        <Grid.Column>
-          {columns[2].map((item)=>
-              <Container className='ItemElement_Container' key={item.id} as={Link} to={'/i/' + item.id}>
-                <ItemElement key={item.id} item={item} />
-              </Container>
-          )} 
-        </Grid.Column>  
-        <Grid.Column>
-          {columns[3].map((item)=>
-              <Container className='ItemElement_Container' key={item.id} as={Link} to={'/i/' + item.id}>
-                <ItemElement key={item.id} item={item} />
-              </Container>
-          )} 
-        </Grid.Column>   
+      <Grid relaxed>
+        <Grid.Row columns={4} only='computer'>
+          <Grid.Column>
+            <CategoriesNav state={this.props.state} currentCategoryHandler={this.props.currentCategoryHandler}/>
+            {columns[0].map((item)=>
+                <Container className='ItemElement_Container' key={item.id} as={Link} to={'/i/' + item.id}>
+                  <ItemElement key={item.id} item={item} />
+                </Container>
+            )} 
+          </Grid.Column> 
+          <Grid.Column>
+            {columns[1].map((item)=>
+                <Container className='ItemElement_Container' key={item.id} as={Link} to={'/i/' + item.id}>
+                  <ItemElement key={item.id} item={item} />
+                </Container>
+            )} 
+          </Grid.Column>  
+          <Grid.Column>
+            {columns[2].map((item)=>
+                <Container className='ItemElement_Container' key={item.id} as={Link} to={'/i/' + item.id}>
+                  <ItemElement key={item.id} item={item} />
+                </Container>
+            )} 
+          </Grid.Column>  
+          <Grid.Column>
+            {columns[3].map((item)=>
+                <Container className='ItemElement_Container' key={item.id} as={Link} to={'/i/' + item.id}>
+                  <ItemElement key={item.id} item={item} />
+                </Container>
+            )} 
+          </Grid.Column>  
+        </Grid.Row> 
+        <Grid.Row columns={2} only='mobile tablet'>
+          <Grid.Column>
+            <CategoriesNav state={this.props.state} currentCategoryHandler={this.props.currentCategoryHandler}/>
+            {columns[0].map((item)=>
+                <Container className='ItemElement_Container' key={item.id} as={Link} to={'/i/' + item.id}>
+                  <ItemElement key={item.id} item={item} />
+                </Container>
+            )} 
+            {columns[1].map((item)=>
+                <Container className='ItemElement_Container' key={item.id} as={Link} to={'/i/' + item.id}>
+                  <ItemElement key={item.id} item={item} />
+                </Container>
+            )} 
+          </Grid.Column>  
+          <Grid.Column>
+            {columns[2].map((item)=>
+                <Container className='ItemElement_Container' key={item.id} as={Link} to={'/i/' + item.id}>
+                  <ItemElement key={item.id} item={item} />
+                </Container>
+            )} 
+            {columns[3].map((item)=>
+                <Container className='ItemElement_Container' key={item.id} as={Link} to={'/i/' + item.id}>
+                  <ItemElement key={item.id} item={item} />
+                </Container>
+            )} 
+          </Grid.Column>  
+        </Grid.Row> 
       </Grid>
     );
   }
