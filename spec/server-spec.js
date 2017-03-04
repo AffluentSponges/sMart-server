@@ -154,7 +154,7 @@ describe('Model Methods (Insert/Update)', function() {
         transaction.sale_price.should.equal(product.asking_price)
         transaction.status.should.equal('received_payment')
         transaction.coinbase_address_id.should.equal(info.coinbase_address_id)
-        transaction.amount.should.equal(info.amount)
+        transaction.sale_price_btc.should.equal(info.amount)
         transaction.currency.should.equal(info.currency)
         transaction.coinbase_transaction_id.should.equal(info.coinbase_transaction_id)
         done()
@@ -238,7 +238,7 @@ describe('Controllers', function() {
       "resource_path": "/v2/notifications/d9cc3ee5-567e-5f8d-a031-11194e103d99",
       "additional_data": 
        { "hash": "ba95c9dd9a2faebe63025a29ec1dc077ae5ee6dc5b065ae0978dcb5cc13fd6ce",
-         "amount": { "amount": "0.00008287", "currency": "BTC" },
+         "amount": { "amount": "1.23456789", "currency": "BTC" },
          "transaction": 
           { "id": "13f07688-c6dc-539d-aacc-5c08288b1481",
             "resource": "transaction",
@@ -293,7 +293,7 @@ describe('Controllers', function() {
           transaction.coinbase_address_id.should.equal(data.data.id)
           transaction.coinbase_transaction_id.should.equal(data.additional_data.transaction.id)
           transaction.currency.should.equal(data.additional_data.amount.currency)
-          transaction.amount.should.equal(data.additional_data.amount.amount)
+          transaction.sale_price_btc.should.equal(data.additional_data.amount.amount)
           transaction.status.should.equal('received_payment')
           transaction.uber_delivery_id.should.be.a('string')
           transaction.product.bitcoin_address.should.equal(data.data.address)
@@ -301,6 +301,21 @@ describe('Controllers', function() {
           transaction.product.buyer_id.should.not.be.null
           done()
         })
+      })
+    })
+    it('should fail the buying process via webhook for new-payment due to not enough btc', function(done) {
+      //change it to not enough btc
+      data.additional_data.amount.amount = 0.01234
+      chai.request(server)
+      .post('/coinbase_webhook')
+      .set('content-type', 'application/json')
+      .send(data)
+      .end((err, res) => {
+        // console.log(res.body)
+        res.body.message.should.equal('error, not enough btc...')
+        //change it back
+        data.additional_data.amount.amount = 1.123456789
+        done()
       })
     })
   })
@@ -424,7 +439,11 @@ describe('API Routes', function() {
         res.should.have.status(200)
         res.body.message.should.equal('waiting for coinbase payment')
         res.body.BTC.should.be.a('string')
-        done()
+        Product.findById(product_id)
+        .then(product => {
+          parseInt(product.attributes.total_price_btc).should.be.a('number')
+          done()
+        })
       })
     })
     it('should initiate a purchase (attempt) & fail', function(done) {

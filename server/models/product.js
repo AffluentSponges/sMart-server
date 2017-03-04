@@ -61,6 +61,13 @@ const Product = ModelBase.extend({
       //if it's already purchased, send an error!
       return product.set({buyer_id: product.attributes.attempted_buyer_id, sold: true}).save()
     })
+  },
+
+  checkAmount: function(bitcoin_address, amount) {
+    return this.findOne({bitcoin_address: bitcoin_address})
+    .then(product => {
+      return (amount >= product.attributes.total_price_btc)
+    })
   }
 })
 module.exports = Product
