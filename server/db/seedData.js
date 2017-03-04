@@ -191,7 +191,7 @@ seedData.productArray = [
     category_id: 2,
     title: 'beanie',
     description: 'Lorem ipsum dolor sit amet, an cum graecis concludaturque. Nam habeo dictas ex, harum officiis incorrupte in eum. Sint tacimates vis id, error ludus torquatos eam ne, populo oporteat voluptaria at duo. Mea antiopam neglegentur ei, in quo cibo nonumy, congue impetus suavitate quo ea. Ex mea primis numquam periculis, meis labitur fabulas no nec, est mediocrem pertinacia no.',
-    asking_price: 7,
+    asking_price: 0.1,
     address: '944 market st',
     postal_code: '94117',
     // preferred_time_and_date: 'February 28 9:30:30 2017 PST',
