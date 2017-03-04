@@ -45,6 +45,7 @@ controller.attemptPurchase = function(req, res) {
       res.send({message: 'waiting for coinbase payment',
                 BTC: bitcoinAmount})
     }
+    product.set({total_price_btc: bitcoinAmount}).save()
   })
 };
 
@@ -102,23 +103,22 @@ controller.getUserProducts = function(req, res) {
   })
 };
 
-var cnt = 0;
+// var cnt = 0;
 controller.isPaid = function(req, res) {
   Product.findById(req.query.id)
   .then(product => {
     var thisProduct = product.serialize();
-    if (thisProduct.buyer_id === req.query.id && thisProduct.sold) {
-
-    }
-    console.log(thisProduct.buyer_id, thisProduct.sold);
-
-    if (cnt < 5) {
-      res.send('');  
-    } else {
+    if (thisProduct.buyer_id === req.query.id) {
       res.json({paid: true});
     }
-    cnt++;
-
+    console.log(thisProduct.buyer_id, thisProduct.sold);
+    res.json({paid: false});
+    // if (cnt < 5) {
+    //   res.send('');  
+    // } else {
+    //   res.json({paid: true});
+    // }
+    // cnt++;
   })
 };
 
