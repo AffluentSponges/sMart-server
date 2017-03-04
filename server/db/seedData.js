@@ -23,7 +23,7 @@ seedData.usersArray = [
     first_name: 'daniel',
     last_name: 'voigt',
     password: bcrypt.hashSync('testpassword'),
-    wallet_address: 'none',
+    wallet_address: '1LYbfZzJN45HYocUJxkK5WDNhxB5MN27XK',
     address: '944 market st',
     city: 'San Francisco',
     state: 'CA',

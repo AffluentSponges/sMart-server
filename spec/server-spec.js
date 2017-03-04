@@ -387,6 +387,25 @@ describe('Controllers', function() {
       })
     })
   })
+
+  describe('uberRUSH delivery and coinbase transaction', function(done) {
+    it('Should trigger coinbase transaction after successful delivery', function(done) {
+      chai.request(server)
+      .post('/uber_webhook')
+      .set('content-type', 'application/json')
+      .send({
+        "meta": {
+          "status": "completed",
+          "resource_id": 1
+        }
+      })
+      .end((err, res) => {
+        res.should.have.status(200)
+        res.body.should.be.a('object')
+      })
+      done();
+    })
+  })
 })
 
 describe('API Routes', function() {

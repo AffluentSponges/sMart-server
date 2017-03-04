@@ -41,16 +41,16 @@ module.exports.deliverNotifications = function(delivery_id, status) {
 module.exports.completeTransaction = function(delivery_id) {
 	Transaction.getTransactionInfo(delivery_id)
 	.then(function(transactionData) {
-		var transaction = transactionData.attributes;
-		var idem = transaction.id;
-		var seller = transactionData.relations.seller.attributes;
-		var sellerWalletAddress = seller.wallet_address;
-	    var product = transactionData.relations.product.attributes;
-	    var salePrice = product.sale_price;
+      	var transaction = transactionData.attributes;
+      	var idem = transaction.id;
+      	var seller = transactionData.relations.seller.attributes;
+      	var sellerWalletAddress = seller.wallet_address;
+      	var product = transactionData.relations.product.attributes;
+      	var salePrice = Number(product.asking_price);
 		
-		coinbaseController.convertCurrency(sale_price)
+            coinbaseController.convertCurrency(salePrice)
 		.then(function(btc) {
-			coinbaseController.sendBTC(idem, sellerWalletAddress, salePrice);
+			coinbaseController.sendBTC(sellerWalletAddress, btc);
 		})
 	})
 };
