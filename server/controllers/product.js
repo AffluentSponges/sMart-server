@@ -20,8 +20,9 @@ controller.getOne = function (req, res) {
 
 controller.attemptPurchase = function(req, res) {
   const product_id = req.body.product_id
-  const attempted_buyer_id = req.body.buyer_ids
-  var product;
+  const attempted_buyer_id = req.body.buyer_id
+  
+  var product
 
   Product.attemptPurchase(product_id, attempted_buyer_id)
   .then(p => {
@@ -38,14 +39,32 @@ controller.attemptPurchase = function(req, res) {
           BTC: bitcoinAmount
         })
       }
+    return User.findById(attempted_buyer_id)
+  })
+  .then(buyer => {
+    return uberRUSH.quote(product, buyer)
+  })
+  .then(delivery => {
+    var totalPrice = parseInt(product.attributes.asking_price) + delivery.uber_delivery_price
+    return coinbase.convertCurrency(totalPrice)
+  })
+  .then(bitcoinAmount => {
+    if(product.attributes.attempted_buyer_id !== attempted_buyer_id) {
+      res.send({
+        message: 'Someone already bought this item'
+      })
+    } else {
+      res.send({message: 'waiting for coinbase payment',
+                BTC: bitcoinAmount})
+    }
+    product.set({total_price_btc: bitcoinAmount}).save()
   })
 };
 
 
-controller.quote = function(req, res, next) {
+controller.quote = function(req, res) {
   const product_id = req.query.product_id
   const buyer_id = req.query.buyer_id
-  // console.log(product_id, buyer_id)
   if (req.query.buyer_id === undefined) {
     var data = {
         dropoff_eta: 10,
@@ -56,7 +75,7 @@ controller.quote = function(req, res, next) {
     return;
   }
 
-  var product = null
+  var product
 
   Product.getWithSeller(product_id)
   .then(p => {
@@ -96,7 +115,7 @@ controller.getUserProducts = function(req, res) {
   })
 };
 
-var cnt = 0;
+// var cnt = 0;
 controller.isPaid = function(req, res) {
   Product.findById(req.query.id)
   .then(product => {
@@ -112,6 +131,17 @@ controller.isPaid = function(req, res) {
       res.json({paid: true});
     }
     cnt++;
+    if (thisProduct.buyer_id === req.query.id) {
+      res.json({paid: true});
+    }
+    console.log(thisProduct.buyer_id, thisProduct.sold);
+    res.json({paid: false});
+    // if (cnt < 5) {
+    //   res.send('');  
+    // } else {
+    //   res.json({paid: true});
+    // }
+    // cnt++;
   })
 };
 

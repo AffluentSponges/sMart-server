@@ -35,7 +35,7 @@ const Transaction = ModelBase.extend({
       sale_time_and_date: date,
       coinbase_address_id: info.coinbase_address_id,
       currency: info.currency,
-      amount: info.amount,
+      sale_price_btc: info.amount,
       coinbase_transaction_id: info.coinbase_transaction_id
     })
   },

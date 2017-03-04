@@ -96,7 +96,7 @@ controller.requestDelivery = function(product_id) {
 }
 
 controller.webhook = function(req, res) {
-  console.log('received uber webhook', req.body)
+  // console.log('received uber webhook', req.body)
   var statusChange = req.body.event_type === 'deliveries.status_changed';
   var status = req.body.meta.status
   var delivery_id = req.body.meta.resource_id

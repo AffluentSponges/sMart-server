@@ -88,6 +88,7 @@ describe('Model Methods (Read only)', function() {
 })
 
 describe('Model Methods (Insert/Update)', function() {
+  this.timeout(5000)
   after(function(done) {
     init('test')
     .then(() => {
@@ -152,7 +153,7 @@ describe('Model Methods (Insert/Update)', function() {
         transaction.sale_price.should.equal(product.asking_price)
         transaction.status.should.equal('received_payment')
         transaction.coinbase_address_id.should.equal(info.coinbase_address_id)
-        transaction.amount.should.equal(info.amount)
+        transaction.sale_price_btc.should.equal(info.amount)
         transaction.currency.should.equal(info.currency)
         transaction.coinbase_transaction_id.should.equal(info.coinbase_transaction_id)
         done()
@@ -236,7 +237,7 @@ describe('Controllers', function() {
       "resource_path": "/v2/notifications/d9cc3ee5-567e-5f8d-a031-11194e103d99",
       "additional_data": 
        { "hash": "ba95c9dd9a2faebe63025a29ec1dc077ae5ee6dc5b065ae0978dcb5cc13fd6ce",
-         "amount": { "amount": "0.00008287", "currency": "BTC" },
+         "amount": { "amount": "1.23456789", "currency": "BTC" },
          "transaction": 
           { "id": "13f07688-c6dc-539d-aacc-5c08288b1481",
             "resource": "transaction",
@@ -245,6 +246,13 @@ describe('Controllers', function() {
         }
       }
     // ^I like to shrink this to one line
+    it('should convert USD to BTC', function(done) {
+      coinbaseController.convertCurrency(1000)
+      .then(tx => {
+        tx.should.be.a('string')
+        done()
+      })
+    })
     xit('should send BTC to an address', function(done) {
       coinbaseController.sendBTC('1LYbfZzJN45HYocUJxkK5WDNhxB5MN27XK', '0.0001')
       .then(tx => {
@@ -285,7 +293,7 @@ describe('Controllers', function() {
           transaction.coinbase_address_id.should.equal(data.data.id)
           transaction.coinbase_transaction_id.should.equal(data.additional_data.transaction.id)
           transaction.currency.should.equal(data.additional_data.amount.currency)
-          transaction.amount.should.equal(data.additional_data.amount.amount)
+          transaction.sale_price_btc.should.equal(data.additional_data.amount.amount)
           transaction.status.should.equal('received_payment')
           transaction.uber_delivery_id.should.be.a('string')
           transaction.product.bitcoin_address.should.equal(data.data.address)
@@ -295,29 +303,43 @@ describe('Controllers', function() {
         })
       })
     })
-  describe('Send BTC', function() {
-    xit('should send BTC to an address', function(done) {
-      coinbaseController.sendBTC('1LYbfZzJN45HYocUJxkK5WDNhxB5MN27XK', '0.0001')
-    xit('should send BTC to an address', function(done) {
-      coinbase.sendBTC('1LYbfZzJN45HYocUJxkK5WDNhxB5MN27XK', '0.0001')
-      .then(tx => {
-        // console.log(tx)
-        tx.should.be.an('object')
-        done()
-      })
-    })
   })
-  describe('Convert Currency', function() {
-    it('should convert USD to BTC', function(done) {
-      coinbaseController.convertCurrency(1000)
-      .then(tx => {
-        // console.log(tx)
-        tx.should.be.a('string')
-        done()
-      })
-    })
-  })
-  })
+  // describe('Send BTC', function() {
+  //   xit('should send BTC to an address', function(done) {
+  //     coinbaseController.sendBTC('1LYbfZzJN45HYocUJxkK5WDNhxB5MN27XK', '0.0001')
+  //   xit('should send BTC to an address', function(done) {
+  //     coinbase.sendBTC('1LYbfZzJN45HYocUJxkK5WDNhxB5MN27XK', '0.0001')
+  //     .then(tx => {
+  //       // console.log(tx)
+  //       tx.should.be.an('object')
+  //       done()
+  //     })
+  //   })
+  // })
+  // describe('Convert Currency', function() {
+  //   it('should convert USD to BTC', function(done) {
+  //     coinbaseController.convertCurrency(1000)
+  //     .then(tx => {
+  //       // console.log(tx)
+  //       tx.should.be.a('string')
+  //     })
+  //   })
+  //   it('should fail the buying process via webhook for new-payment due to not enough btc', function(done) {
+  //     //change it to not enough btc
+  //     data.additional_data.amount.amount = 0.01234
+  //     chai.request(server)
+  //     .post('/coinbase_webhook')
+  //     .set('content-type', 'application/json')
+  //     .send(data)
+  //     .end((err, res) => {
+  //       // console.log(res.body)
+  //       res.body.message.should.equal('error, not enough btc...')
+  //       //change it back
+  //       data.additional_data.amount.amount = 1.123456789
+  //       done()
+  //     })
+  //   })
+  // })
   describe('Twilio Notification System', function() {
     describe('uberRUSH status updates', function() {
       it('Status: "en_route_to_pickup" should have status 200', function(done) {
@@ -389,6 +411,7 @@ describe('Controllers', function() {
 })
 
 describe('API Routes', function() {
+  this.timeout(5000)
   var product_id;
   after(function(done) {
     init('test')
@@ -437,7 +460,11 @@ describe('API Routes', function() {
         res.should.have.status(200)
         res.body.message.should.equal('waiting for coinbase payment')
         res.body.BTC.should.be.a('string')
-        done()
+        Product.findById(product_id)
+        .then(product => {
+          parseInt(product.attributes.total_price_btc).should.be.a('number')
+          done()
+        })
       })
     })
     it('should initiate a purchase (attempt) & fail', function(done) {
@@ -459,8 +486,6 @@ describe('API Routes', function() {
   })
 
   describe('GET ROUTES', function() {
-    it('should')
-
     it('should return the single product just posted', function(done) {
       chai.request(server)
       .get('/api/v1/product?id=' + product_id)
@@ -537,7 +562,6 @@ describe('API Routes', function() {
     })
 
     xit('should return a title of a given image url', function(done) {
-      this.timeout(3000);
       chai.request(server)
       .get('/api/v1/vision?image_links=https://store.storeimages.cdn-apple.com/4974/as-images.apple.com/is/image/AppleInc/aos/published/images/m/bp/mbp13/silver/mbp13-silver-select-201610?wid=452&hei=420&fmt=jpeg&qlt=95&op_sharpen=0&resMode=bicub&op_usm=0.5,0.5,0,0&iccEmbed=0&layer=comp&.v=1477352400929')
       .end((err, res) => {
@@ -549,7 +573,6 @@ describe('API Routes', function() {
     }) 
 
     xit('should return Electronics category id from laptop image url', function(done) {
-      this.timeout(3000);
       chai.request(server)
       .get('/api/v1/vision?image_links=https://cnet1.cbsistatic.com/img/hu-by7YBD22hiXFqkorB2xKbcdw=/770x578/2016/11/04/b88dcfca-056b-4f74-aeb1-84da826ead0b/apple-macbook-pro-with-touch-bar-13-inch-2016-39.jpg')
       .end((err, res) => {
@@ -559,7 +582,6 @@ describe('API Routes', function() {
       })
     })
   })
-})
 })
 
 // describe('Twilio messaging system', function() {

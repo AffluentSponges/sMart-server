@@ -47,7 +47,7 @@ const Product = ModelBase.extend({
   },
 
   attemptPurchase: function(product_id, attempted_buyer_id) {
-    return this.findById(product_id)
+    return this.getWithSeller(product_id)
     .then(product => {
       return product.attributes.attempted_buyer_id
         ? product
@@ -60,6 +60,13 @@ const Product = ModelBase.extend({
     .then(product => {
       //if it's already purchased, send an error!
       return product.set({buyer_id: product.attributes.attempted_buyer_id, sold: true}).save()
+    })
+  },
+
+  checkAmount: function(bitcoin_address, amount) {
+    return this.findOne({bitcoin_address: bitcoin_address})
+    .then(product => {
+      return (amount >= product.attributes.total_price_btc)
     })
   }
 })

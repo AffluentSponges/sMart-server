@@ -66,13 +66,22 @@ controller.prunePayload = function(data) {
 controller.acceptPayment = function(data) {
   var bitcoin_address = data.data.address
   var info = this.prunePayload(data)
-  return Product.completePurchase(bitcoin_address)
-  .then(product => {
-    return Transaction.addNewTransaction(product, info)
+  return Product.checkAmount(bitcoin_address, info.amount)
+  .then(enough => {
+    if(enough) {
+      return Product.completePurchase(bitcoin_address)
+      .then(product => {
+        return Transaction.addNewTransaction(product, info)
+      })
+      .then(transaction => {
+        return uberRUSHController.requestDelivery(transaction.attributes.product_id)
+      })
+    }
+    else {
+      return {message: 'error, not enough btc...'}
+    }
   })
-  .then(transaction => {
-    return uberRUSHController.requestDelivery(transaction.attributes.product_id)
-  })
+
 }
 
 function sendBTCAsync (account, idem, sellerAddress, amount) {
@@ -102,10 +111,10 @@ function sendBTCAsync (account, idem, sellerAddress, amount) {
   })
 }
 
-controller.sendBTC = function(sellerAddress, amount) {
+controller.sendBTC = function(idem, sellerAddress, amount) {
   return getAccountAysnc(process.env.COINBASE_BTC_ACCOUNT)
   .then(account => {
-    return sendBTCAsync(account, sellerAddress, amount)
+    return sendBTCAsync(account, idem, sellerAddress, amount)
   })
 }
 // controller.sendBTC('1LYbfZzJN45HYocUJxkK5WDNhxB5MN27XK', 0.000777)
@@ -123,8 +132,13 @@ controller.convertCurrency = function(USD) {
 controller.webhook = function(req, res) {
   if(req.body.type === 'wallet:addresses:new-payment') {
     controller.acceptPayment(req.body)
-    .then(transaction => {
-      res.json(transaction)
+    .then(data => {
+      if(data.message) {
+        // @TODO send a text to the buyer that it didn't go through
+        // include the address to send the btc to, and correct amount
+        // set a timer for 15 minutes to put it back on the market
+      }
+      res.json(data)
     })
   }
 }

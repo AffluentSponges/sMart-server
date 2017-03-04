@@ -24,6 +24,13 @@ class PostItem extends Component {
     this.handleCategoriesChange = this.handleCategoriesChange.bind(this);
   }
 
+  componentWillMount(){
+    console.log("componentWillMount", this.props.state);
+    if (!this.props.state.loggedIn) {
+      browserHistory.push('/login');
+    }
+  }
+
   handleChange(e, { value }) {
     console.log(value);
     this.setState({ formData: {title: value }})
