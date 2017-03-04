@@ -33,8 +33,10 @@ controller.attemptPurchase = function(req, res) {
           message: 'Someone already bought this item'
         })
       } else {
-        res.send({message: 'waiting for coinbase payment',
-                  BTC: bitcoinAmount})
+        res.send({
+          message: 'waiting for coinbase payment',
+          BTC: bitcoinAmount
+        })
       }
   })
 };
@@ -43,7 +45,7 @@ controller.attemptPurchase = function(req, res) {
 controller.quote = function(req, res, next) {
   const product_id = req.query.product_id
   const buyer_id = req.query.buyer_id
-  console.log(product_id, buyer_id)
+  // console.log(product_id, buyer_id)
   if (req.query.buyer_id === undefined) {
     var data = {
         dropoff_eta: 10,
@@ -102,7 +104,7 @@ controller.isPaid = function(req, res) {
     if (thisProduct.buyer_id === req.query.id && thisProduct.sold) {
 
     }
-    console.log(thisProduct.buyer_id, thisProduct.sold);
+    // console.log(thisProduct.buyer_id, thisProduct.sold);
 
     if (cnt < 5) {
       res.send('');  
@@ -110,7 +112,6 @@ controller.isPaid = function(req, res) {
       res.json({paid: true});
     }
     cnt++;
-
   })
 };
 

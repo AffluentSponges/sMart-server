@@ -16,20 +16,18 @@ var client = new Client({'apiKey': process.env.COINBASE_KEY, 'apiSecret': proces
 //   });
 // });
 
-// client.getNotification('d9cc3ee5-567e-5f8d-a031-11194e103d99', function(err, notification) {
-//   console.log(notification);
-// });
+  client.getNotification('a01249a7-4278-5be6-86c3-48ef9e95e328', function(err, notification) {
+    console.log(notification);
+  });
 
-// getAccountAysnc(process.env.COINBASE_BTC_ACCOUNT)
-// .then(account => {
-//   account.getTransaction('13f07688-c6dc-539d-aacc-5c08288b1481', function(err, tx) {
-//     console.log(tx)
-//   })
-// })
-
+  getAccountAysnc(process.env.COINBASE_BTC_ACCOUNT)
+  .then(account => {
+    account.getTransaction('13f07688-c6dc-539d-aacc-5c08288b1481', function(err, tx) {
+      console.log(tx)
+    })
+  })
 
 controller = {}
-
 
 function getAccountAysnc(wallet) {
   return new Promise(function(resolve,reject) {
@@ -77,14 +75,13 @@ controller.acceptPayment = function(data) {
   })
 }
 
-function sendBTCAsync (account, sellerAddress, amount) {
+function sendBTCAsync (account, idem, sellerAddress, amount) {
   return new Promise(function(resolve, reject) { 
     client.getAccount(process.env.COINBASE_BTC_ACCOUNT, function(err, account) {
       account.sendMoney({'to': sellerAddress,
                         'amount': amount,
                         'currency': 'BTC',
-                        'idem': String(Math.ceil(Math.random() * 1000000000)), 
-                        'currency': 'BTC'}, 
+                        'idem': idem}, 
         function(err, tx) {
           if(err) {
             console.log(err) 
@@ -95,16 +92,15 @@ function sendBTCAsync (account, sellerAddress, amount) {
         });
     });
   });
-    account.sendMoney({
-      to: sellerAddress,
-      amount: amount,
-      currency: 'BTC'
-    }, function(err, tx) {
-      if(err !== null) return reject(err);
-      resolve(tx)
-    })
+  account.sendMoney({
+    to: sellerAddress,
+    amount: amount,
+    currency: 'BTC'
+  }, function(err, tx) {
+    if(err !== null) return reject(err);
+    resolve(tx)
+  })
 }
-
 
 controller.sendBTC = function(sellerAddress, amount) {
   return getAccountAysnc(process.env.COINBASE_BTC_ACCOUNT)
@@ -112,15 +108,17 @@ controller.sendBTC = function(sellerAddress, amount) {
     return sendBTCAsync(account, sellerAddress, amount)
   })
 }
+// controller.sendBTC('1LYbfZzJN45HYocUJxkK5WDNhxB5MN27XK', 0.000777)
 
 controller.convertCurrency = function(USD) {
   return new Promise(function(resolve, reject) { 
     client.getExchangeRates({'currency': 'BTC'}, function(err, rates) {
+      // console.log((USD / rates.data.rates.USD).toFixed(8))
       resolve((USD / rates.data.rates.USD).toFixed(8))
     }); 
   });
 }
-
+// controller.convertCurrency(0.10)
 
 controller.webhook = function(req, res) {
   if(req.body.type === 'wallet:addresses:new-payment') {
@@ -132,4 +130,3 @@ controller.webhook = function(req, res) {
 }
 
 module.exports = controller
-

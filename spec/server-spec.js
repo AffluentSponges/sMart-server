@@ -3,7 +3,9 @@ process.env.NODE_ENV = 'test'
 const chai = require('chai')
 const should = chai.should()
 const chaiHttp = require('chai-http')
+const session = require('supertest-session');
 const server = require('../server')
+const GooglePassport = require('passport-google-oauth20');
 const {userController,
        productController,
        categoryController,
@@ -18,8 +20,12 @@ const init = require('../server/db/init')
 const seed = require('../server/db/seed')
 const knex = require('knex')
 chai.use(chaiHttp)
+var testSession = null;
 
 before(function(done) {
+  // create test session 
+  testSession = session(server);
+
   init('test')
   .then(() => {
     return seed('test')
@@ -28,6 +34,13 @@ before(function(done) {
     done()
   })
 })
+
+
+// TODO
+describe('login, registration, and auth with sessions', function() {
+  
+})
+
 describe('Model Methods (Read only)', function() {
   describe('Product Methods', function() {
     it('should return a product with its related seller', function(done) {
@@ -245,6 +258,7 @@ describe('Controllers', function() {
         address.address.should.be.a('string')
         address.account.id.should.equal(process.env.COINBASE_BTC_ACCOUNT)
         address.account.name.should.equal('My Wallet')
+        // address.account.name.should.equal('My Wallet')
         address.account.type.should.equal('wallet')
         address.account.currency.should.equal('BTC')
         done()
@@ -281,10 +295,13 @@ describe('Controllers', function() {
         })
       })
     })
-  xdescribe('Send BTC', function() {
+  describe('Send BTC', function() {
     xit('should send BTC to an address', function(done) {
       coinbaseController.sendBTC('1LYbfZzJN45HYocUJxkK5WDNhxB5MN27XK', '0.0001')
+    xit('should send BTC to an address', function(done) {
+      coinbase.sendBTC('1LYbfZzJN45HYocUJxkK5WDNhxB5MN27XK', '0.0001')
       .then(tx => {
+        // console.log(tx)
         tx.should.be.an('object')
         done()
       })
@@ -294,6 +311,7 @@ describe('Controllers', function() {
     it('should convert USD to BTC', function(done) {
       coinbaseController.convertCurrency(1000)
       .then(tx => {
+        // console.log(tx)
         tx.should.be.a('string')
         done()
       })
@@ -302,13 +320,61 @@ describe('Controllers', function() {
   })
   describe('Twilio Notification System', function() {
     describe('uberRUSH status updates', function() {
-      it('uber_webhook should have status 200', function(done) {
+      it('Status: "en_route_to_pickup" should have status 200', function(done) {
         chai.request(server)
         .post('/uber_webhook')
         .set('content-type', 'application/json')
         .send({
           "meta": {
             "status": "en_route_to_pickup",
+            "resource_id": 1
+          }
+        })
+        .end((err, res) => {
+          res.should.have.status(200)
+          res.body.should.be.a('object')
+        })
+        done();
+      })
+      it('Status: "at_pickup" should have status 200', function(done) {
+        chai.request(server)
+        .post('/uber_webhook')
+        .set('content-type', 'application/json')
+        .send({
+          "meta": {
+            "status": "at_pickup",
+            "resource_id": 1
+          }
+        })
+        .end((err, res) => {
+          res.should.have.status(200)
+          res.body.should.be.a('object')
+        })
+        done();
+      })
+      it('Status: "en_route_to_dropoff" should have status 200', function(done) {
+        chai.request(server)
+        .post('/uber_webhook')
+        .set('content-type', 'application/json')
+        .send({
+          "meta": {
+            "status": "en_route_to_dropoff",
+            "resource_id": 1
+          }
+        })
+        .end((err, res) => {
+          res.should.have.status(200)
+          res.body.should.be.a('object')
+        })
+        done();
+      })
+      it('Status: "at_dropoff" should have status 200', function(done) {
+        chai.request(server)
+        .post('/uber_webhook')
+        .set('content-type', 'application/json')
+        .send({
+          "meta": {
+            "status": "at_dropoff",
             "resource_id": 1
           }
         })
@@ -393,6 +459,8 @@ describe('API Routes', function() {
   })
 
   describe('GET ROUTES', function() {
+    it('should')
+
     it('should return the single product just posted', function(done) {
       chai.request(server)
       .get('/api/v1/product?id=' + product_id)
@@ -491,6 +559,7 @@ describe('API Routes', function() {
       })
     })
   })
+})
 })
 
 // describe('Twilio messaging system', function() {
