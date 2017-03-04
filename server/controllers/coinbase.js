@@ -88,9 +88,9 @@ function sendBTCAsync (account, idem, sellerAddress, amount) {
   return new Promise(function(resolve, reject) { 
     client.getAccount(process.env.COINBASE_BTC_ACCOUNT, function(err, account) {
       account.sendMoney({'to': sellerAddress,
-                        'amount': amount,
-                        'currency': 'BTC',
-                        'idem': idem}, 
+                         'amount': amount,
+                         'currency': 'BTC',
+                         'idem': idem}, 
         function(err, tx) {
           if(err) {
             console.log(err) 
