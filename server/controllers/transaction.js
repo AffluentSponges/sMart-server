@@ -50,7 +50,7 @@ module.exports.completeTransaction = function(delivery_id) {
 		
             coinbaseController.convertCurrency(salePrice)
 		.then(function(btc) {
-			coinbaseController.sendBTC(sellerWalletAddress, btc);
+			coinbaseController.sendBTC(idem, sellerWalletAddress, btc);
 		})
 	})
 };
