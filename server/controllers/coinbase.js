@@ -76,7 +76,7 @@ controller.acceptPayment = function(data) {
         return Transaction.addNewTransaction(product, info)
       })
       .then(transaction => {
-        return uberRUSHController.requestDelivery(transaction.attributes.product_id)
+        return require('./uberRUSH').requestDelivery(transaction.attributes.product_id)
       })
     }
     else {
