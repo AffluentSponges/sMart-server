@@ -7,9 +7,11 @@ const axios = require('axios');
 //   headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
 // });
 const coinbaseController = require('./coinbase');
+const uberRUSHController = require('./uberRUSH');
 
+var controller = {};
 
-module.exports.deliverNotifications = function(delivery_id, status) {
+controller.deliverNotifications = function(delivery_id, status) {
 	Transaction.getTransactionInfo(delivery_id)
     .then(function(transactionData) {
       	var product = transactionData.relations.product.attributes;
@@ -38,7 +40,7 @@ module.exports.deliverNotifications = function(delivery_id, status) {
     });
 };
 
-module.exports.completeTransaction = function(delivery_id) {
+controller.completeTransaction = function(delivery_id) {
 	Transaction.getTransactionInfo(delivery_id)
 	.then(function(transactionData) {
       	var transaction = transactionData.attributes;
@@ -54,3 +56,5 @@ module.exports.completeTransaction = function(delivery_id) {
 		})
 	})
 };
+
+module.exports = controller;
