@@ -5,7 +5,7 @@ import { Segment, Divider } from 'semantic-ui-react'
 const CategoryList = ({active, children, to, currentCategoryHandler}) => (
     <li>
       <Link to={to} onClick={()=>{console.log(children);currentCategoryHandler(children);}}>
-            {children}
+            <span className='categoryName'>{children}</span>
       </Link>
     </li>
 )
