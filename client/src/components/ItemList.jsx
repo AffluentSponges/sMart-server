@@ -23,7 +23,7 @@ class ItemList extends React.Component {
       columns[target].push(this.props.items[i]);
     }
     return (
-      <Grid relaxed columns={4}>
+      <Grid relaxed columns={4} doubling>
         <Grid.Column>
           <CategoriesNav state={this.props.state} currentCategoryHandler={this.props.currentCategoryHandler}/>
           {columns[0].map((item)=>
@@ -58,86 +58,4 @@ class ItemList extends React.Component {
   }
 }
 
-
-
-// {_this.props.items.map((item) =>
-//   <Grid.Column key={item.id} onClick={()=>{console.log(item.id)}}>
-//     <Container key={item.id} as={Link} to={'/i/' + item.id}>
-//       <ItemElement key={item.id} item={item} />
-//     </Container>
-//   </Grid.Column>       
-// )}
-
-
-
-
-// const ItemList = (props) => (
-//   <Grid relaxed columns={4}>
-//       {props.items.map((item) =>
-//         <Grid.Column key={item.postId} as={Link} to={'/i/' + item.postId} onClick={()=>{console.log(item.postId)}}>
-//           <ItemElement item={item}/>
-//         </Grid.Column>       
-//       )}
-//   </Grid>
-// )
-
 export default ItemList;
-
-
-
-// const ItemList = (props) => (
-//   <Grid relaxed columns={4}>
-//     <Grid.Column>
-//       <ItemElement />
-//     </Grid.Column>
-//     <Grid.Column>
-//       <ItemElement />
-//     </Grid.Column>
-//     <Grid.Column>
-//       <ItemElement />
-//     </Grid.Column>
-//     <Grid.Column>
-//       <ItemElement />
-//     </Grid.Column>
-//     <Grid.Column>
-//       <ItemElement />
-//     </Grid.Column>
-//     <Grid.Column>
-//       <ItemElement />
-//     </Grid.Column>     
-//   </Grid>
-// )
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const ItemList = () => (
-//   <Grid relaxed columns={4}>
-//     <Grid.Column>
-//       <Image src='http://semantic-ui.com/images/wireframe/image.png' />
-//     </Grid.Column>
-//     <Grid.Column>
-//       <Image src='http://semantic-ui.com/images/wireframe/image.png' />
-//     </Grid.Column>
-//     <Grid.Column>
-//       <Image src='http://semantic-ui.com/images/wireframe/image.png' />
-//     </Grid.Column>
-//     <Grid.Column>
-//       <Image src='http://semantic-ui.com/images/wireframe/image.png' />
-//     </Grid.Column>
-//    <Grid.Column>
-//       <Image src='http://semantic-ui.com/images/wireframe/image.png' />
-//     </Grid.Column>  
-//   </Grid>
-// )
-
-// export default ItemList

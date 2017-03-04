@@ -61,7 +61,7 @@ module.exports = function(env, initialzing) {
   .then(values => {
     if(initialzing) {
       console.log('done seeding data. exiting gracefully')
-      knex.destroy()
+      return knex.destroy()
     }
     // process.exit()
   })
