@@ -3,7 +3,7 @@ const bookshelf = require('bookshelf')(knex)
 const ModelBase = require('bookshelf-modelbase')(bookshelf)
 bookshelf.plugin(require('bookshelf-modelbase').pluggable)
 
-const Transaction = ModelBase.extend({
+module.exports = ModelBase.extend({
   tableName: 'transactions',
 
   buyer: function() {
@@ -54,5 +54,3 @@ const Transaction = ModelBase.extend({
   }
 
 });
-
-module.exports = Transaction

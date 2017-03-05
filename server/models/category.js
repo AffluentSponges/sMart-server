@@ -4,7 +4,8 @@ const ModelBase = require('bookshelf-modelbase')(bookshelf)
 bookshelf.plugin(require('bookshelf-modelbase').pluggable)
 const Product = require('./product')
 
-const Category = ModelBase.extend({
+//Category
+module.exports = ModelBase.extend({
   tableName: 'categories',
 
   products: function() {
@@ -20,5 +21,3 @@ const Category = ModelBase.extend({
     return this.hasMany(Category)
   }
 })
-
-module.exports = Category
