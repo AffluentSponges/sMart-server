@@ -60,7 +60,7 @@ describe('Model Methods (Read only)', function() {
       .then(product => {
         var p = JSON.parse(JSON.stringify(product))
         p.title.should.equal('beanie')
-        p.asking_price.should.equal('7.00')
+        p.asking_price.should.equal('0.10')
         p.should.have.property('seller')
         p.seller.first_name.should.equal('daniel')
         p.should.have.property('buyer')
@@ -388,6 +388,25 @@ describe('Controllers', function() {
       })
     })
   })
+
+  describe('uberRUSH delivery and coinbase transaction', function(done) {
+    it('Should trigger coinbase transaction after successful delivery', function(done) {
+      chai.request(server)
+      .post('/uber_webhook')
+      .set('content-type', 'application/json')
+      .send({
+        "meta": {
+          "status": "completed",
+          "resource_id": 1
+        }
+      })
+      .end((err, res) => {
+        res.should.have.status(200)
+        res.body.should.be.a('object')
+      })
+      done();
+    })
+  })
 })
 
 describe('API Routes', function() {
@@ -563,16 +582,3 @@ describe('API Routes', function() {
     })
   })
 })
-
-// describe('Twilio messaging system', function() {
-//   describe('uberRUSH delivery status', function() {
-//     it('should fetch buyer, seller and product given an uber delivery ID', function() {
-//       Transaction.where({ uber_delivery_id: delivery_id})
-//     })
-
-//     it('should deliver message "on route to pickup"', function(done) {
-
-//       done()
-//     });
-//   })
-// });

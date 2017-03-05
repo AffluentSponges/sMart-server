@@ -1,5 +1,5 @@
 require('dotenv').config()
-const uberRUSHController = require('./uberRUSH')
+const uberRUSHController = require('./uberRUSH.js')
 const {User,
        Product,
        Category,
@@ -76,7 +76,7 @@ controller.acceptPayment = function(data) {
         return Transaction.addNewTransaction(product, info)
       })
       .then(transaction => {
-        return uberRUSHController.requestDelivery(transaction.attributes.product_id)
+        return require('./uberRUSH').requestDelivery(transaction.attributes.product_id)
       })
     }
     else {
@@ -86,12 +86,13 @@ controller.acceptPayment = function(data) {
 
 }
 
-function sendBTCAsync (account, sellerAddress, amount) {
+function sendBTCAsync (idem, account, sellerAddress, amount) {
   return new Promise(function(resolve, reject) { 
     account.sendMoney({
       to: sellerAddress,
       amount: amount,
-      currency: 'BTC'
+      currency: 'BTC',
+      idem: idem
     }, function(err, tx) {
       if(err !== null) return reject(err);
       resolve(tx)
@@ -99,10 +100,10 @@ function sendBTCAsync (account, sellerAddress, amount) {
   })
 }
 
-controller.sendBTC = function(sellerAddress, amount) {
+controller.sendBTC = function(idem, sellerAddress, amount) {
   return getAccountAysnc(process.env.COINBASE_BTC_ACCOUNT)
   .then(account => {
-    return sendBTCAsync(account, sellerAddress, amount)
+    return sendBTCAsync(idem, account, sellerAddress, amount)
   })
 }
 
