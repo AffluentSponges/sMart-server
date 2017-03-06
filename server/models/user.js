@@ -1,9 +1,8 @@
 const knex = require('../db/knex')
 const bookshelf = require('bookshelf')(knex)
 const ModelBase = require('bookshelf-modelbase')(bookshelf)
-bookshelf.plugin(require('bookshelf-modelbase').pluggable)
 
-var User = ModelBase.extend({
+module.exports = ModelBase.extend({
   tableName: 'users',
 
   products: function() {
@@ -16,5 +15,3 @@ var User = ModelBase.extend({
     return this.hasMany(Transaction)
   }
 })
-
-module.exports = User

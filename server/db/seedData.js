@@ -23,7 +23,7 @@ seedData.usersArray = [
     first_name: 'daniel',
     last_name: 'voigt',
     password: bcrypt.hashSync('testpassword'),
-    wallet_address: '1LYbfZzJN45HYocUJxkK5WDNhxB5MN27XK',
+    wallet_address: '1MPju73ZaVNEbpeJ4FwsycqUQW1iyFwG8U',
     address: '944 market st',
     city: 'San Francisco',
     state: 'CA',
@@ -282,7 +282,7 @@ seedData.transactionArray = [
     id: 1,
     buyer_id: 3,
     product_id: 4,
-    sale_price: 7,
+    sale_price: .1,
     status: 'buyer_paid',
     uber_delivery_id: 1
   }

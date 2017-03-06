@@ -3,9 +3,8 @@ const Vision = require('@google-cloud/vision');
 const vision = Vision();
 const axios = require('axios')
 const Tag = require('../models/tag')
-const controller = {};
 
-controller.getImageTitleAndCategory = (req, res) => {
+module.exports.getImageTitleAndCategory = (req, res) => {
   var url = req.query.image_links
   axios({
     method: 'post',
@@ -33,5 +32,3 @@ controller.getImageTitleAndCategory = (req, res) => {
   });
 
 }
-
-module.exports = controller;
