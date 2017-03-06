@@ -12,7 +12,7 @@ const axiosUber = axios.create({
   }
 })
 
-helpers.changeUberStatus = function(delivery_id, status) {
+var changeUberStatus = function(delivery_id, status) {
   // console.log('changeUberStatus')
   // console.log(delivery_id)
   return axiosUber.put(delivery_id, {
@@ -22,24 +22,23 @@ helpers.changeUberStatus = function(delivery_id, status) {
     return response
   })
 }
+exports.changeUberStatus = changeUberStatus
 
-helpers.simulateDelivery = function(delivery_id) {
-  return helpers.changeUberStatus(deliveryId, 'en_route_to_pickup')
+exports.simulateDelivery = function(delivery_id) {
+  return changeUberStatus(deliveryId, 'en_route_to_pickup')
   .then(() => {
-    return helpers.changeUberStatus(deliveryId, 'at_pickup')
+    return changeUberStatus(deliveryId, 'at_pickup')
   })
   .then(() => {
-    return helpers.changeUberStatus(deliveryId, 'en_route_to_dropoff')
+    return changeUberStatus(deliveryId, 'en_route_to_dropoff')
   })
   .then(() => {
-    return helpers.changeUberStatus(deliveryId, 'at_dropoff')
+    return changeUberStatus(deliveryId, 'at_dropoff')
   })
   .then(() => {
-    return helpers.changeUberStatus(deliveryId, 'completed')
+    return changeUberStatus(deliveryId, 'completed')
   })
   .then(() => {
     return 'purchase completed'
   })
 }
-
-module.exports = helpers

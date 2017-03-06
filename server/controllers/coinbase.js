@@ -71,7 +71,6 @@ controller.acceptPayment = function(data) {
   return Product.checkAmount(bitcoin_address, info.amount)
   .then(enough => {
     if(enough) {
-      console.log('it was enough!')
       return Product.completePurchase(bitcoin_address)
       .then(product => {
         return Transaction.addNewTransaction(product, info)
@@ -81,7 +80,6 @@ controller.acceptPayment = function(data) {
       })
     }
     else {
-      console.log('not enough btc...')
       return {message: 'error, not enough btc...'}
     }
   })
@@ -119,7 +117,6 @@ controller.convertCurrency = function(USD) {
 
 
 controller.webhook = function(req, res) {
-  console.log(req.body)
   if(req.body.type === 'wallet:addresses:new-payment') {
     controller.acceptPayment(req.body)
     .then(data => {
@@ -130,6 +127,10 @@ controller.webhook = function(req, res) {
       }
       res.json(data)
     })
+  }
+  else {
+    console.log(req.body)
+    res.send(200)
   }
 }
 

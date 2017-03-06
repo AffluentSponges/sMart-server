@@ -299,7 +299,6 @@ describe('Controllers', function() {
           transaction.product.bitcoin_address.should.equal(data.data.address)
           transaction.product.sold.should.equal(true)
           transaction.product.buyer_id.should.not.be.null
-          console.log(transaction.uber_delivery_id)
           done()
         })
       })
@@ -354,14 +353,14 @@ describe('Controllers', function() {
         })
         done();
       })
-      it.only('Status: "en_route_to_dropoff" should have status 200', function(done) {
+      it('Status: "en_route_to_dropoff" should have status 200', function(done) {
         chai.request(server)
         .post('/uber_webhook')
         .set('content-type', 'application/json')
         .send({
           "meta": {
             "status": "en_route_to_dropoff",
-            "resource_id": 'a2848f73-28b8-497d-bc06-80870a95b18e'
+            "resource_id": 1
           }
         })
         .end((err, res) => {

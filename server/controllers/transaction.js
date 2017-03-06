@@ -21,8 +21,8 @@ controller.deliverNotifications = function(delivery_id, status) {
 
       	transactionData.set({status: status}).save();
 
-        console.log(seller.phone_number)
-        console.log(buyer.phone_number)
+        // console.log(seller.phone_number)
+        // console.log(buyer.phone_number)
 
       	twilio.sendSms(seller.phone_number, `S-Mart Alert to ${seller.username}: Your recently sold product, ${product.title}, is ${status.split('_').join(' ')}.\nETA:`);
       	twilio.sendSms(buyer.phone_number, `S-Mart Alert to ${buyer.username}: Your recently purchased product, ${product.title}, is ${status.split('_').join(' ')}.\nETA:`);      	
