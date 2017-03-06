@@ -45,7 +45,7 @@ a {
 
 .jumbotron {
   height: 270px !important;
-  background-image: url("https://us.letgo.com/assets-3/bundles/site/img/intersticial-bg.png") !important;
+  background-image: url("https://s3-us-west-1.amazonaws.com/affluentsponges/product_image/5673054113921228.jpg") !important;
   background-repeat: repeat !important;
   border-radius: 0 !important;
 }
@@ -56,7 +56,7 @@ a {
 }
 
 .space {
-  height: 49px;
+  height: 64px;
 }
 
 .categoryName {
@@ -64,4 +64,19 @@ a {
   line-height: 1.25 !important;
   font-family: Roboto,"Helvetica Neue",Helvetica,Arial,sans-serif;
 }
+
+.dropzone {
+  outline: 2px dashed #92b0b3;
+  outline-offset: -10px;
+  font-size: 1.25rem;
+  background-color: white;
+  padding: 100px 20px;
+  margin-top: 10px;
+}
+
+
+
+
+
+
 
