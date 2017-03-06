@@ -1,7 +1,6 @@
 const User = require('../models/User')
-var controller = {}
 
-controller.getAll = (req, res) => {
+module.exports.getAll = (req, res) => {
   console.log('getAll products')
   User.findAll()
   .then(users => {
@@ -9,14 +8,14 @@ controller.getAll = (req, res) => {
   })
 }
 
-controller.getUserProfile = (req, res) => {
+module.exports.getUserProfile = (req, res) => {
   User.where({id: req.query.id}).fetch()
   .then(user => {
     res.json(user)
   })
 };
 
-controller.checkInfo = (req, res) => {
+module.exports.checkInfo = (req, res) => {
   var user = req.session.passport.user;
 
   if (!user.address || !user.postal_code || !user.city || !user.state || !user.phone_number) {
@@ -27,7 +26,7 @@ controller.checkInfo = (req, res) => {
   res.end();
 };
 
-controller.setContactInfo = (req, res) => {
+module.exports.setContactInfo = (req, res) => {
   var profile = User.where({id: req.body.id}).fetch()
     .then(model => {
       model.set("address", req.body.address);
@@ -38,5 +37,3 @@ controller.setContactInfo = (req, res) => {
       res.json(model)
   });
 };
-
-module.exports = controller;

@@ -1,9 +1,6 @@
-var controllers = {}
-
-controllers.userController = require('./user')
-controllers.productController = require('./product')
-controllers.categoryController = require('./category')
-controllers.transactionController = require('./transaction')
-controllers.uberRUSHController = require('./uberRUSH')
-controllers.coinbaseController = require('./coinbase')
-module.exports = controllers
+module.exports.userController = require('./user')
+module.exports.productController = require('./product')
+module.exports.categoryController = require('./category')
+module.exports.transactionController = require('./transaction')
+module.exports.uberRUSHController = require('./uberRUSH')
+module.exports.coinbaseController = require('./coinbase')

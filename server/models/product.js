@@ -1,10 +1,11 @@
 const knex = require('../db/knex')
 const bookshelf = require('bookshelf')(knex)
 const ModelBase = require('bookshelf-modelbase')(bookshelf)
-bookshelf.plugin(require('bookshelf-modelbase').pluggable)
+
 const Transaction = require('./transaction')
 
-const Product = ModelBase.extend({
+//Product
+module.exports = ModelBase.extend({
   tableName: 'products',
 
   seller: function() {
@@ -70,4 +71,3 @@ const Product = ModelBase.extend({
     })
   }
 })
-module.exports = Product
