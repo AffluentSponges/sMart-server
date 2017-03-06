@@ -43,21 +43,21 @@ module.exports.deliverNotifications = function(delivery_id, status) {
 };
 
 module.exports.completeTransaction = function(delivery_id) {
-	Transaction.getTransactionInfo(delivery_id)
-	.then(function(transactionData) {
+  Transaction.getTransactionInfo(delivery_id)
+  .then(function(transactionData) {
     var transaction = transactionData.attributes;
     var idem = transaction.id;
     var seller = transactionData.relations.seller.attributes;
     var sellerWalletAddress = seller.wallet_address;
     var product = transactionData.relations.product.attributes;
     var salePrice = Number(product.asking_price);
-		
+
     return coinbaseController.convertCurrency(salePrice)
-		.then(function(btc) {
-		  coinbaseController.sendBTC(idem, sellerWalletAddress, btc);
-		})
+    .then(function(btc) {
+    coinbaseController.sendBTC(idem, sellerWalletAddress, btc);
+    })
     .catch(err => {
       console.log('error:', err)
     })
-	})
+  })
 };
