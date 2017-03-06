@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Button, Dropdown, Divider } from 'semantic-ui-react'
+import { Menu, Button, Dropdown, Divider} from 'semantic-ui-react'
 import { Link } from 'react-router';
 import Search from './Search.jsx'
 
@@ -20,11 +20,14 @@ class Header extends React.Component {
     return (
       <Menu fixed='top'>
         <Menu.Item as={Link} to='/'name='smart' active={activeItem === 'smart'} onClick={this.handleItemClick}>SMart</Menu.Item>
+        <Menu.Item>
+          <Search searchData={this.props.searchData}/>
+        </Menu.Item>
         <Menu.Menu position='right'>
           {this.props.loggedIn ? (
             <Dropdown item text={this.props.appState.user.first_name}>
               <Dropdown.Menu>
-                <Dropdown.Item as={Link} to='/u/1234123'>My Profile</Dropdown.Item>
+                <Dropdown.Item as={Link} to={`/u/${this.props.appState.user.id}/selling`}>My Profile</Dropdown.Item>
                 <Divider />
                 <a href='/logout'><Dropdown.Item onClick={this.props.logout}>Log Out</Dropdown.Item></a>
               </Dropdown.Menu>
@@ -50,9 +53,6 @@ class Header extends React.Component {
 export default Header;
 
 
-        // <Menu.Item>
-          // <Search items={this.props.items}/>
-        // </Menu.Item>
 
 
 // <Menu.Item as={Search}></Menu.Item>

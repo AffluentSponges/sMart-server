@@ -47,6 +47,18 @@ module.exports = ModelBase.extend({
     return this.where({seller_id: seller_id}).fetchAll()
   },
 
+  getSellingBySellerId: function(seller_id) {
+    return this.query({where: {seller_id: seller_id, sold: null}}, {orWhere: {seller_id: seller_id, sold: false}})
+  },
+
+  getSoldBySellerId: function(seller_id) {
+    return
+  },
+
+  getBoughtByBuyerId: function(seller_id) {
+    return
+  },
+
   attemptPurchase: function(product_id, attempted_buyer_id) {
     return this.getWithSeller(product_id)
     .then(product => {
