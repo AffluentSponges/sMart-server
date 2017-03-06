@@ -104,6 +104,9 @@ module.exports.sendBTC = function(idem, sellerAddress, amount) {
   .then(account => {
     return sendBTCAsync(idem, account, sellerAddress, amount)
   })
+  .catch(err => {
+    console.log('error: ', err)
+  })
 }
 
 module.exports.convertCurrency = function(USD) {
