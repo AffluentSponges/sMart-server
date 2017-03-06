@@ -82,7 +82,7 @@ module.exports.quote = function(req, res) {
 
 module.exports.post = function(req, res) {
   var product;
-  console.log('User wants to post this', req.body);
+  //console.log('User wants to post this', req.body);
   Product.create(req.body)
   .then( p => {
     product = p
