@@ -132,7 +132,7 @@ module.exports.webhook = function(req, res) {
   }
   else {
     console.log(req.body)
-    res.send(200)
+    res.sendStatus(200)
   }
 }
 
