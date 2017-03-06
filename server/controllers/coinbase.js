@@ -1,9 +1,9 @@
 require('dotenv').config()
-const uberRUSHController = require('./uberRUSH')
 const {User,
        Product,
        Category,
        Transaction} = require('../models')
+const uberRUSH = require('./uberRUSH')
 
 var Client = require('coinbase').Client;
 var client = new Client({'apiKey': process.env.COINBASE_KEY, 'apiSecret': process.env.COINBASE_SECRET});
@@ -28,7 +28,6 @@ var client = new Client({'apiKey': process.env.COINBASE_KEY, 'apiSecret': proces
 // })
 
 
-controller = {}
 
 
 function getAccountAysnc(wallet) {
@@ -49,14 +48,14 @@ function createAddressAysnc(account) {
   })
 }
 
-controller.createAddress = function() {
+module.exports.createAddress = function() {
   return getAccountAysnc(process.env.COINBASE_BTC_ACCOUNT)
   .then(account => {
     return createAddressAysnc(account)
   })
 }
 
-controller.prunePayload = function(data) {
+module.exports.prunePayload = function(data) {
   return {
     coinbase_address_id: data.data.id,
     amount: data.additional_data.amount.amount,
@@ -65,7 +64,7 @@ controller.prunePayload = function(data) {
   }
 }
 
-controller.acceptPayment = function(data) {
+module.exports.acceptPayment = function(data) {
   var bitcoin_address = data.data.address
   var info = this.prunePayload(data)
   return Product.checkAmount(bitcoin_address, info.amount)
@@ -76,7 +75,7 @@ controller.acceptPayment = function(data) {
         return Transaction.addNewTransaction(product, info)
       })
       .then(transaction => {
-        return uberRUSHController.requestDelivery(transaction.attributes.product_id)
+        return uberRUSH.requestDelivery(transaction.attributes.product_id)
       })
     }
     else {
@@ -86,12 +85,13 @@ controller.acceptPayment = function(data) {
 
 }
 
-function sendBTCAsync (account, sellerAddress, amount) {
+function sendBTCAsync (idem, account, sellerAddress, amount) {
   return new Promise(function(resolve, reject) { 
     account.sendMoney({
       to: sellerAddress,
       amount: amount,
-      currency: 'BTC'
+      currency: 'BTC',
+      idem: idem
     }, function(err, tx) {
       if(err !== null) return reject(err);
       resolve(tx)
@@ -99,14 +99,17 @@ function sendBTCAsync (account, sellerAddress, amount) {
   })
 }
 
-controller.sendBTC = function(sellerAddress, amount) {
+module.exports.sendBTC = function(idem, sellerAddress, amount) {
   return getAccountAysnc(process.env.COINBASE_BTC_ACCOUNT)
   .then(account => {
-    return sendBTCAsync(account, sellerAddress, amount)
+    return sendBTCAsync(idem, account, sellerAddress, amount)
+  })
+  .catch(err => {
+    console.log('error: ', err)
   })
 }
 
-controller.convertCurrency = function(USD) {
+module.exports.convertCurrency = function(USD) {
   return new Promise(function(resolve, reject) { 
     client.getExchangeRates({'currency': 'BTC'}, function(err, rates) {
       resolve((USD / rates.data.rates.USD).toFixed(8))
@@ -115,9 +118,9 @@ controller.convertCurrency = function(USD) {
 }
 
 
-controller.webhook = function(req, res) {
+module.exports.webhook = function(req, res) {
   if(req.body.type === 'wallet:addresses:new-payment') {
-    controller.acceptPayment(req.body)
+    module.exports.acceptPayment(req.body)
     .then(data => {
       if(data.message) {
         // @TODO send a text to the buyer that it didn't go through
@@ -127,6 +130,9 @@ controller.webhook = function(req, res) {
       res.json(data)
     })
   }
+  else {
+    console.log(req.body)
+    res.sendStatus(200)
+  }
 }
 
-module.exports = controller
