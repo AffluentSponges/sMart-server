@@ -136,6 +136,7 @@ controller.webhook = function(req, res) {
   }
 
   if(status === 'completed') {
+    console.log('completed')
     /*
     update associated transaction
       actual_delivery_time_and_date
@@ -184,6 +185,7 @@ controller.webhook = function(req, res) {
   // if(status === 'unknown') {
   //   console.log('status: ', status)
   // }
+  res.send(200)
 }
 
 module.exports = controller

@@ -9,8 +9,8 @@ module.exports.sendSms = function(to, message) {
     // mediaUrl: 'http://www.yourserver.com/someimage.png'
   }, function(err, data) {
     if (err) {
-      // console.error('Message not sent to: ' + to + '\nMessage: ' + message);
-      // console.error(err);
+      console.error('Message not sent to: ' + to + '\nMessage: ' + message);
+      console.error(err);
     } else {
       console.error('Message was sent to: ' + to + '\nMessage: ' + message);
     }

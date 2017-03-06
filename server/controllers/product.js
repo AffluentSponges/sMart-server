@@ -37,6 +37,7 @@ controller.attemptPurchase = function(req, res) {
     return coinbase.convertCurrency(totalPrice)
   })
   .then(bitcoinAmount => {
+    //@TODO ADD THE ACTUAL PRICE TO THE BTC AMOUNT
     if(product.attributes.attempted_buyer_id !== attempted_buyer_id) {
       res.send({
         message: 'Someone already bought this item',

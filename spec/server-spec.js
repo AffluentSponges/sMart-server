@@ -280,7 +280,7 @@ describe('Controllers', function() {
       info.coinbase_transaction_id.should.equal(data.additional_data.transaction.id)
       done()
     })
-    it.only('should trigger the buying process via webhook for new-payment', function(done) {
+    it('should trigger the buying process via webhook for new-payment', function(done) {
       chai.request(server)
       .post('/coinbase_webhook')
       .set('content-type', 'application/json')
@@ -354,14 +354,14 @@ describe('Controllers', function() {
         })
         done();
       })
-      it('Status: "en_route_to_dropoff" should have status 200', function(done) {
+      it.only('Status: "en_route_to_dropoff" should have status 200', function(done) {
         chai.request(server)
         .post('/uber_webhook')
         .set('content-type', 'application/json')
         .send({
           "meta": {
             "status": "en_route_to_dropoff",
-            "resource_id": 1
+            "resource_id": 'a2848f73-28b8-497d-bc06-80870a95b18e'
           }
         })
         .end((err, res) => {
