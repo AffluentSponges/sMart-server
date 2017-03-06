@@ -389,7 +389,7 @@ describe('Controllers', function() {
   })
 
   describe('uberRUSH delivery and coinbase transaction', function(done) {
-    it.only('Should trigger coinbase transaction after successful delivery', function(done) {
+    it('Should trigger coinbase transaction after successful delivery', function(done) {
       chai.request(server)
       .post('/uber_webhook')
       .set('content-type', 'application/json')
@@ -421,7 +421,7 @@ describe('API Routes', function() {
     })
   })
   describe('POST routes', function() {
-    it.only('should insert an item', function(done) {
+    it('should insert an item', function(done) {
       chai.request(server)
       .post('/api/v1/postitem')
       .set('content-type', 'application/x-www-form-urlencoded')
