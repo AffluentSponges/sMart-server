@@ -20,6 +20,9 @@ controller.deliverNotifications = function(delivery_id, status) {
       	var transaction = transactionData.attributes;
 
       	transactionData.set({status: status}).save();
+            twilio.sendSms(seller.phone_number, `S-Mart Alert to ${seller.username}: Your recently sold product, ${product.title}, is ${status.split('_').join(' ')}.\nETA: ${pickupEta}`);
+            twilio.sendSms(buyer.phone_number, `S-Mart Alert to ${buyer.username}: Your recently purchased product, ${product.title}, is ${status.split('_').join(' ')}.\nETA: ${dropoffEta}`);          
+
 
       	// uber.get(`${delivery_id}`)
       	// .then(function(res) {
