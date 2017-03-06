@@ -82,6 +82,7 @@ module.exports.quote = function(req, res) {
 
 module.exports.post = function(req, res) {
   var product;
+  //console.log('User wants to post this', req.body);
   Product.create(req.body)
   .then( p => {
     product = p
@@ -99,10 +100,24 @@ module.exports.post = function(req, res) {
 }
 
 module.exports.getUserProducts = function(req, res) {
-  Product.getAllBySellerId(req.query.seller_id)
-  .then(products => {
-    res.json(products)
-  })
+  if (req.query.condition === undefined) {
+    Product.getAllBySellerId(req.query.user_id)
+    .then(products => {
+      res.json(products)
+    })
+  } else if (req.query.condition === 'selling') {
+    console.log('selling', req.query)
+    Product.getAllBySellerId(req.query.user_id)
+    .then(products => {
+      res.json(products)
+    })
+  } else if (req.query.condition === 'sold') {
+    console.log('sold', req.query)
+    res.end();
+  } else if (req.query.condition === 'bought') {
+    console.log('bought', req.query)
+    res.end();
+  } 
 };
 
 // var cnt = 0;

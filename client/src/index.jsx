@@ -29,7 +29,8 @@ class App extends React.Component {
       categories: [],
       currentCategory:'',
       items: [],
-      currentCategoryItems:[]
+      currentCategoryItems:[],
+      searchData: []
     }
     this.currentCategoryHandler = this.currentCategoryHandler.bind(this);
     // this.logout = this.logout.bind(this);
@@ -70,9 +71,19 @@ class App extends React.Component {
 
     axios.get('/api/v1/products')
     .then(function (response) {
-      //console.log(response.data)
+      console.log(response.data);
       _this.setState({items: response.data})
-      //console.log('this.state.items', _this.state.items);
+      var searchData = response.data.map(({title, asking_price, description, image_links, id}) => {
+        return {
+          title: title,
+          description: description.slice(0, 15) + '...',
+          image: image_links[0],
+          price: "$" + asking_price,
+          id: id,
+          childKey: id
+        };
+      });
+      _this.setState({searchData: searchData});
     })
     .catch(function (error) {
       console.log(error);
@@ -109,7 +120,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Header appState={this.state} items={this.state.items} loggedIn={this.state.loggedIn} logout={this.logout} axiosSignin={this.axiosSignin}/>
+        <Header appState={this.state} searchData={this.state.searchData} loggedIn={this.state.loggedIn} logout={this.logout} axiosSignin={this.axiosSignin}/>
         <div className='space'></div>
         {React.cloneElement(this.props.children, {
           items: this.state.items,
@@ -129,7 +140,7 @@ ReactDOM.render(
       <Route path="signup" component={Signup}/>
       <Route path="x/:category" component={Category}/>
       <Route path="i/:postId" component={itemDetail}/>
-      <Route path="u/:userId" component={Profile}/>      
+      <Route path="u/:userId/:activeItem" component={Profile}/>      
       <Route path="post" component={PostItem}/>
       <Route path="account-edit" component={AccountEdit}/>
     </Route>
