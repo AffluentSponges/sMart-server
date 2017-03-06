@@ -34,6 +34,7 @@ controller.setContactInfo = (req, res) => {
       model.set("address_2", req.body.address_2);
       model.set("postal_code", req.body.postal_code);
       model.set("phone_number", req.body.phone_number);
+      model.set("wallet_address", req.body.wallet_address);
       model.save()
       res.json(model)
   });

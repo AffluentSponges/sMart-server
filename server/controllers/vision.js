@@ -19,13 +19,17 @@ controller.getImageTitleAndCategory = (req, res) => {
     // console.log(response.data)
     Tag.where({tag: response.data.description.tags[0]}).fetch()
     .then(tags => {
-      var category = tags.serialize();
-      var data = {
-        tags: response.data.description.tags,
-        captions: response.data.description.captions[0].text,
-        category_id: category.category_id
+      if (tags) {
+        var category = tags.serialize();
+        var data = {
+          tags: response.data.description.tags,
+          captions: response.data.description.captions[0].text,
+          category_id: category.category_id
+        }
+        res.json(data);
+      } else {
+        res.end();
       }
-      res.json(data);
     })
   })
   .catch(function (error) {

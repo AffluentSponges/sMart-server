@@ -1,15 +1,8 @@
 import _ from 'lodash'
-import faker from 'faker'
 import React, { Component } from 'react'
+import { browserHistory } from 'react-router'
 import { Search, Grid, Header } from 'semantic-ui-react'
 
-// const source = _.times(5, () => ({
-//   title: faker.company.companyName(),
-//   description: faker.company.catchPhrase(),
-//   image: faker.internet.avatar(),
-//   price: faker.finance.amount(0, 100, 2, '$'),
-// }))
-  
 export default class SearchExampleStandard extends Component {
   constructor(props) {
     super(props);
@@ -26,6 +19,7 @@ export default class SearchExampleStandard extends Component {
 
   handleResultSelect(e, result) {
     this.setState({ value: result.title })
+    console.log(this.state);
   }
 
   handleSearchChange(e, value) {
@@ -39,22 +33,25 @@ export default class SearchExampleStandard extends Component {
 
       this.setState({
         isLoading: false,
-        results: _.filter(this.props.items, isMatch),
+        results: _.filter(this.props.searchData, isMatch),
       })
     }, 500)
   }
 
+  onResultSelect(e, item) {
+    browserHistory.push(`/i/${item.id}`);
+  }
+
   render() {
     const { isLoading, value, results } = this.state
-
     return (
-
           <Search
             loading={isLoading}
             onResultSelect={this.handleResultSelect.bind(this)}
             onSearchChange={this.handleSearchChange.bind(this)}
             results={results}
             value={value}
+            onResultSelect={this.onResultSelect.bind(this)}
             {...this.props}
           />
     )

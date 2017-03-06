@@ -262,6 +262,7 @@ describe('Controllers', function() {
       })
     })
     it('should create a new btc wallet address', function(done) {
+      this.timeout(5000)
       coinbaseController.createAddress()
       .then(address => {
         address.address.should.be.a('string')
@@ -281,6 +282,7 @@ describe('Controllers', function() {
       done()
     })
     it('should trigger the buying process via webhook for new-payment', function(done) {
+      this.timeout(5000);
       chai.request(server)
       .post('/coinbase_webhook')
       .set('content-type', 'application/json')
@@ -503,7 +505,7 @@ describe('API Routes', function() {
     })
     it('should return all products of a seller', function(done) {
       chai.request(server)
-      .get('/api/v1/getuserproducts?seller_id=1')
+      .get('/api/v1/getuserproducts?user_id=1')
       .end((err, res) => {
         res.should.have.status(200)
         res.should.be.json
@@ -512,6 +514,31 @@ describe('API Routes', function() {
           res.body[i].seller_id.should.equal(1)
         }
         res.body[0].should.have.property('category_id')
+        done()
+      })
+    })
+    it('should return only selling products of a seller', function(done) {
+      chai.request(server)
+      .get('/api/v1/getuserproducts?user_id=1&condition=selling')
+      .end((err, res) => {
+        for(var i = 0; i < res.body.length; i++) {
+          res.body[i].seller_id.should.equal(1);
+          res.body[i].sold.should.equal(false);
+        }
+        done()
+      })
+    })
+    it('should return only sold products of a seller', function(done) {
+      chai.request(server)
+      .get('/api/v1/getuserproducts?user_id=1&condition=sold')
+      .end((err, res) => {
+        done()
+      })
+    })
+    it('should return only bought products of a buyer', function(done) {
+      chai.request(server)
+      .get('/api/v1/getuserproducts?user_id=1&condition=bought')
+      .end((err, res) => {
         done()
       })
     })

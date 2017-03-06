@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import { Dimmer, Loader, Grid, Image, Segment, Divider, Button, Container, Header, Icon, Modal, Input } from 'semantic-ui-react'
 import axios from 'axios';
 import ReactSVG from 'react-svg'
@@ -47,7 +47,6 @@ class ItemDetail extends React.Component {
       },
       seller: '',
       isPaid: false,
-      wallet: '13W7JGnycCzLLWYg2dqJw8ZcnLFtjh7wsU',
       currentBTC: ''
     }
     this.checkPayment = this.checkPayment.bind(this);
@@ -136,15 +135,19 @@ class ItemDetail extends React.Component {
   }
 
   render() {
-    const qr_svg = qr.svgObject(this.state.wallet).path;
+    console.log(this.state.thisProduct.bitcoin_address);
+    var qr_svg = '';
+    if (this.state.thisProduct.bitcoin_address) {
+      qr_svg = qr.svgObject(this.state.thisProduct.bitcoin_address).path; 
+    }
     const bitcoin_address = this.state.thisProduct.bitcoin_address;
     var dimmer = !this.state.uber.dropoff_eta;
     const isPaid = this.state.isPaid;
     var qrButton;
 
     if (isPaid) {
-      qrButton = <Button color='green'>
-                   Your Payment confirmed
+      qrButton = <Button as={Link} to={`/u/${this.props.state.user.id}/delivery`} color='green'>
+                   Your Payment confirmed. Click to see delivery status.
                  </Button>
     } else {
       qrButton = <Button color='grey'>

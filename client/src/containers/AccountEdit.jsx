@@ -2,6 +2,9 @@ import React from 'react';
 import { browserHistory } from 'react-router'
 import { Header, Icon, Image, Button, Container, Menu, Segment, Divider, Grid, Form, Message } from 'semantic-ui-react'
 import axios from 'axios';
+import WAValidator from 'wallet-address-validator';
+ 
+
 
 class AccountEdit extends React.Component {
   constructor(props) {
@@ -14,25 +17,24 @@ class AccountEdit extends React.Component {
   }
 
   handleSubmit(e, { formData }) {
+    var context = this;
     e.preventDefault()
-    //this.setState({ formData })
-    // var data = {};
-    // data.address =
-    // data.address_2 = 
-    // data.phone = 
-    console.log(formData);
-    console.log(this.props.state.user.id);
-    formData.id = this.props.state.user.id;
-    axios.post('/api/v1/postcontactinfo', formData)
-      .then(function (response) {
-        console.log('response', response);
-        // console.log(response.data.toString());
-        // console.log(typeof '/i/' + response.data.toString())
-        browserHistory.push('/u/1234123');
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    var valid = WAValidator.validate(formData.wallet_address, 'bitcoin');
+    if(valid) {
+      console.log('This is a valid address');
+      formData.id = this.props.state.user.id;
+      axios.post('/api/v1/postcontactinfo', formData)
+        .then(function (response) {
+          console.log('response.data', response.data);
+          browserHistory.push(`/u/${context.props.state.user.id}/selling`);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    } else {
+      window.alert('BITCOIN WALLET ADDRESS IS INVALID')
+      console.log('Address INVALID');
+    }
   }
 
   handleChange(e, { value }) {
@@ -60,11 +62,14 @@ class AccountEdit extends React.Component {
           <Grid.Column width={8}>
             <Form onSubmit={this.handleSubmit}>
               <Form.Group widths='equal'>
-                <Form.Input label='Address 1' name='address' placeholder='922 folsom' />
+                <Form.Input label='Address 1' name='address' placeholder='922 folsom' required/>
                 <Form.Input label='Address2' name='address_2' placeholder='#153' />
-                <Form.Input label='Zip' name='postal_code' placeholder='zip' />
+                <Form.Input label='Zip' name='postal_code' placeholder='zip' required/>
               </Form.Group>
-                <Form.Input label='PHONE' name='phone_number' placeholder='415-4324-2345' />
+              <Form.Group widths='equal'>
+                <Form.Input label='BITCOIN WALLET ADDRESS' name='wallet_address' placeholder='1DRjzNVA8CsLAL74TdsZvk6ezdvPPtixhW' required/>
+                <Form.Input label='PHONE' name='phone_number' placeholder='415-4324-2345' required/>
+              </Form.Group>
               <Button primary type='submit'>Save</Button>
             </Form>
           </Grid.Column>       
