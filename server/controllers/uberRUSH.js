@@ -1,5 +1,4 @@
 const {Product, Transaction, User} = require('../models')
-const coinbaseController = require('./coinbase');
 const transactionController = require('./transaction')
 const UberRUSH = require('uber-rush')
 const UberRUSHClient = UberRUSH.createClient({
@@ -8,9 +7,9 @@ const UberRUSHClient = UberRUSH.createClient({
     sandbox: true // No couriers will actually be called if set
 })
 
-var controller = {}
+// var controller = {}
 
-controller.createDeliveryObj = function(productWithRelatedData, potentialBuyer) {
+module.exports.createDeliveryObj = function(productWithRelatedData, potentialBuyer) {
   p = JSON.parse(JSON.stringify(productWithRelatedData))
   p.buyer = !!potentialBuyer ? JSON.parse(JSON.stringify(potentialBuyer)) : p.buyer
 
@@ -59,7 +58,7 @@ controller.createDeliveryObj = function(productWithRelatedData, potentialBuyer) 
   return UberRUSHClient.createDelivery(deliveryObj)
 }
 
-controller.quote = function(product, buyer) {
+module.exports.quote = function(product, buyer) {
   var delivery = this.createDeliveryObj(product, buyer)
   //create quote from req
   return delivery.quote()
@@ -78,10 +77,10 @@ controller.quote = function(product, buyer) {
   })
 }
 
-controller.requestDelivery = function(product_id) {
+module.exports.requestDelivery = function(product_id) {
   return Product.getWithAllRelated(product_id)
   .then(productWithRelatedData => {
-    var delivery = controller.createDeliveryObj(productWithRelatedData)
+    var delivery = module.exports.createDeliveryObj(productWithRelatedData)
     return delivery.confirm()
   })
   .then(confirmedDelivery => {
@@ -95,46 +94,34 @@ controller.requestDelivery = function(product_id) {
   })
 }
 
-controller.webhook = function(req, res) {
+module.exports.webhook = function(req, res) {
   // console.log('received uber webhook', req.body)
   var statusChange = req.body.event_type;
   var status = req.body.meta.status
   var delivery_id = req.body.meta.resource_id
 
   if(status === 'en_route_to_pickup') {
+    transactionController.deliverNotifications(delivery_id, status);
     /*
     update associated transaction
       est_pickup_time_and_date
       est_deliver_time_and_date
-
-    notify seller
-
-    notify buyer
     */
-    transactionController.deliverNotifications(delivery_id, status);
   }
-
   if(status === 'at_pickup') {
-    //notify seller
     transactionController.deliverNotifications(delivery_id, status);
   }
-
   if(status === 'en_route_to_dropoff') {
     /*
     update associated transaction
       actual_pickup_time_and_date
       est_deliver_time_and_date
-
-    notify buyer
     */
     transactionController.deliverNotifications(delivery_id, status);
   }
-
   if(status === 'at_dropoff') {
-    //notify buyer
     transactionController.deliverNotifications(delivery_id, status);
   }
-
   if(status === 'completed') {
     console.log('completed')
     /*
@@ -144,15 +131,7 @@ controller.webhook = function(req, res) {
   
     update associated product
       sold => true
-
-    charge buyer
-    pay seller
-
-
-    //notify seller
-
     */
-
     transactionController.completeTransaction(delivery_id);
 
     transactionController.deliverNotifications(delivery_id, status);
@@ -187,5 +166,3 @@ controller.webhook = function(req, res) {
   // }
   res.sendStatus(200)
 }
-
-module.exports = controller

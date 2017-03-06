@@ -2,23 +2,22 @@ const Product = require('../models/product')
 const {User} = require('../models')
 const uberRUSH = require('./uberRUSH')
 const coinbase = require('./coinbase')
-var controller = {}
 
-controller.getAll = function (req, res) {
+module.exports.getAll = function (req, res) {
   Product.findAll()
   .then(products => {
     res.json(products)
   })
 }
 
-controller.getOne = function (req, res) {
+module.exports.getOne = function (req, res) {
   Product.findById(req.query.id)
   .then(product => {
     res.json(product)
   })
 }
 
-controller.attemptPurchase = function(req, res) {
+module.exports.attemptPurchase = function(req, res) {
   const product_id = req.body.product_id
   const attempted_buyer_id = req.body.buyer_id
   
@@ -53,7 +52,7 @@ controller.attemptPurchase = function(req, res) {
 };
 
 
-controller.quote = function(req, res) {
+module.exports.quote = function(req, res) {
   const product_id = req.query.product_id
   const buyer_id = req.query.buyer_id
   if (req.query.buyer_id === undefined) {
@@ -81,7 +80,7 @@ controller.quote = function(req, res) {
   })
 }
 
-controller.post = function(req, res) {
+module.exports.post = function(req, res) {
   var product;
   Product.create(req.body)
   .then( p => {
@@ -99,7 +98,7 @@ controller.post = function(req, res) {
   })
 }
 
-controller.getUserProducts = function(req, res) {
+module.exports.getUserProducts = function(req, res) {
   Product.getAllBySellerId(req.query.seller_id)
   .then(products => {
     res.json(products)
@@ -107,7 +106,7 @@ controller.getUserProducts = function(req, res) {
 };
 
 // var cnt = 0;
-controller.isPaid = function(req, res) {
+module.exports.isPaid = function(req, res) {
   Product.findById(req.query.id)
   .then(product => {
     var thisProduct = product.serialize();
@@ -125,5 +124,3 @@ controller.isPaid = function(req, res) {
     // cnt++;
   })
 };
-
-module.exports = controller

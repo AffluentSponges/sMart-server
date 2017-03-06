@@ -7,19 +7,18 @@ const axios = require('axios');
 //   headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
 // });
 const coinbaseController = require('./coinbase');
-const uberRUSHController = require('./uberRUSH');
 
-var controller = {};
+// var controller = {};
 
-controller.deliverNotifications = function(delivery_id, status) {
-	Transaction.getTransactionInfo(delivery_id)
-    .then(function(transactionData) {
-      	var product = transactionData.relations.product.attributes;
-      	var seller = transactionData.relations.seller.attributes;
-      	var buyer = transactionData.relations.buyer.attributes;
-      	var transaction = transactionData.attributes;
+module.exports.deliverNotifications = function(delivery_id, status) {
+  Transaction.getTransactionInfo(delivery_id)
+  .then(function(transactionData) {
+    var product = transactionData.relations.product.attributes;
+    var seller = transactionData.relations.seller.attributes;
+    var buyer = transactionData.relations.buyer.attributes;
+    var transaction = transactionData.attributes;
 
-      	transactionData.set({status: status}).save();
+    transactionData.set({status: status}).save();
 
         // console.log(seller.phone_number)
         // console.log(buyer.phone_number)
@@ -43,7 +42,7 @@ controller.deliverNotifications = function(delivery_id, status) {
     });
 };
 
-controller.completeTransaction = function(delivery_id) {
+module.exports.completeTransaction = function(delivery_id) {
 	Transaction.getTransactionInfo(delivery_id)
 	.then(function(transactionData) {
       	var transaction = transactionData.attributes;
@@ -59,5 +58,3 @@ controller.completeTransaction = function(delivery_id) {
 		})
 	})
 };
-
-module.exports = controller;
