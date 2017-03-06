@@ -32,7 +32,7 @@ module.exports.attemptPurchase = function(req, res) {
     return uberRUSH.quote(product, buyer)
   })
   .then(delivery => {
-    var totalPrice = parseInt(product.attributes.asking_price) + delivery.uber_delivery_price
+    var totalPrice = parseFloat(product.attributes.asking_price) + delivery.uber_delivery_price
     return coinbase.convertCurrency(totalPrice)
   })
   .then(bitcoinAmount => {
