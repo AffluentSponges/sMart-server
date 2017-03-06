@@ -164,6 +164,7 @@ describe('Model Methods (Insert/Update)', function() {
 })
 
 describe('Controllers', function() {
+  this.timeout(5000)
   describe('UberRUSH', function() {
     it('should return an Uber delivery object from a product with a buyer', function(done) {
       Product.getWithAllRelated(4)
