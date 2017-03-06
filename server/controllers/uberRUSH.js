@@ -164,5 +164,3 @@ module.exports.webhook = function(req, res) {
   //   console.log('status: ', status)
   // }
 }
-
-// module.exports = controller

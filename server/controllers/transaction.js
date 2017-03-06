@@ -55,5 +55,3 @@ module.exports.completeTransaction = function(delivery_id) {
 		})
 	})
 };
-
-// module.exports = controller;
