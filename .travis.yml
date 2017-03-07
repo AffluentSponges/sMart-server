@@ -4,7 +4,7 @@ node_js:
 - stable
 before_script:
 - psql -c 'create database smart_server_test;' -U postgres
-- psql -c 'grant all privileges on database smart_server_dev to BrennerSpear;' -U postgres
+- psql -c 'grant all privileges on database smart_server_test to BrennerSpear;' -U postgres
 script:
 - npm test
 after_success:
