@@ -2,7 +2,7 @@ import React from 'react';
 import { Header, Icon, Image, Button, Container, Menu, Segment, Item } from 'semantic-ui-react'
 import { Link } from 'react-router';
 import axios from 'axios';
-
+import _ from 'lodash'
 
 
 const ItemInProfile = (props) => (
@@ -11,7 +11,7 @@ const ItemInProfile = (props) => (
     <Item.Image size='tiny' src={props.item.image_links[0]} />
 
     <Item.Content>
-      <Item.Header as='a'>{`Status: ${props.activeItem}`}</Item.Header>
+      <Item.Header as='a'>{`Status: ${props.item.status}`}</Item.Header>
       <Item.Meta>{props.item.title}</Item.Meta>
       <Item.Extra>Additional Details</Item.Extra>
     </Item.Content>
@@ -52,12 +52,14 @@ class Profile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeItem: 'delivery',
+      activeItem: 'selling',
       delivery: [],
       selling: [],
       sold: [],
-      bought: []
+      bought: [],
+      intervalID: []
     };
+    this.getDeliveryItems = this.getDeliveryItems.bind(this);
   }
 
   handleItemClick = (e, { name }) => {
@@ -66,7 +68,6 @@ class Profile extends React.Component {
   }
 
   componentDidMount() {
-    console.log('Profile componentDidMount')
     var context = this;
     this.setState({ activeItem: this.props.params.activeItem });
     console.log(context.props.state.user.id, 'selling')
@@ -78,11 +79,63 @@ class Profile extends React.Component {
       })
       .then(function (response) {
         console.log(response.data);
-        context.setState({selling: response.data})
+        var data = response.data.map((product) => {
+          var item = product;
+          item.status = 'selling'
+          return item;
+        })
+        context.setState({selling: data})
       })
       .catch(function (error) {
         console.log(error);
       });
+      this.getDeliveryItems();
+  }
+
+  getDeliveryItems() {
+    var context = this;
+    var intervalID;
+    axios.get('/api/v1/getuserproducts', {
+        params: {
+          user_id: context.props.state.user.id,
+          condition: 'delivery'
+        }
+      })
+      .then(function (response) {
+        var data = response.data.map((transaction) => {
+          var item = transaction.product;
+          item.status = transaction.status;
+          return item;
+        });
+        context.setState({delivery: data})
+        intervalID = window.setInterval(pulling, 2000);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    var pulling = () => {
+      axios.get('/api/v1/getuserproducts', {
+          params: {
+            user_id: context.props.state.user.id,
+            condition: 'delivery'
+          }
+        })
+        .then(function (response) {
+          var data = response.data.map((transaction) => {
+            var item = transaction.product;
+            item.status = transaction.status;
+            return item;
+          });
+          context.setState({delivery: data})
+          if (_.every(data, {status: 'completed'})) {
+            console.log('Every items are delivered!')
+            clearInterval(intervalID);
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }       
   }
 
   render() {
