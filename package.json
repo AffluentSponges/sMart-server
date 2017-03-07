@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "webpack --config webpack.config.js --watch | nodemon server.js",
-    "build": "webpack --config webpack.config.js --watch",
+    "build": "webpack --config webpack.config.js",
     "local": "nodemon server.js",
     "test": "mocha --bail spec/server-spec.js",
     "init-db": "node ./server/db/script.js init",
