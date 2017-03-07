@@ -126,7 +126,7 @@ module.exports.webhook = function(req, res) {
   var delivery_id = req.body.meta.resource_id
 
   if(onTrack.includes(status)) {
-    Transaction.upsertByDeliveryId(delivery_id, {status: status})
+    Transaction.updateByDeliveryId(delivery_id, {status: status})
     .then(transaction => {
       twilio.updateSeller(transaction)
       twilio.updateBuyer(transaction)
@@ -136,7 +136,7 @@ module.exports.webhook = function(req, res) {
   if(status === 'completed') {
     console.log('completed')
 
-    Transaction.upsertByDeliveryId(delivery_id, {status: status})
+    Transaction.updateByDeliveryId(delivery_id, {status: status})
     .then(transaction => {
       twilio.updateSeller(transaction)
       twilio.updateBuyer(transaction)

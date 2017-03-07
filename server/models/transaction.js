@@ -39,12 +39,12 @@ module.exports = ModelBase.extend({
     })
   },
 
-  updateByProductId: function(product_id, options) {
-    return this.upsert({product_id: product_id}, options)
+  updateByProductId: function(product_id, attributesObj) {
+    return this.upsert({product_id: product_id}, attributesObj)
   },
 
-  upsertByDeliveryId: function(delivery_id, options) {
-    return this.upsert({delivery_id: delivery_id}, options, {withRelated: ['seller', 'buyer', 'product']})
+  updateByDeliveryId: function(delivery_id, attributesObj) {
+    return this.upsert({uber_delivery_id: delivery_id}, attributesObj, {withRelated: ['seller', 'buyer', 'product']})
   },
 
   getByDeliveryId: function(delivery_id) {

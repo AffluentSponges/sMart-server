@@ -14,7 +14,7 @@ seedData.usersArray = [
     state: 'CA',
     country: 'US',
     postal_code: '94117',
-    phone_number: '301-520-1246',
+    phone_number: '971-533-5883',
     preferred_time: '16:30:00 PST'
   },
   {
@@ -243,12 +243,12 @@ seedData.productArray = [
   {
     id: 7,
     seller_id: 1,
-    buyer_id: null,
+    buyer_id: 4,
     bitcoin_address: '',
     category_id: 2,
     title: 'long sleeve shirt',
     description: 'Lorem ipsum dolor sit amet, an cum graecis concludaturque. Nam habeo dictas ex, harum officiis incorrupte in eum. Sint tacimates vis id, error ludus torquatos eam ne, populo oporteat voluptaria at duo. Mea antiopam neglegentur ei, in quo cibo nonumy, congue impetus suavitate quo ea. Ex mea primis numquam periculis, meis labitur fabulas no nec, est mediocrem pertinacia no.',
-    asking_price: 12.50,
+    asking_price: .45,
     address: '400 baker st',
     postal_code: '94117',
     // preferred_time_and_date: 'February 26 20:30:00 2017 PST',
@@ -285,6 +285,14 @@ seedData.transactionArray = [
     sale_price: .1,
     status: 'buyer_paid',
     uber_delivery_id: '295e895d-5bf7-4989-bd01-fdc7aaf9a3da'
+  },
+  {
+    id: 2,
+    buyer_id: 4,
+    product_id: 7,
+    sale_price: .45,
+    status: 'buyer_paid',
+    uber_delivery_id: 'fdc7aaf9a3da-5bf7-4989-bd01-295e895d'
   }
 ]
 

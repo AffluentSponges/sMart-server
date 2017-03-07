@@ -161,15 +161,56 @@ describe('Model Methods (Insert/Update)', function() {
         done()
       })
     })
-    // it('should update a transaction by delivery_id', function(done) {
-    //   const deliveryId = '295e895d-5bf7-4989-bd01-fdc7aaf9a3da'
+    it('should update a transaction by delivery_id', function(done) {
+      const deliveryId = '295e895d-5bf7-4989-bd01-fdc7aaf9a3da'
 
-    // })
+      Transaction.updateByDeliveryId(deliveryId, {status: 'en_route_to_pickup'})
+      .then(transaction => {
+        var t = transaction.serialize()
+        t.status.should.equal('en_route_to_pickup')
+        t.seller.username.should.equal('daniel-test')
+        t.buyer.username.should.equal('greg-test')
+        t.product.title.should.equal('beanie')
+        done()
+      })
+    })
   })
 })
 
 describe('Controllers', function() {
   this.timeout(5000)
+  describe('Twilio', function() {
+    it('should send a text to the seller of a transaction', function(done) {
+      Transaction.getWithAllRelated(2)
+      .then(transaction => {
+        return twilioController.updateSeller(transaction)
+      })
+      .then(data => {
+        data.account_sid.should.equal(process.env.TWILIO_ACCOUNT_SID)
+        should.equal(data.error_code, null)
+        done()
+      })
+      .catch(err => {
+        console.log('it broke')
+        console.log(err)
+      })
+    })
+    it('should send a text to the buyer of a transaction', function(done) {
+      Transaction.getWithAllRelated(2)
+      .then(transaction => {
+        return twilioController.updateBuyer(transaction)
+      })
+      .then(data => {
+        data.account_sid.should.equal(process.env.TWILIO_ACCOUNT_SID)
+        should.equal(data.error_code, null)
+        done()
+      })
+      .catch(err => {
+        console.log('it broke')
+        console.log(err)
+      })
+    })
+  })
   describe('UberRUSH', function() {
     it('should return an Uber delivery object from a product with a buyer', function(done) {
       Product.getWithAllRelated(4)
