@@ -1,4 +1,5 @@
 const Product = require('../models/product')
+const Transaction = require('../models/transaction')
 const {User} = require('../models')
 const uberRUSH = require('./uberRUSH')
 const coinbase = require('./coinbase')
@@ -105,9 +106,15 @@ module.exports.getUserProducts = function(req, res) {
     .then(products => {
       res.json(products)
     })
+  } else if (req.query.condition === 'delivery') {
+    Transaction.getItemsOnDelivery(req.query.user_id)
+    .then(products => {
+      console.log('client is asking delivery status');
+      res.json(products)
+    })
   } else if (req.query.condition === 'selling') {
     console.log('selling', req.query)
-    Product.getAllBySellerId(req.query.user_id)
+    Product.getSellingBySellerId(req.query.user_id)
     .then(products => {
       res.json(products)
     })
