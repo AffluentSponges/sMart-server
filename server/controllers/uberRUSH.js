@@ -1,5 +1,7 @@
 const {Product, Transaction, User} = require('../models')
 const transactionController = require('./transaction')
+const twilio = require('./twilio')
+const coinbase = require('./coinbase') 
 const UberRUSH = require('uber-rush')
 const UberRUSHClient = UberRUSH.createClient({
     client_secret: process.env.UBER_RUSH_SECRET,
@@ -94,75 +96,65 @@ module.exports.requestDelivery = function(product_id) {
   })
 }
 
+
+const onTrack = [
+  'en_route_to_pickup',
+  'at_pickup',
+  'en_route_to_dropoff',
+  'at_dropoff'
+]
+
+const problems = [
+  'no_couriers_available',
+  'client_canceled',
+  'returning',
+  'returned',
+  'unable_to_return',
+  'unable_to_deliver',
+  'unknown'
+]
+
+const other = [
+  'processing',
+  'scheduled',
+]
+
 module.exports.webhook = function(req, res) {
   // console.log('received uber webhook', req.body)
   var statusChange = req.body.event_type;
   var status = req.body.meta.status
   var delivery_id = req.body.meta.resource_id
 
-  if(status === 'en_route_to_pickup') {
-    transactionController.deliverNotifications(delivery_id, status);
-    /*
-    update associated transaction
-      est_pickup_time_and_date
-      est_deliver_time_and_date
-    */
+  if(onTrack.includes(status)) {
+    Transaction.upsertByDeliveryId(delivery_id, {status: status})
+    .then(transaction => {
+      twilio.updateSeller(transaction)
+      twilio.updateBuyer(transaction)
+    })
   }
-  if(status === 'at_pickup') {
-    transactionController.deliverNotifications(delivery_id, status);
-  }
-  if(status === 'en_route_to_dropoff') {
-    /*
-    update associated transaction
-      actual_pickup_time_and_date
-      est_deliver_time_and_date
-    */
-    transactionController.deliverNotifications(delivery_id, status);
-  }
-  if(status === 'at_dropoff') {
-    transactionController.deliverNotifications(delivery_id, status);
-  }
+
   if(status === 'completed') {
     console.log('completed')
-    /*
-    update associated transaction
-      actual_delivery_time_and_date
-      est_deliver_time_and_date
-  
-    update associated product
-      sold => true
-    */
-    transactionController.completeTransaction(delivery_id);
 
-    transactionController.deliverNotifications(delivery_id, status);
+    Transaction.upsertByDeliveryId(delivery_id, {status: status})
+    .then(transaction => {
+      twilio.updateSeller(transaction)
+      twilio.updateBuyer(transaction)
+
+      const t = transaction.serialize()
+      const idem = t.delivery_id
+      const sellerWallet = t.seller.wallet_address
+      const amount = t.sale_price_btc 
+      return coinbase.sendBTC(idem, sellerWallet, amount)
+    })
+    .then(response => {
+      console.log(response)
+    })
   }
 
-  // if(status === 'processing') {
-  //   console.log('status: ', req.body)
-  // }
-  // if(status === 'no_couriers_available') {
-  //   console.log('status: ', status) 
-  // }
-  // if(status === 'scheduled') {
-  //   console.log('status: ', status)
-  // }
-  // if(status === 'client_canceled') {
-  //   console.log('status: ', status)
-  // }
-  // if(status === 'returning') {
-  //   console.log('status: ', status)
-  // }
-  // if(status === 'returned') {
-  //   console.log('status: ', status)
-  // }
-  // if(status === 'unable_to_return') {
-  //   console.log('status: ', status)
-  // }
-  // if(status === 'unable_to_deliver') {
-  //   console.log('status: ', status)
-  // }
-  // if(status === 'unknown') {
-  //   console.log('status: ', status)
-  // }
+  if(problems.includes(status) || other.includes(status)) {
+    console.log('UberRUSH is ', status)
+  }
+
   res.sendStatus(200)
 }

@@ -11,7 +11,8 @@ const {userController,
        categoryController,
        transactionController,
        uberRUSHController,
-       coinbaseController} = require('../server/controllers')
+       coinbaseController,
+       twilioController} = require('../server/controllers')
 const {User,
        Product,
        Category,
@@ -152,7 +153,7 @@ describe('Model Methods (Insert/Update)', function() {
         transaction.buyer_id.should.equal(product.buyer_id)
         transaction.product_id.should.equal(product.id)
         transaction.sale_price.should.equal(product.asking_price)
-        transaction.status.should.equal('received_payment')
+        transaction.status.should.equal('received_payment') //@TODO why this status? why not a status from uber?
         transaction.coinbase_address_id.should.equal(info.coinbase_address_id)
         transaction.sale_price_btc.should.equal(info.amount)
         transaction.currency.should.equal(info.currency)
@@ -160,6 +161,10 @@ describe('Model Methods (Insert/Update)', function() {
         done()
       })
     })
+    // it('should update a transaction by delivery_id', function(done) {
+    //   const deliveryId = '295e895d-5bf7-4989-bd01-fdc7aaf9a3da'
+
+    // })
   })
 })
 
@@ -331,54 +336,6 @@ describe('Controllers', function() {
         .send({
           "meta": {
             "status": "en_route_to_pickup",
-            "resource_id": 1
-          }
-        })
-        .end((err, res) => {
-          res.should.have.status(200)
-          res.body.should.be.a('object')
-        })
-        done();
-      })
-      it('Status: "at_pickup" should have status 200', function(done) {
-        chai.request(server)
-        .post('/uber_webhook')
-        .set('content-type', 'application/json')
-        .send({
-          "meta": {
-            "status": "at_pickup",
-            "resource_id": 1
-          }
-        })
-        .end((err, res) => {
-          res.should.have.status(200)
-          res.body.should.be.a('object')
-        })
-        done();
-      })
-      it('Status: "en_route_to_dropoff" should have status 200', function(done) {
-        chai.request(server)
-        .post('/uber_webhook')
-        .set('content-type', 'application/json')
-        .send({
-          "meta": {
-            "status": "en_route_to_dropoff",
-            "resource_id": 1
-          }
-        })
-        .end((err, res) => {
-          res.should.have.status(200)
-          res.body.should.be.a('object')
-        })
-        done();
-      })
-      it('Status: "at_dropoff" should have status 200', function(done) {
-        chai.request(server)
-        .post('/uber_webhook')
-        .set('content-type', 'application/json')
-        .send({
-          "meta": {
-            "status": "at_dropoff",
             "resource_id": 1
           }
         })

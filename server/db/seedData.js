@@ -284,7 +284,7 @@ seedData.transactionArray = [
     product_id: 4,
     sale_price: .1,
     status: 'buyer_paid',
-    uber_delivery_id: 1
+    uber_delivery_id: '295e895d-5bf7-4989-bd01-fdc7aaf9a3da'
   }
 ]
 

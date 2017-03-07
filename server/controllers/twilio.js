@@ -1,7 +1,6 @@
-require('dotenv').config();
 const client = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
-module.exports.sendSms = function(to, message) {
+var sendSms = function(to, message) {
   client.messages.create({
     body: message,
     to: to,
@@ -9,11 +8,25 @@ module.exports.sendSms = function(to, message) {
     // mediaUrl: 'http://www.yourserver.com/someimage.png'
   }, function(err, data) {
     if (err) {
-      console.error('Message not sent to: ' + to + '\nMessage: ' + message);
       console.error(err);
-    } else {
-      console.error('Message was sent to: ' + to + '\nMessage: ' + message);
     }
   });
 };
 
+module.exports.sendSms = sendSms
+
+module.exports.updateSeller = function(transaction) {
+  var t = transaction.serialize()
+  sendSms(
+    t.seller.phone_number, 
+    `S-Mart Alert for ${t.seller.username}: Your recently sold product, ${t.product.title}, is ${t.status.split('_').join(' ')}.\nETA:`
+  )
+}
+
+module.exports.updateBuyer = function(transaction) {
+  var t = transaction.serialize()
+  sendSms(
+    t.buyer.phone_number, 
+    `S-Mart Alert for ${t.buyer.username}: Your recently purchased product, ${t.product.title}, is ${t.status.split('_').join(' ')}.\nETA:`
+  )
+}

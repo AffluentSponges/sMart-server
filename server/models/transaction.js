@@ -43,7 +43,11 @@ module.exports = ModelBase.extend({
     return this.upsert({product_id: product_id}, options)
   },
 
-  getTransactionInfo: function(delivery_id) {
+  upsertByDeliveryId: function(delivery_id, options) {
+    return this.upsert({delivery_id: delivery_id}, options, {withRelated: ['seller', 'buyer', 'product']})
+  },
+
+  getByDeliveryId: function(delivery_id) {
     return this.where({ uber_delivery_id: delivery_id })
     .fetch({ withRelated: ['buyer', 'seller', 'product']})
   },
