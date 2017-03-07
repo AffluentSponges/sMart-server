@@ -51,6 +51,8 @@ class PostItem extends Component {
 
   handleSubmit(e, { formData }) {
     e.preventDefault()
+    var context = this;
+    this.setState({fetching: true});
     var data = {};
     data.seller_id = this.props.state.user.id;
     data.title = formData.title;
@@ -64,6 +66,7 @@ class PostItem extends Component {
     console.log('before send', data);
     axios.post('/api/v1/postitem', data)
       .then(function (response) {
+        context.setState({fetching: false});
         browserHistory.push(`/i/${response.data.id}`);
       })
       .catch(function (error) {
@@ -138,7 +141,7 @@ class PostItem extends Component {
               <Form.Input label='Price' name='price' placeholder='$0' required/>
             </Form.Group>
             <Form.TextArea name='details' label='Details' placeholder='Anything else we should know?(optinal)' rows='3' />
-            <Button primary type='submit'>Show me the money!</Button>
+            {this.state.fetching ? <Button primary loading>Show me the money!</Button> : <Button primary type='submit'>Show me the money!</Button> }
           </Form>
         </Grid.Column>
       </Grid>
