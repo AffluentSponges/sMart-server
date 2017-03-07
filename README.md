@@ -5,7 +5,6 @@ Add a .env file:
 Add the postgres database:
 ```
 psql
-create user postgres with superuser createdb; //this is because travis-ci uses this username as its user, so we are also going to for our test db
 create database smart_server_dev;
 create database smart_server_test;
 \q
@@ -15,7 +14,7 @@ open .env
 ```
 copy&paste this -> ```DATABASE_URL=postgres://USERNAME:@localhost:5432/smart_server_dev```
 
-copy&paste this -> ```TEST_DATABASE_URL=postgres://postgres:@localhost:5432/smart_server_test```
+copy&paste this -> ```TEST_DATABASE_URL=postgres://USERNAME:@localhost:5432/smart_server_test```
 
 into the .env file. replace ```USERNAME``` with the name that appears before the ```=#``` when you do ```psql```
 
