@@ -3,7 +3,7 @@ language: node_js
 node_js:
 - stable
 before_script:
--psql -c 'create database smart_server_test;' -U BrennerSpear
+- psql -c 'create database smart_server_test;' -U BrennerSpear
 script:
 - npm test
 after_success:
