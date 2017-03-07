@@ -16,7 +16,6 @@ var getFilename = function(user) {
 };
 
 module.exports = function(req, res) {
-  console.log('start uploading file to AWS S3');
   var filename = getFilename()
   s3.putObject({
       Bucket: 'affluentsponges',
@@ -28,7 +27,6 @@ module.exports = function(req, res) {
         console.log('this is err from aws s3', err);
         return res.status(400).send(err);
       }
-      console.log('success uploading image to https://s3-us-west-1.amazonaws.com/affluentsponges/' + filename);
       res.send('https://s3-us-west-1.amazonaws.com/affluentsponges/' + filename);
   });
 }

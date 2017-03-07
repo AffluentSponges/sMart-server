@@ -15,7 +15,6 @@ module.exports.getImageTitleAndCategory = (req, res) => {
     }
   })
   .then(function (response) {
-    // console.log(response.data)
     Tag.where({tag: response.data.description.tags[0]}).fetch()
     .then(tags => {
       if (tags) {

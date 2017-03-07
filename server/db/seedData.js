@@ -14,7 +14,7 @@ seedData.usersArray = [
     state: 'CA',
     country: 'US',
     postal_code: '94117',
-    phone_number: '111-222-3333',
+    phone_number: '301-520-1246',
     preferred_time: '16:30:00 PST'
   },
   {
@@ -29,7 +29,7 @@ seedData.usersArray = [
     state: 'CA',
     country: 'US',
     postal_code: '94102',
-    phone_number: '111-222-4444',
+    phone_number: '301-520-1246',
     preferred_time: '11:30:00 PST'
   },
   {
@@ -44,7 +44,7 @@ seedData.usersArray = [
     state: 'CA',
     country: 'US',
     postal_code: '94117',
-    phone_number: '111-222-4444',
+    phone_number: '9166069046',
     preferred_time: '9:30:00 PST'
   },
   {
@@ -59,7 +59,7 @@ seedData.usersArray = [
     state: 'CA',
     country: 'US',
     postal_code: '94117',
-    phone_number: '111-222-4444',
+    phone_number: '9166069046',
     preferred_time: '20:30:00 PST'
   }
 ]
