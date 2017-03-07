@@ -114,7 +114,7 @@ module.exports.getUserProducts = function(req, res) {
     })
   } else if (req.query.condition === 'selling') {
     console.log('selling', req.query)
-    Product.getAllBySellerId(req.query.user_id)
+    Product.getSellingBySellerId(req.query.user_id)
     .then(products => {
       res.json(products)
     })
