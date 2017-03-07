@@ -8,7 +8,7 @@
     "dev": "webpack --config webpack.config.js --watch | nodemon server.js",
     "build": "webpack --config webpack.config.js --watch",
     "local": "nodemon server.js",
-    "test": "nyc ./node_modules/.bin/ava -v",
+    "test": "mocha --bail spec/server-spec.js",
     "init-db": "node ./server/db/script.js init",
     "seed-db": "node ./server/db/script.js seed",
     "test-db": "node ./server/db/script.js all test",
