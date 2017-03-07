@@ -5,7 +5,7 @@ import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import Home from './containers/Home.jsx';
 import Category from './containers/Category.jsx';
 import Login from './containers/Login.jsx';
-import itemDetail from './containers/itemDetail.jsx';
+import itemDetail from './containers/ItemDetail.jsx';
 import PostItem from './containers/PostItem.jsx';
 import Signup from './containers/Signup.jsx';
 import Profile from './containers/Profile.jsx';
