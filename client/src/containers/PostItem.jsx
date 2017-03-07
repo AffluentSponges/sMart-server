@@ -15,7 +15,8 @@ class PostItem extends Component {
         category: ''
       },
       image_links: [],
-      categories: []
+      categories: [],
+      fetching: false
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
