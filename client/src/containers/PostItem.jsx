@@ -23,6 +23,7 @@ class PostItem extends Component {
     this.onFocus = this.onFocus.bind(this);
     this.handleImageUrl = this.handleImageUrl.bind(this);
     this.handleCategoriesChange = this.handleCategoriesChange.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
   componentWillMount(){
@@ -49,6 +50,18 @@ class PostItem extends Component {
     // })
   }  
 
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+    console.log(name, value);
+    this.setState({
+      formData: {
+        [name]: value 
+      }
+    });
+  }
+
   handleSubmit(e, { formData }) {
     e.preventDefault()
     var context = this;
@@ -59,10 +72,10 @@ class PostItem extends Component {
     data.image_links = this.state.image_links;
     data.description = formData.details;
     data.category_id = formData.category;
-    data.address = formData.address1;
-    data.address_2 = formData.address2;
+    data.address = formData.address;
+    data.address_2 = formData.address_2;
     data.asking_price = parseFloat(formData.price);
-    data.postal_code = formData.zip;
+    data.postal_code = formData.postal_code;
     console.log('before send', data);
     axios.post('/api/v1/postitem', data)
       .then(function (response) {
@@ -96,11 +109,29 @@ class PostItem extends Component {
   }
 
   componentDidMount() {
+    var context = this;
     var categories = this.props.state.categories.map(function(category) {
       return { key: category.id, text: category.name, value: category.id };
     });
-    console.log(categories);
-    this.setState({categories: categories});
+    axios.get('/api/v1/getuserprofile', {
+        params: {
+          id: context.props.state.user.id
+        }
+      })
+      .then(function (response) {
+        console.log(response.data);
+        context.setState({ 
+          formData: {
+            address: response.data.address,
+            address_2: response.data.address_2,
+            postal_code: response.data.postal_code 
+          },
+          categories: categories
+        })
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
   onFocus() {
@@ -132,9 +163,9 @@ class PostItem extends Component {
               <Form.Input label='Title' name='title' placeholder='Title' value={this.state.formData.title} onChange={this.handleChange} required/>
             </Form.Group>
             <Form.Group widths='equal'>
-              <Form.Input label='Address 1' name='address1' placeholder='922 folsom' required/>
-              <Form.Input label='Address2' name='address2' placeholder='#153' />
-              <Form.Input label='Zip' name='zip' placeholder='zip' required/>
+              <Form.Input label='Address 1' name='address' placeholder='922 folsom' value={this.state.formData.address} onChange={this.handleInputChange} required/>
+              <Form.Input label='Address2' name='address_2' placeholder='#153' value={this.state.formData.address_2} onChange={this.handleInputChange} />
+              <Form.Input label='Zip' name='postal_code' placeholder='94107' value={this.state.formData.postal_code} onChange={this.handleInputChange} required/>
             </Form.Group>
             <Form.Group widths='equal'>
               <Form.Select label='Category' name='category' value={this.state.formData.category} onChange={this.handleCategoriesChange} options={this.state.categories} placeholder='Choose category...' required/>
