@@ -26,7 +26,12 @@ var testSession = null;
 
 before(function(done) {
   // create test session 
-  testSession = session(server);
+
+  testSession = session(server, {
+    before: function (req) {
+      req.set('session', {passport: {user: {name: 'test'}}});
+    }
+  });
 
   init('test')
   .then(() => {
@@ -408,7 +413,8 @@ describe('API Routes', function() {
   })
   describe('POST routes', function() {
     it('should insert an item', function(done) {
-      chai.request(server)
+      // chai.request(server)
+      testSession
       .post('/api/v1/postitem')
       .set('content-type', 'application/x-www-form-urlencoded')
       .send({
@@ -433,7 +439,8 @@ describe('API Routes', function() {
     it('should initiate a purchase (attempt)', function(done) {
       var product_id = 2
       var buyer_id = 2
-      chai.request(server)
+      // chai.request(server)
+      testSession
       .post('/api/v1/attempt_purchase')
       .set('content-type', 'application/x-www-form-urlencoded')
       .send({
@@ -454,7 +461,8 @@ describe('API Routes', function() {
     it('should initiate a purchase (attempt) & fail', function(done) {
       var product_id = 2
       var buyer_id = 2
-      chai.request(server)
+      // chai.request(server)
+      testSession
       .post('/api/v1/attempt_purchase')
       .set('content-type', 'application/x-www-form-urlencoded')
       .send({
@@ -471,7 +479,8 @@ describe('API Routes', function() {
 
   describe('GET ROUTES', function() {
     it('should return the single product just posted', function(done) {
-      chai.request(server)
+      // chai.request(server)
+      testSession
       .get('/api/v1/product?id=' + product_id)
       .end((err, res) => {
         res.should.have.status(200)
@@ -481,7 +490,8 @@ describe('API Routes', function() {
       })
     })
     it('should return all products', function(done) {
-      chai.request(server)
+      // chai.request(server)
+      testSession
       .get('/api/v1/products')
       .end((err, res) => {
         res.should.have.status(200)
@@ -495,7 +505,8 @@ describe('API Routes', function() {
       })
     })
     it('should return all categories', function(done) {
-      chai.request(server)
+      // chai.request(server)
+      testSession
       .get('/api/v1/categories')
       .end((err, res) => {
         res.should.have.status(200)
@@ -507,7 +518,8 @@ describe('API Routes', function() {
       })
     })
     it('should return all products of a seller', function(done) {
-      chai.request(server)
+      // chai.request(server)
+      testSession
       .get('/api/v1/getuserproducts?user_id=1')
       .end((err, res) => {
         res.should.have.status(200)
@@ -521,7 +533,8 @@ describe('API Routes', function() {
       })
     })
     it('should return only selling products of a seller', function(done) {
-      chai.request(server)
+      // chai.request(server)
+      testSession
       .get('/api/v1/getuserproducts?user_id=1&condition=selling')
       .end((err, res) => {
         for(var i = 0; i < res.body.length; i++) {
@@ -532,21 +545,24 @@ describe('API Routes', function() {
       })
     })
     it('should return only sold products of a seller', function(done) {
-      chai.request(server)
+      // chai.request(server)
+      testSession
       .get('/api/v1/getuserproducts?user_id=1&condition=sold')
       .end((err, res) => {
         done()
       })
     })
     xit('should return only bought products of a buyer', function(done) {
-      chai.request(server)
+      // chai.request(server)
+      testSession
       .get('/api/v1/getuserproducts?user_id=1&condition=bought')
       .end((err, res) => {
         done()
       })
     })
     it('should return a users profile', function(done) {
-      chai.request(server)
+      // chai.request(server)
+      testSession
       .get('/api/v1/getuserprofile?id=4')
       .end((err, res) => {
         res.should.have.status(200)
@@ -557,7 +573,8 @@ describe('API Routes', function() {
       })
     })
     it('should return an uberRUSH quote', function(done) {
-      chai.request(server)
+      // chai.request(server)
+      testSession
       .get('/api/v1/product/get_quote?product_id=1&buyer_id=3')
       .end((err, res) => {
         res.should.have.status(200)

@@ -25,6 +25,10 @@ module.exports.checkInfo = (req, res) => {
   res.end();
 };
 
+module.exports.isAuthenticated = (req, res, next) => {
+  req.session.passport ? next() : res.redirect('/login');
+};
+
 module.exports.setContactInfo = (req, res) => {
   var profile = User.where({id: req.body.id}).fetch()
     .then(model => {
