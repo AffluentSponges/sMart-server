@@ -67,7 +67,7 @@ describe('Model Methods (Read only)', function() {
         p.should.have.property('buyer')
         p.buyer.first_name.should.equal('Greg')
         p.should.have.property('transaction')
-        p.transaction.status.should.equal('buyer_paid')
+        p.transaction.status.should.equal('processing')
         done()
       })
     })
@@ -153,7 +153,7 @@ describe('Model Methods (Insert/Update)', function() {
         transaction.buyer_id.should.equal(product.buyer_id)
         transaction.product_id.should.equal(product.id)
         transaction.sale_price.should.equal(product.asking_price)
-        transaction.status.should.equal('received_payment') //@TODO why this status? why not a status from uber?
+        transaction.status.should.equal('processing') //@TODO why this status? why not a status from uber?
         transaction.coinbase_address_id.should.equal(info.coinbase_address_id)
         transaction.sale_price_btc.should.equal(info.amount)
         transaction.currency.should.equal(info.currency)
@@ -167,11 +167,19 @@ describe('Model Methods (Insert/Update)', function() {
       Transaction.updateByDeliveryId(deliveryId, {status: 'en_route_to_pickup'})
       .then(transaction => {
         var t = transaction.serialize()
-        console.log(t)
         t.status.should.equal('en_route_to_pickup')
         t.seller.username.should.equal('daniel-test')
         t.buyer.username.should.equal('greg-test')
         t.product.title.should.equal('beanie')
+        done()
+      })
+    })
+    it('should not update a transaction by delivery_id because the status didnt progress forwards', function(done) {
+      const deliveryId = 'fdc7aaf9a3da-5bf7-4989-bd01-295e895d'
+
+      Transaction.updateByDeliveryId(deliveryId, {status: 'en_route_to_pickup'})
+      .then(transaction => {
+        should.equal(transaction, null)
         done()
       })
     })
@@ -247,7 +255,7 @@ describe('Controllers', function() {
         delivery.items[0].title.should.be.equal('macbook pro')
         delivery.pickup.should.be.an('object')
         delivery.pickup.contact.first_name.should.be.equal('brenner')
-        delivery.pickup.contact.phone.number.should.be.equal('+13015201246')
+        delivery.pickup.contact.phone.number.should.be.equal('+19715335883')
         delivery.pickup.location.address.should.be.equal('400 baker st')
         delivery.pickup.location.postal_code.should.be.equal('94117')
         delivery.dropoff.should.be.an('object')
@@ -258,14 +266,15 @@ describe('Controllers', function() {
         done()
       })
     })
-    it.only('Status: "en_route_to_pickup" should have status 200', function(done) {
+    //@TODO should use some sinon spies when testing with good data
+    it('webhook should respond with status 200 when bad data is sent', function(done) {
       chai.request(server)
       .post('/uber_webhook')
       .set('content-type', 'application/json')
       .send({
         "meta": {
-          "status": "en_route_to_pickup",
-          "resource_id": "fdc7aaf9a3da-5bf7-4989-bd01-295e895d"
+          "status": "completed",
+          "resource_id": "xxx"
         }
       })
       .end((err, res) => {
@@ -280,37 +289,36 @@ describe('Controllers', function() {
       "id": "d9cc3ee5-567e-5f8d-a031-11194e103d99",
       "type": "wallet:addresses:new-payment",
       "data": 
-       { "id": "6c6e3a77-5f34-5bdd-b2fa-fc2840ae87eb",
-         "address": "1DRjzNVA8CsLAL74TdsZvk6ezdvPPtixhW",
-         "name": null,
-         "created_at": "2017-03-01T18:43:39Z",
-         "updated_at": "2017-03-01T18:43:39Z",
-         "network": "bitcoin",
-         "resource": "address",
-         "resource_path": "/v2/accounts/e57d688a-424b-5758-9318-481f2bef8dc3/addresses/6c6e3a77-5f34-5bdd-b2fa-fc2840ae87eb" },
+      { "id": "6c6e3a77-5f34-5bdd-b2fa-fc2840ae87eb",
+        "address": "1DRjzNVA8CsLAL74TdsZvk6ezdvPPtixhW",
+        "name": null,
+        "created_at": "2017-03-01T18:43:39Z",
+        "updated_at": "2017-03-01T18:43:39Z",
+        "network": "bitcoin",
+        "resource": "address",
+        "resource_path": "/v2/accounts/e57d688a-424b-5758-9318-481f2bef8dc3/addresses/6c6e3a77-5f34-5bdd-b2fa-fc2840ae87eb" },
       "user": 
-       { "id": "7ad3ae13-82f5-58a0-a4e3-84044f7ceec3",
-         "resource": "user",
-         "resource_path": "/v2/users/7ad3ae13-82f5-58a0-a4e3-84044f7ceec3" },
+      { "id": "7ad3ae13-82f5-58a0-a4e3-84044f7ceec3",
+        "resource": "user",
+        "resource_path": "/v2/users/7ad3ae13-82f5-58a0-a4e3-84044f7ceec3" },
       "account": 
-       { "id": "e57d688a-424b-5758-9318-481f2bef8dc3",
-         "resource": "account",
-         "resource_path": "/v2/accounts/e57d688a-424b-5758-9318-481f2bef8dc3" },
+      { "id": "e57d688a-424b-5758-9318-481f2bef8dc3",
+        "resource": "account",
+        "resource_path": "/v2/accounts/e57d688a-424b-5758-9318-481f2bef8dc3" },
       "delivery_attempts": 0,
       "created_at": "2017-03-01T18:44:10Z",
       "resource": "notification",
       "resource_path": "/v2/notifications/d9cc3ee5-567e-5f8d-a031-11194e103d99",
       "additional_data": 
-       { "hash": "ba95c9dd9a2faebe63025a29ec1dc077ae5ee6dc5b065ae0978dcb5cc13fd6ce",
-         "amount": { "amount": "1.23456789", "currency": "BTC" },
-         "transaction": 
-          { "id": "13f07688-c6dc-539d-aacc-5c08288b1481",
-            "resource": "transaction",
-            "resource_path": "/v2/accounts/e57d688a-424b-5758-9318-481f2bef8dc3/transactions/13f07688-c6dc-539d-aacc-5c08288b1481"
-          }
+      { "hash": "ba95c9dd9a2faebe63025a29ec1dc077ae5ee6dc5b065ae0978dcb5cc13fd6ce",
+        "amount": { "amount": "1.23456789", "currency": "BTC" },
+        "transaction": 
+        { "id": "13f07688-c6dc-539d-aacc-5c08288b1481",
+          "resource": "transaction",
+          "resource_path": "/v2/accounts/e57d688a-424b-5758-9318-481f2bef8dc3/transactions/13f07688-c6dc-539d-aacc-5c08288b1481"
         }
       }
-    // ^I like to shrink this to one line
+    }
     it('should convert USD to BTC', function(done) {
       coinbaseController.convertCurrency(1000)
       .then(tx => {
@@ -360,7 +368,7 @@ describe('Controllers', function() {
           transaction.coinbase_transaction_id.should.equal(data.additional_data.transaction.id)
           transaction.currency.should.equal(data.additional_data.amount.currency)
           transaction.sale_price_btc.should.equal(data.additional_data.amount.amount)
-          transaction.status.should.equal('received_payment')
+          transaction.status.should.equal('processing')
           transaction.uber_delivery_id.should.be.a('string')
           transaction.product.bitcoin_address.should.equal(data.data.address)
           transaction.product.sold.should.equal(true)
@@ -382,29 +390,6 @@ describe('Controllers', function() {
         data.additional_data.amount.amount = 1.123456789
         done()
       })
-    })
-  })
-  describe('Twilio Notification System', function() {
-    describe('uberRUSH status updates', function() {
-    })
-  })
-
-  describe('uberRUSH delivery and coinbase transaction', function(done) {
-    it('Should trigger coinbase transaction after successful delivery', function(done) {
-      chai.request(server)
-      .post('/uber_webhook')
-      .set('content-type', 'application/json')
-      .send({
-        "meta": {
-          "status": "completed",
-          "resource_id": 1
-        }
-      })
-      .end((err, res) => {
-        res.should.have.status(200)
-        res.body.should.be.a('object')
-      })
-      done();
     })
   })
 })
@@ -540,7 +525,6 @@ describe('API Routes', function() {
       .get('/api/v1/getuserproducts?user_id=1&condition=selling')
       .end((err, res) => {
         for(var i = 0; i < res.body.length; i++) {
-          console.log(res.body[i])
           res.body[i].seller_id.should.equal(1);
           res.body[i].sold.should.equal(false);
         }
