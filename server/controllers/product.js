@@ -115,9 +115,10 @@ module.exports.getUserProducts = function(req, res) {
       res.json(products)
     })
   } else if (req.query.condition === 'sold') {
-    res.end();
-  } else if (req.query.condition === 'bought') {
-    res.end();
+    Product.getSoldBySellerId(req.query.user_id)
+    .then(products => {
+      res.json(products)
+    })
   } 
 };
 
