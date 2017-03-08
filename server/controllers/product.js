@@ -107,7 +107,6 @@ module.exports.getUserProducts = function(req, res) {
   } else if (req.query.condition === 'delivery') {
     Transaction.getItemsOnDelivery(req.query.user_id)
     .then(products => {
-      console.log('client is asking delivery status');
       res.json(products)
     })
   } else if (req.query.condition === 'selling') {
@@ -120,6 +119,14 @@ module.exports.getUserProducts = function(req, res) {
   } else if (req.query.condition === 'bought') {
     res.end();
   } 
+};
+
+module.exports.getProductHistory = function(req, res) {
+  Transaction.getItemTransactionHistory(req.query.product_id)
+  .then(history => {
+    console.log('pulling to check delivery status')
+    res.json(history);
+  })
 };
 
 // var cnt = 0;
