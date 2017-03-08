@@ -542,7 +542,6 @@ describe('API Routes', function() {
       .get('/api/v1/getuserproducts?user_id=1&condition=selling')
       .end((err, res) => {
         for(var i = 0; i < res.body.length; i++) {
-          console.log(res.body[i])
           res.body[i].seller_id.should.equal(1);
           res.body[i].sold.should.equal(false);
         }
