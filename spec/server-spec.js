@@ -167,6 +167,7 @@ describe('Model Methods (Insert/Update)', function() {
       Transaction.updateByDeliveryId(deliveryId, {status: 'en_route_to_pickup'})
       .then(transaction => {
         var t = transaction.serialize()
+        console.log(t)
         t.status.should.equal('en_route_to_pickup')
         t.seller.username.should.equal('daniel-test')
         t.buyer.username.should.equal('greg-test')
@@ -255,6 +256,22 @@ describe('Controllers', function() {
         delivery.dropoff.location.address.should.be.equal('556 mission st')
         delivery.dropoff.location.postal_code.should.be.equal('94117')
         done()
+      })
+    })
+    it.only('Status: "en_route_to_pickup" should have status 200', function(done) {
+      chai.request(server)
+      .post('/uber_webhook')
+      .set('content-type', 'application/json')
+      .send({
+        "meta": {
+          "status": "en_route_to_pickup",
+          "resource_id": "fdc7aaf9a3da-5bf7-4989-bd01-295e895d"
+        }
+      })
+      .end((err, res) => {
+        res.should.have.status(200)
+        res.body.should.be.a('object')
+        done();
       })
     })
   })
@@ -360,7 +377,6 @@ describe('Controllers', function() {
       .set('content-type', 'application/json')
       .send(data)
       .end((err, res) => {
-        // console.log(res.body)
         res.body.message.should.equal('error, not enough btc...')
         //change it back
         data.additional_data.amount.amount = 1.123456789
@@ -370,22 +386,6 @@ describe('Controllers', function() {
   })
   describe('Twilio Notification System', function() {
     describe('uberRUSH status updates', function() {
-      it('Status: "en_route_to_pickup" should have status 200', function(done) {
-        chai.request(server)
-        .post('/uber_webhook')
-        .set('content-type', 'application/json')
-        .send({
-          "meta": {
-            "status": "en_route_to_pickup",
-            "resource_id": 1
-          }
-        })
-        .end((err, res) => {
-          res.should.have.status(200)
-          res.body.should.be.a('object')
-        })
-        done();
-      })
     })
   })
 

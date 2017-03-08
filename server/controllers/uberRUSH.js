@@ -124,12 +124,15 @@ module.exports.webhook = function(req, res) {
   var statusChange = req.body.event_type;
   var status = req.body.meta.status
   var delivery_id = req.body.meta.resource_id
-
+  // console.log(status)
   if(onTrack.includes(status)) {
+    console.log(delivery_id)
     Transaction.updateByDeliveryId(delivery_id, {status: status})
     .then(transaction => {
-      twilio.updateSeller(transaction)
-      twilio.updateBuyer(transaction)
+      console.log(transaction)
+      // twilio.updateSeller(transaction)
+      // twilio.updateBuyer(transaction)
+      res.sendStatus(200)
     })
   }
 
@@ -149,12 +152,14 @@ module.exports.webhook = function(req, res) {
     })
     .then(response => {
       console.log(response)
+      res.sendStatus(200)
     })
   }
 
   if(problems.includes(status) || other.includes(status)) {
     console.log('UberRUSH is ', status)
+    res.sendStatus(200)
   }
 
-  res.sendStatus(200)
+  
 }

@@ -1,6 +1,6 @@
 const client = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
-var sendSms = function(to, message) {
+const sendSms = function(to, message) {
   return new Promise(function(resolve, reject) {
     client.messages.create({
       body: message,
@@ -14,9 +14,7 @@ var sendSms = function(to, message) {
   })
 }
 
-module.exports.sendSms = sendSms
-
-module.exports.updateSeller = function(transaction) {
+const updateSeller = function(transaction) {
   var t = transaction.serialize()
   return sendSms(
     t.seller.phone_number, 
@@ -24,7 +22,7 @@ module.exports.updateSeller = function(transaction) {
   )
 }
 
-module.exports.updateBuyer = function(transaction) {
+const updateBuyer = function(transaction) {
   var t = transaction.serialize()
   return sendSms(
     t.buyer.phone_number, 
@@ -32,15 +30,8 @@ module.exports.updateBuyer = function(transaction) {
   )
 }
 
-// var sendSms = function(to, message) {
-//   client.messages.create({
-//     body: message,
-//     to: to,
-//     from: process.env.TWILIO_NUMBER
-//     // mediaUrl: 'http://www.yourserver.com/someimage.png'
-//   }, function(err, data) {
-//     if (err) {
-//       console.error(err);
-//     }
-//   });
-// };
+module.exports = {
+  sendSms: sendSms,
+  updateSeller: updateSeller,
+  updateBuyer: updateBuyer
+}
