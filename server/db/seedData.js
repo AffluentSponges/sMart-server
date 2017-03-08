@@ -952,6 +952,502 @@ seedData.productArray = [
     image_links: [
       'https://img.letgo.com/images/2f/d2/6f/ad/2fd26fad3b638cbfb2e77fc467c3acbb.jpg?impolicy=img_900'
     ]
+  },
+  {
+    id: 52,
+    seller_id: Math.ceil(Math.random() * 4),
+    buyer_id: Math.ceil(Math.random() * 4),
+    bitcoin_address: '',
+    category_id: 6,
+    title: 'Red Commuters Bicycle',
+    description: 'Lorem ipsum dolor sit amet, an cum graecis concludaturque. Nam habeo dictas ex, harum officiis incorrupte in eum. Sint tacimates vis id, error ludus torquatos eam ne, populo oporteat voluptaria at duo. Mea antiopam neglegentur ei, in quo cibo nonumy, congue impetus suavitate quo ea. Ex mea primis numquam periculis, meis labitur fabulas no nec, est mediocrem pertinacia no.',
+    asking_price: 30,
+    address: '944 market st',
+    postal_code: '94117',
+    // preferred_time_and_date: 'February 28 9:30:30 2017 PST',
+    image_links: [
+      'https://img.letgo.com/images/de/86/99/dc/de8699dcaf4980adf38e905eba27bdac.jpg'
+    ]
+  },
+  {
+    id: 53,
+    seller_id: Math.ceil(Math.random() * 4),
+    buyer_id: Math.ceil(Math.random() * 4),
+    bitcoin_address: '',
+    category_id: 6,
+    title: 'Super Smash Bros Nintendo 3Ds Game',
+    description: 'Lorem ipsum dolor sit amet, an cum graecis concludaturque. Nam habeo dictas ex, harum officiis incorrupte in eum. Sint tacimates vis id, error ludus torquatos eam ne, populo oporteat voluptaria at duo. Mea antiopam neglegentur ei, in quo cibo nonumy, congue impetus suavitate quo ea. Ex mea primis numquam periculis, meis labitur fabulas no nec, est mediocrem pertinacia no.',
+    asking_price: 35,
+    address: '944 market st',
+    postal_code: '94117',
+    // preferred_time_and_date: 'February 28 9:30:30 2017 PST',
+    image_links: [
+      'https://img.letgo.com/images/a9/de/6c/58/a9de6c58c3518cbd20fc94bc17dec9c5.jpeg'
+    ]
+  },
+  {
+    id: 54,
+    seller_id: Math.ceil(Math.random() * 4),
+    buyer_id: Math.ceil(Math.random() * 4),
+    bitcoin_address: '',
+    category_id: 6,
+    title: 'Pokemon Y Nintendo 3Ds Game',
+    description: 'Lorem ipsum dolor sit amet, an cum graecis concludaturque. Nam habeo dictas ex, harum officiis incorrupte in eum. Sint tacimates vis id, error ludus torquatos eam ne, populo oporteat voluptaria at duo. Mea antiopam neglegentur ei, in quo cibo nonumy, congue impetus suavitate quo ea. Ex mea primis numquam periculis, meis labitur fabulas no nec, est mediocrem pertinacia no.',
+    asking_price: 45,
+    address: '944 market st',
+    postal_code: '94117',
+    // preferred_time_and_date: 'February 28 9:30:30 2017 PST',
+    image_links: [
+      'https://img.letgo.com/images/d0/95/5d/d8/d0955dd830c6fe067c2c77ebeb7ec87c.jpeg'
+    ]
+  },
+  {
+    id: 55,
+    seller_id: Math.ceil(Math.random() * 4),
+    buyer_id: Math.ceil(Math.random() * 4),
+    bitcoin_address: '',
+    category_id: 6,
+    title: 'New Spalding Women Shoes w/Box - Size 7 1/2',
+    description: 'Lorem ipsum dolor sit amet, an cum graecis concludaturque. Nam habeo dictas ex, harum officiis incorrupte in eum. Sint tacimates vis id, error ludus torquatos eam ne, populo oporteat voluptaria at duo. Mea antiopam neglegentur ei, in quo cibo nonumy, congue impetus suavitate quo ea. Ex mea primis numquam periculis, meis labitur fabulas no nec, est mediocrem pertinacia no.',
+    asking_price: 50,
+    address: '944 market st',
+    postal_code: '94117',
+    // preferred_time_and_date: 'February 28 9:30:30 2017 PST',
+    image_links: [
+      'https://img.letgo.com/images/4c/24/3a/37/4c243a370c601931b5306a51a04e33dd.jpg?impolicy=img_900'
+    ]
+  },
+  {
+    id: 56,
+    seller_id: Math.ceil(Math.random() * 4),
+    buyer_id: Math.ceil(Math.random() * 4),
+    bitcoin_address: '',
+    category_id: 6,
+    title: 'Wilson Softball Firstbase Glove',
+    description: 'Lorem ipsum dolor sit amet, an cum graecis concludaturque. Nam habeo dictas ex, harum officiis incorrupte in eum. Sint tacimates vis id, error ludus torquatos eam ne, populo oporteat voluptaria at duo. Mea antiopam neglegentur ei, in quo cibo nonumy, congue impetus suavitate quo ea. Ex mea primis numquam periculis, meis labitur fabulas no nec, est mediocrem pertinacia no.',
+    asking_price: 25,
+    address: '944 market st',
+    postal_code: '94117',
+    // preferred_time_and_date: 'February 28 9:30:30 2017 PST',
+    image_links: [
+      'https://img.letgo.com/images/bf/22/4a/4d/bf224a4d278bf17cb00e22c88b1f87bb.jpeg'
+    ]
+  },
+  {
+    id: 57,
+    seller_id: Math.ceil(Math.random() * 4),
+    buyer_id: Math.ceil(Math.random() * 4),
+    bitcoin_address: '',
+    category_id: 6,
+    title: 'Lamiglas Redline Hs94Mhs Spinning Rod',
+    description: 'Lorem ipsum dolor sit amet, an cum graecis concludaturque. Nam habeo dictas ex, harum officiis incorrupte in eum. Sint tacimates vis id, error ludus torquatos eam ne, populo oporteat voluptaria at duo. Mea antiopam neglegentur ei, in quo cibo nonumy, congue impetus suavitate quo ea. Ex mea primis numquam periculis, meis labitur fabulas no nec, est mediocrem pertinacia no.',
+    asking_price: 120,
+    address: '944 market st',
+    postal_code: '94117',
+    // preferred_time_and_date: 'February 28 9:30:30 2017 PST',
+    image_links: [
+      'https://img.letgo.com/images/6e/08/84/87/6e0884873be2182e741ebcb4be002310.jpg'
+    ]
+  },
+  {
+    id: 58,
+    seller_id: Math.ceil(Math.random() * 4),
+    buyer_id: Math.ceil(Math.random() * 4),
+    bitcoin_address: '',
+    category_id: 6,
+    title: 'Nike Flyknit Presto Size 9.5',
+    description: 'Lorem ipsum dolor sit amet, an cum graecis concludaturque. Nam habeo dictas ex, harum officiis incorrupte in eum. Sint tacimates vis id, error ludus torquatos eam ne, populo oporteat voluptaria at duo. Mea antiopam neglegentur ei, in quo cibo nonumy, congue impetus suavitate quo ea. Ex mea primis numquam periculis, meis labitur fabulas no nec, est mediocrem pertinacia no.',
+    asking_price: 80,
+    address: '944 market st',
+    postal_code: '94117',
+    // preferred_time_and_date: 'February 28 9:30:30 2017 PST',
+    image_links: [
+      'https://img.letgo.com/images/e9/12/84/a2/e91284a2b39e6c6699b5a7f6de22abaa.jpg?impolicy=img_900'
+    ]
+  },
+  {
+    id: 59,
+    seller_id: Math.ceil(Math.random() * 4),
+    buyer_id: Math.ceil(Math.random() * 4),
+    bitcoin_address: '',
+    category_id: 6,
+    title: 'Mario Kart 7 Nintendo 3Ds Game',
+    description: 'Lorem ipsum dolor sit amet, an cum graecis concludaturque. Nam habeo dictas ex, harum officiis incorrupte in eum. Sint tacimates vis id, error ludus torquatos eam ne, populo oporteat voluptaria at duo. Mea antiopam neglegentur ei, in quo cibo nonumy, congue impetus suavitate quo ea. Ex mea primis numquam periculis, meis labitur fabulas no nec, est mediocrem pertinacia no.',
+    asking_price: 30,
+    address: '944 market st',
+    postal_code: '94117',
+    // preferred_time_and_date: 'February 28 9:30:30 2017 PST',
+    image_links: [
+      'https://img.letgo.com/images/6c/ee/e8/3a/6ceee83a615d0c645e3f63f34bc2bcce.jpeg'
+    ]
+  },
+  {
+    id: 60,
+    seller_id: Math.ceil(Math.random() * 4),
+    buyer_id: Math.ceil(Math.random() * 4),
+    bitcoin_address: '',
+    category_id: 6,
+    title: 'Three Brown And Blue Badminton Rackets',
+    description: 'Lorem ipsum dolor sit amet, an cum graecis concludaturque. Nam habeo dictas ex, harum officiis incorrupte in eum. Sint tacimates vis id, error ludus torquatos eam ne, populo oporteat voluptaria at duo. Mea antiopam neglegentur ei, in quo cibo nonumy, congue impetus suavitate quo ea. Ex mea primis numquam periculis, meis labitur fabulas no nec, est mediocrem pertinacia no.',
+    asking_price: 25,
+    address: '944 market st',
+    postal_code: '94117',
+    // preferred_time_and_date: 'February 28 9:30:30 2017 PST',
+    image_links: [
+      'https://img.letgo.com/images/49/1a/44/ab/491a44ab178c16a0a6cb4102ad0bfedb.jpeg'
+    ]
+  },
+  {
+    id: 61,
+    seller_id: Math.ceil(Math.random() * 4),
+    buyer_id: Math.ceil(Math.random() * 4),
+    bitcoin_address: '',
+    category_id: 6,
+    title: '2016 Nike Hyperrev Size 11.5 Draymond Green Pe',
+    description: 'Lorem ipsum dolor sit amet, an cum graecis concludaturque. Nam habeo dictas ex, harum officiis incorrupte in eum. Sint tacimates vis id, error ludus torquatos eam ne, populo oporteat voluptaria at duo. Mea antiopam neglegentur ei, in quo cibo nonumy, congue impetus suavitate quo ea. Ex mea primis numquam periculis, meis labitur fabulas no nec, est mediocrem pertinacia no.',
+    asking_price: 80,
+    address: '944 market st',
+    postal_code: '94117',
+    // preferred_time_and_date: 'February 28 9:30:30 2017 PST',
+    image_links: [
+      'https://img.letgo.com/images/6b/90/52/22/6b905222e915a1332a4dfbe4a6e87480.jpeg?impolicy=img_900'
+    ]
+  },
+  {
+    id: 62,
+    seller_id: Math.ceil(Math.random() * 4),
+    buyer_id: Math.ceil(Math.random() * 4),
+    bitcoin_address: '',
+    category_id: 5,
+    title: 'Gray And Black Automotive Wheel',
+    description: 'Lorem ipsum dolor sit amet, an cum graecis concludaturque. Nam habeo dictas ex, harum officiis incorrupte in eum. Sint tacimates vis id, error ludus torquatos eam ne, populo oporteat voluptaria at duo. Mea antiopam neglegentur ei, in quo cibo nonumy, congue impetus suavitate quo ea. Ex mea primis numquam periculis, meis labitur fabulas no nec, est mediocrem pertinacia no.',
+    asking_price: 150,
+    address: '944 market st',
+    postal_code: '94117',
+    // preferred_time_and_date: 'February 28 9:30:30 2017 PST',
+    image_links: [
+      'https://img.letgo.com/images/9a/75/7a/e2/9a757ae2b440cc4cb703b6839d4363cc.jpeg'
+    ]
+  },
+  {
+    id: 63,
+    seller_id: Math.ceil(Math.random() * 4),
+    buyer_id: Math.ceil(Math.random() * 4),
+    bitcoin_address: '',
+    category_id: 5,
+    title: '2005 Toyota Tundra',
+    description: 'Lorem ipsum dolor sit amet, an cum graecis concludaturque. Nam habeo dictas ex, harum officiis incorrupte in eum. Sint tacimates vis id, error ludus torquatos eam ne, populo oporteat voluptaria at duo. Mea antiopam neglegentur ei, in quo cibo nonumy, congue impetus suavitate quo ea. Ex mea primis numquam periculis, meis labitur fabulas no nec, est mediocrem pertinacia no.',
+    asking_price: 1500,
+    address: '944 market st',
+    postal_code: '94117',
+    // preferred_time_and_date: 'February 28 9:30:30 2017 PST',
+    image_links: [
+      'https://img.letgo.com/images/e2/1b/52/8c/e21b528c25b809056e827374964a9f06.jpeg'
+    ]
+  },
+  {
+    id: 64,
+    seller_id: Math.ceil(Math.random() * 4),
+    buyer_id: Math.ceil(Math.random() * 4),
+    bitcoin_address: '',
+    category_id: 5,
+    title: 'Gray 2009 Honda Cbr 1000Rr',
+    description: 'Lorem ipsum dolor sit amet, an cum graecis concludaturque. Nam habeo dictas ex, harum officiis incorrupte in eum. Sint tacimates vis id, error ludus torquatos eam ne, populo oporteat voluptaria at duo. Mea antiopam neglegentur ei, in quo cibo nonumy, congue impetus suavitate quo ea. Ex mea primis numquam periculis, meis labitur fabulas no nec, est mediocrem pertinacia no.',
+    asking_price: 2523,
+    address: '944 market st',
+    postal_code: '94117',
+    // preferred_time_and_date: 'February 28 9:30:30 2017 PST',
+    image_links: [
+      'https://img.letgo.com/images/35/4c/12/61/354c12616aa41816c52374ea015c4bfd.jpg'
+    ]
+  },
+  {
+    id: 65,
+    seller_id: Math.ceil(Math.random() * 4),
+    buyer_id: Math.ceil(Math.random() * 4),
+    bitcoin_address: '',
+    category_id: 5,
+    title: '22 Inch Chrome Rims 2 Good Wheels',
+    description: 'Lorem ipsum dolor sit amet, an cum graecis concludaturque. Nam habeo dictas ex, harum officiis incorrupte in eum. Sint tacimates vis id, error ludus torquatos eam ne, populo oporteat voluptaria at duo. Mea antiopam neglegentur ei, in quo cibo nonumy, congue impetus suavitate quo ea. Ex mea primis numquam periculis, meis labitur fabulas no nec, est mediocrem pertinacia no.',
+    asking_price: 450,
+    address: '944 market st',
+    postal_code: '94117',
+    // preferred_time_and_date: 'February 28 9:30:30 2017 PST',
+    image_links: [
+      'https://img.letgo.com/images/d7/71/04/73/d771047327d70d4b775089d1186e8513.jpeg'
+    ]
+  },
+  {
+    id: 66,
+    seller_id: Math.ceil(Math.random() * 4),
+    buyer_id: Math.ceil(Math.random() * 4),
+    bitcoin_address: '',
+    category_id: 5,
+    title: '2005 Audi A4 2.0T ',
+    description: 'Lorem ipsum dolor sit amet, an cum graecis concludaturque. Nam habeo dictas ex, harum officiis incorrupte in eum. Sint tacimates vis id, error ludus torquatos eam ne, populo oporteat voluptaria at duo. Mea antiopam neglegentur ei, in quo cibo nonumy, congue impetus suavitate quo ea. Ex mea primis numquam periculis, meis labitur fabulas no nec, est mediocrem pertinacia no.',
+    asking_price: 1000,
+    address: '944 market st',
+    postal_code: '94117',
+    // preferred_time_and_date: 'February 28 9:30:30 2017 PST',
+    image_links: [
+      'https://img.letgo.com/images/a1/d0/8e/c7/a1d08ec7e9661b4b1ea2485ac2f8cf70.jpeg'
+    ]
+  },
+  {
+    id: 67,
+    seller_id: Math.ceil(Math.random() * 4),
+    buyer_id: Math.ceil(Math.random() * 4),
+    bitcoin_address: '',
+    category_id: 5,
+    title: '1999 Chevrolet S10 Pick Up Truck',
+    description: 'Lorem ipsum dolor sit amet, an cum graecis concludaturque. Nam habeo dictas ex, harum officiis incorrupte in eum. Sint tacimates vis id, error ludus torquatos eam ne, populo oporteat voluptaria at duo. Mea antiopam neglegentur ei, in quo cibo nonumy, congue impetus suavitate quo ea. Ex mea primis numquam periculis, meis labitur fabulas no nec, est mediocrem pertinacia no.',
+    asking_price: 2400,
+    address: '944 market st',
+    postal_code: '94117',
+    // preferred_time_and_date: 'February 28 9:30:30 2017 PST',
+    image_links: [
+      'https://img.letgo.com/images/0d/20/24/a3/0d2024a39cb7d019558bffb9a21a76c7.jpg'
+    ]
+  },
+  {
+    id: 68,
+    seller_id: Math.ceil(Math.random() * 4),
+    buyer_id: Math.ceil(Math.random() * 4),
+    bitcoin_address: '',
+    category_id: 5,
+    title: 'Lexus G 300',
+    description: 'Lorem ipsum dolor sit amet, an cum graecis concludaturque. Nam habeo dictas ex, harum officiis incorrupte in eum. Sint tacimates vis id, error ludus torquatos eam ne, populo oporteat voluptaria at duo. Mea antiopam neglegentur ei, in quo cibo nonumy, congue impetus suavitate quo ea. Ex mea primis numquam periculis, meis labitur fabulas no nec, est mediocrem pertinacia no.',
+    asking_price: 4000,
+    address: '944 market st',
+    postal_code: '94117',
+    // preferred_time_and_date: 'February 28 9:30:30 2017 PST',
+    image_links: [
+      'https://img.letgo.com/images/46/1b/b0/ab/461bb0ab3b332a8da6542fb639778ffd.jpeg'
+    ]
+  },
+  {
+    id: 69,
+    seller_id: Math.ceil(Math.random() * 4),
+    buyer_id: Math.ceil(Math.random() * 4),
+    bitcoin_address: '',
+    category_id: 5,
+    title: '1990 chevy scottsdale',
+    description: 'Lorem ipsum dolor sit amet, an cum graecis concludaturque. Nam habeo dictas ex, harum officiis incorrupte in eum. Sint tacimates vis id, error ludus torquatos eam ne, populo oporteat voluptaria at duo. Mea antiopam neglegentur ei, in quo cibo nonumy, congue impetus suavitate quo ea. Ex mea primis numquam periculis, meis labitur fabulas no nec, est mediocrem pertinacia no.',
+    asking_price: 450,
+    address: '944 market st',
+    postal_code: '94117',
+    // preferred_time_and_date: 'February 28 9:30:30 2017 PST',
+    image_links: [
+      'https://img.letgo.com/images/f5/e7/5f/cd/f5e75fcd84ce9190ba051b23ad41599a.jpeg?impolicy=img_900'
+    ]
+  },
+  {
+    id: 70,
+    seller_id: Math.ceil(Math.random() * 4),
+    buyer_id: Math.ceil(Math.random() * 4),
+    bitcoin_address: '',
+    category_id: 5,
+    title: 'Nissan Quess',
+    description: 'Lorem ipsum dolor sit amet, an cum graecis concludaturque. Nam habeo dictas ex, harum officiis incorrupte in eum. Sint tacimates vis id, error ludus torquatos eam ne, populo oporteat voluptaria at duo. Mea antiopam neglegentur ei, in quo cibo nonumy, congue impetus suavitate quo ea. Ex mea primis numquam periculis, meis labitur fabulas no nec, est mediocrem pertinacia no.',
+    asking_price: 7000,
+    address: '944 market st',
+    postal_code: '94117',
+    // preferred_time_and_date: 'February 28 9:30:30 2017 PST',
+    image_links: [
+      'https://img.letgo.com/images/03/84/2d/ca/03842dca59a8d731f322770f3f36acd5.jpeg?impolicy=img_900'
+    ]
+  },
+  {
+    id: 71,
+    seller_id: Math.ceil(Math.random() * 4),
+    buyer_id: Math.ceil(Math.random() * 4),
+    bitcoin_address: '',
+    category_id: 5,
+    title: 'Camaro Front And Rear Rim ',
+    description: 'Lorem ipsum dolor sit amet, an cum graecis concludaturque. Nam habeo dictas ex, harum officiis incorrupte in eum. Sint tacimates vis id, error ludus torquatos eam ne, populo oporteat voluptaria at duo. Mea antiopam neglegentur ei, in quo cibo nonumy, congue impetus suavitate quo ea. Ex mea primis numquam periculis, meis labitur fabulas no nec, est mediocrem pertinacia no.',
+    asking_price: 200,
+    address: '944 market st',
+    postal_code: '94117',
+    // preferred_time_and_date: 'February 28 9:30:30 2017 PST',
+    image_links: [
+      'https://img.letgo.com/images/e4/9f/d3/c1/e49fd3c1583501fea23f9e7b0d982ce7.jpeg'
+    ]
+  },
+  {
+    id: 72,
+    seller_id: Math.ceil(Math.random() * 4),
+    buyer_id: Math.ceil(Math.random() * 4),
+    bitcoin_address: '',
+    category_id: 7,
+    title: 'English Grammar Fourth Edition Book',
+    description: 'Lorem ipsum dolor sit amet, an cum graecis concludaturque. Nam habeo dictas ex, harum officiis incorrupte in eum. Sint tacimates vis id, error ludus torquatos eam ne, populo oporteat voluptaria at duo. Mea antiopam neglegentur ei, in quo cibo nonumy, congue impetus suavitate quo ea. Ex mea primis numquam periculis, meis labitur fabulas no nec, est mediocrem pertinacia no.',
+    asking_price: 12,
+    address: '944 market st',
+    postal_code: '94117',
+    // preferred_time_and_date: 'February 28 9:30:30 2017 PST',
+    image_links: [
+      'https://img.letgo.com/images/cf/46/dc/05/cf46dc0586558731efca8bf6dc02c387.jpg?impolicy=img_900'
+    ]
+  },
+  {
+    id: 73,
+    seller_id: Math.ceil(Math.random() * 4),
+    buyer_id: Math.ceil(Math.random() * 4),
+    bitcoin_address: '',
+    category_id: 7,
+    title: 'Yamaha Allegro Clarinet',
+    description: 'Lorem ipsum dolor sit amet, an cum graecis concludaturque. Nam habeo dictas ex, harum officiis incorrupte in eum. Sint tacimates vis id, error ludus torquatos eam ne, populo oporteat voluptaria at duo. Mea antiopam neglegentur ei, in quo cibo nonumy, congue impetus suavitate quo ea. Ex mea primis numquam periculis, meis labitur fabulas no nec, est mediocrem pertinacia no.',
+    asking_price: 175,
+    address: '944 market st',
+    postal_code: '94117',
+    // preferred_time_and_date: 'February 28 9:30:30 2017 PST',
+    image_links: [
+      'https://img.letgo.com/images/70/b5/c9/3d/70b5c93d3444baec51787d38ccea165c.jpg?impolicy=img_900'
+    ]
+  },
+  {
+    id: 74,
+    seller_id: Math.ceil(Math.random() * 4),
+    buyer_id: Math.ceil(Math.random() * 4),
+    bitcoin_address: '',
+    category_id: 7,
+    title: 'Gmat Books In Very Good Condition',
+    description: 'Lorem ipsum dolor sit amet, an cum graecis concludaturque. Nam habeo dictas ex, harum officiis incorrupte in eum. Sint tacimates vis id, error ludus torquatos eam ne, populo oporteat voluptaria at duo. Mea antiopam neglegentur ei, in quo cibo nonumy, congue impetus suavitate quo ea. Ex mea primis numquam periculis, meis labitur fabulas no nec, est mediocrem pertinacia no.',
+    asking_price: 50,
+    address: '944 market st',
+    postal_code: '94117',
+    // preferred_time_and_date: 'February 28 9:30:30 2017 PST',
+    image_links: [
+      'https://img.letgo.com/images/50/35/cd/a1/5035cda1e9f7801ebc6da65e29de97d8.jpg'
+    ]
+  },
+  {
+    id: 75,
+    seller_id: Math.ceil(Math.random() * 4),
+    buyer_id: Math.ceil(Math.random() * 4),
+    bitcoin_address: '',
+    category_id: 7,
+    title: 'Yoga - Beginners Manual - Hardcover',
+    description: 'Lorem ipsum dolor sit amet, an cum graecis concludaturque. Nam habeo dictas ex, harum officiis incorrupte in eum. Sint tacimates vis id, error ludus torquatos eam ne, populo oporteat voluptaria at duo. Mea antiopam neglegentur ei, in quo cibo nonumy, congue impetus suavitate quo ea. Ex mea primis numquam periculis, meis labitur fabulas no nec, est mediocrem pertinacia no.',
+    asking_price: 4,
+    address: '944 market st',
+    postal_code: '94117',
+    // preferred_time_and_date: 'February 28 9:30:30 2017 PST',
+    image_links: [
+      'https://img.letgo.com/images/8d/cf/6c/c0/8dcf6cc0ba70c4932862531ffb9b9208.jpg'
+    ]
+  },
+  {
+    id: 76,
+    seller_id: Math.ceil(Math.random() * 4),
+    buyer_id: Math.ceil(Math.random() * 4),
+    bitcoin_address: '',
+    category_id: 7,
+    title: 'Black Electronic Keyboard',
+    description: 'Lorem ipsum dolor sit amet, an cum graecis concludaturque. Nam habeo dictas ex, harum officiis incorrupte in eum. Sint tacimates vis id, error ludus torquatos eam ne, populo oporteat voluptaria at duo. Mea antiopam neglegentur ei, in quo cibo nonumy, congue impetus suavitate quo ea. Ex mea primis numquam periculis, meis labitur fabulas no nec, est mediocrem pertinacia no.',
+    asking_price: 60,
+    address: '944 market st',
+    postal_code: '94117',
+    // preferred_time_and_date: 'February 28 9:30:30 2017 PST',
+    image_links: [
+      'https://img.letgo.com/images/cd/50/95/60/cd50956095b80f9f9ea0d663ba3e037d.jpeg'
+    ]
+  },
+  {
+    id: 77,
+    seller_id: Math.ceil(Math.random() * 4),
+    buyer_id: Math.ceil(Math.random() * 4),
+    bitcoin_address: '',
+    category_id: 7,
+    title: 'The Paleo Diet Cookbook By Loren Cordain Phd',
+    description: 'Lorem ipsum dolor sit amet, an cum graecis concludaturque. Nam habeo dictas ex, harum officiis incorrupte in eum. Sint tacimates vis id, error ludus torquatos eam ne, populo oporteat voluptaria at duo. Mea antiopam neglegentur ei, in quo cibo nonumy, congue impetus suavitate quo ea. Ex mea primis numquam periculis, meis labitur fabulas no nec, est mediocrem pertinacia no.',
+    asking_price: 12,
+    address: '944 market st',
+    postal_code: '94117',
+    // preferred_time_and_date: 'February 28 9:30:30 2017 PST',
+    image_links: [
+      'https://img.letgo.com/images/f1/eb/d8/b9/f1ebd8b989b2ba7f4bdfeeab00c235cd.jpg'
+    ]
+  },
+  {
+    id: 78,
+    seller_id: Math.ceil(Math.random() * 4),
+    buyer_id: Math.ceil(Math.random() * 4),
+    bitcoin_address: '',
+    category_id: 7,
+    title: '80\'s Pearl Bass Drum',
+    description: 'Lorem ipsum dolor sit amet, an cum graecis concludaturque. Nam habeo dictas ex, harum officiis incorrupte in eum. Sint tacimates vis id, error ludus torquatos eam ne, populo oporteat voluptaria at duo. Mea antiopam neglegentur ei, in quo cibo nonumy, congue impetus suavitate quo ea. Ex mea primis numquam periculis, meis labitur fabulas no nec, est mediocrem pertinacia no.',
+    asking_price: 50,
+    address: '944 market st',
+    postal_code: '94117',
+    // preferred_time_and_date: 'February 28 9:30:30 2017 PST',
+    image_links: [
+      'https://img.letgo.com/images/eb/d4/47/2b/ebd4472b27aa94cfd31652d3030b1e1a.jpeg'
+    ]
+  },
+  {
+    id: 79,
+    seller_id: Math.ceil(Math.random() * 4),
+    buyer_id: Math.ceil(Math.random() * 4),
+    bitcoin_address: '',
+    category_id: 7,
+    title: 'Yamaha Clp-611 Piano',
+    description: 'Lorem ipsum dolor sit amet, an cum graecis concludaturque. Nam habeo dictas ex, harum officiis incorrupte in eum. Sint tacimates vis id, error ludus torquatos eam ne, populo oporteat voluptaria at duo. Mea antiopam neglegentur ei, in quo cibo nonumy, congue impetus suavitate quo ea. Ex mea primis numquam periculis, meis labitur fabulas no nec, est mediocrem pertinacia no.',
+    asking_price: 530,
+    address: '944 market st',
+    postal_code: '94117',
+    // preferred_time_and_date: 'February 28 9:30:30 2017 PST',
+    image_links: [
+      'https://img.letgo.com/images/e6/5c/10/96/e65c1096288983dc3826ef24f6bc4dca.jpg?impolicy=img_900'
+    ]
+  },
+  {
+    id: 80,
+    seller_id: Math.ceil(Math.random() * 4),
+    buyer_id: Math.ceil(Math.random() * 4),
+    bitcoin_address: '',
+    category_id: 7,
+    title: 'Ibanez Artcore Af55',
+    description: 'Lorem ipsum dolor sit amet, an cum graecis concludaturque. Nam habeo dictas ex, harum officiis incorrupte in eum. Sint tacimates vis id, error ludus torquatos eam ne, populo oporteat voluptaria at duo. Mea antiopam neglegentur ei, in quo cibo nonumy, congue impetus suavitate quo ea. Ex mea primis numquam periculis, meis labitur fabulas no nec, est mediocrem pertinacia no.',
+    asking_price: 350,
+    address: '944 market st',
+    postal_code: '94117',
+    // preferred_time_and_date: 'February 28 9:30:30 2017 PST',
+    image_links: [
+      'https://img.letgo.com/images/98/aa/13/11/98aa131149ef17a7315d017bd2a98ba6.jpeg?impolicy=img_900'
+    ]
+  },
+  {
+    id: 81,
+    seller_id: Math.ceil(Math.random() * 4),
+    buyer_id: Math.ceil(Math.random() * 4),
+    bitcoin_address: '',
+    category_id: 7,
+    title: 'Brown Violin With Bow And Case',
+    description: 'Lorem ipsum dolor sit amet, an cum graecis concludaturque. Nam habeo dictas ex, harum officiis incorrupte in eum. Sint tacimates vis id, error ludus torquatos eam ne, populo oporteat voluptaria at duo. Mea antiopam neglegentur ei, in quo cibo nonumy, congue impetus suavitate quo ea. Ex mea primis numquam periculis, meis labitur fabulas no nec, est mediocrem pertinacia no.',
+    asking_price: 200,
+    address: '944 market st',
+    postal_code: '94117',
+    // preferred_time_and_date: 'February 28 9:30:30 2017 PST',
+    image_links: [
+      'https://img.letgo.com/images/55/d5/2f/05/55d52f05f8e4604e8340ab6640bea979.jpeg'
+    ]
+  },
+  {
+    id: 82,
+    seller_id: Math.ceil(Math.random() * 4),
+    buyer_id: Math.ceil(Math.random() * 4),
+    bitcoin_address: '',
+    category_id: 8,
+    title: 'Oleg - Neighborhood Tech Mentor',
+    description: 'Lorem ipsum dolor sit amet, an cum graecis concludaturque. Nam habeo dictas ex, harum officiis incorrupte in eum. Sint tacimates vis id, error ludus torquatos eam ne, populo oporteat voluptaria at duo. Mea antiopam neglegentur ei, in quo cibo nonumy, congue impetus suavitate quo ea. Ex mea primis numquam periculis, meis labitur fabulas no nec, est mediocrem pertinacia no.',
+    asking_price: 20,
+    address: '944 market st',
+    postal_code: '94117',
+    // preferred_time_and_date: 'February 28 9:30:30 2017 PST',
+    image_links: [
+      'https://media.licdn.com/mpr/mpr/shrink_100_100/p/1/000/074/152/2780704.jpg'
+    ]
   }
 ]
 

@@ -39,26 +39,26 @@ router.get('/users/auth', function(req, res) {
   res.send(req.session);
 })
 
-router.get('/api/v1/product', userController.isAuthenticated, productController.getOne)
-router.get('/api/v1/products', userController.isAuthenticated, productController.getAll)
-router.get('/api/v1/categories', userController.isAuthenticated, categoryController.getAll) 
-router.get('/api/v1/getuserproducts', userController.isAuthenticated, productController.getUserProducts); 
-router.get('/api/v1/getuserprofile', userController.isAuthenticated, userController.getUserProfile); //@TODO change to /user
-router.get('/api/v1/product/get_quote', userController.isAuthenticated, productController.quote)
-router.get('/api/v1/product/getProductHistory', userController.isAuthenticated, productController.getProductHistory)
+router.get('/api/v1/product', productController.getOne)
+router.get('/api/v1/products', productController.getAll)
+router.get('/api/v1/categories', categoryController.getAll) 
+router.get('/api/v1/getuserproducts', productController.getUserProducts); 
+router.get('/api/v1/getuserprofile', userController.getUserProfile); //@TODO change to /user
+router.get('/api/v1/product/get_quote', productController.quote)
+router.get('/api/v1/product/getProductHistory', productController.getProductHistory)
 // router.get('/api/v1/exchangeCurrency', coinbaseController)
 
-router.post('/api/v1/postitem', userController.isAuthenticated, productController.post); //@TODO change to /product
-router.post('/api/v1/attempt_purchase', userController.isAuthenticated, productController.attemptPurchase)
+router.post('/api/v1/postitem', productController.post); //@TODO change to /product
+router.post('/api/v1/attempt_purchase', productController.attemptPurchase)
 
 //@TODO TEST:
-router.post('/api/v1/postcontactinfo', userController.isAuthenticated, userController.setContactInfo); //@TODO change to /user
+router.post('/api/v1/postcontactinfo', userController.setContactInfo); //@TODO change to /user
 router.post('/uber_webhook', uberRUSHController.webhook)
 router.post('/coinbase_webhook', coinbaseController.webhook)
-router.post('/upload', userController.isAuthenticated, upload, s3Handler)
+router.post('/upload', upload, s3Handler)
 
 router.get('/api/v1/vision', vision.getImageTitleAndCategory)
-router.get('/api/v1/payment', userController.isAuthenticated, productController.isPaid)
+router.get('/api/v1/payment', productController.isPaid)
 
 /* ## NOT IN MVP ## */
 // router.post('/api/v1/make_bid', /**/)
