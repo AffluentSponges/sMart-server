@@ -54,6 +54,10 @@ module.exports = ModelBase.extend({
 
   getItemsOnDelivery: function(buyer_id) {
     return this.where({buyer_id: buyer_id}).fetchAll({withRelated:['product']});
+  },
+
+  getItemTransactionHistory: function(product_id) {
+    return this.where({product_id: product_id}).fetch({withRelated:['product']});
   }
 
 });

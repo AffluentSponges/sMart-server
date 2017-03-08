@@ -109,22 +109,27 @@ module.exports.getUserProducts = function(req, res) {
   } else if (req.query.condition === 'delivery') {
     Transaction.getItemsOnDelivery(req.query.user_id)
     .then(products => {
-      console.log('client is asking delivery status');
       res.json(products)
     })
   } else if (req.query.condition === 'selling') {
-    console.log('selling', req.query)
     Product.getSellingBySellerId(req.query.user_id)
     .then(products => {
       res.json(products)
     })
   } else if (req.query.condition === 'sold') {
-    console.log('sold', req.query)
-    res.end();
-  } else if (req.query.condition === 'bought') {
-    console.log('bought', req.query)
-    res.end();
+    Product.getSoldBySellerId(req.query.user_id)
+    .then(products => {
+      res.json(products)
+    })
   } 
+};
+
+module.exports.getProductHistory = function(req, res) {
+  Transaction.getItemTransactionHistory(req.query.product_id)
+  .then(history => {
+    console.log('pulling to check delivery status')
+    res.json(history);
+  })
 };
 
 // var cnt = 0;
