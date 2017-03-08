@@ -52,13 +52,9 @@ module.exports = ModelBase.extend({
   },
 
   getSoldBySellerId: function(seller_id) {
-    return
+    return this.query({where: {seller_id: seller_id, sold: true}}).fetchAll()
   },
-
-  getBoughtByBuyerId: function(seller_id) {
-    return
-  },
-
+  
   attemptPurchase: function(product_id, attempted_buyer_id) {
     return this.getWithSeller(product_id)
     .then(product => {

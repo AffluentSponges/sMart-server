@@ -146,7 +146,7 @@ class ItemDetail extends React.Component {
     var qrButton;
 
     if (isPaid) {
-      qrButton = <Button as={Link} to={`/u/${this.props.state.user.id}/delivery`} color='green'>
+      qrButton = <Button as={Link} to={`/u/${this.props.state.user.id}/bought`} color='green'>
                    Your Payment confirmed. Click to see delivery status.
                  </Button>
     } else {

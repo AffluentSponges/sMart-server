@@ -10,6 +10,7 @@ import PostItem from './containers/PostItem.jsx';
 import Signup from './containers/Signup.jsx';
 import Profile from './containers/Profile.jsx';
 import AccountEdit from'./containers/AccountEdit.jsx';
+import DeliveryStatus from'./containers/DeliveryStatus.jsx';
 
 //from App.jsx
 
@@ -140,7 +141,8 @@ ReactDOM.render(
       <Route path="signup" component={Signup}/>
       <Route path="x/:category" component={Category}/>
       <Route path="i/:postId" component={itemDetail}/>
-      <Route path="u/:userId/:activeItem" component={Profile}/>      
+      <Route path="u/:userId/:activeItem" component={Profile}/>
+      <Route path="h/:postId" component={DeliveryStatus}/>              
       <Route path="post" component={PostItem}/>
       <Route path="account-edit" component={AccountEdit}/>
     </Route>
