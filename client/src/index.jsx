@@ -16,6 +16,7 @@ import DeliveryStatus from'./containers/DeliveryStatus.jsx';
 
 import Header from './components/Header.jsx';
 import CategoriesNav from './components/CategoriesNav.jsx';
+import CategoriesNav2 from './components/CategoriesNav2.jsx';
 import ItemElement from './components/ItemElement.jsx';
 import ItemList from './components/ItemList.jsx';
 import auth from './auth/auth.js'
@@ -29,13 +30,12 @@ class App extends React.Component {
       user: '',
       categories: [],
       currentCategory:'',
+      currentCategoryName: '',
       items: [],
       currentCategoryItems:[],
       searchData: []
     }
     this.currentCategoryHandler = this.currentCategoryHandler.bind(this);
-    // this.logout = this.logout.bind(this);
-    // this.axiosSignin = this.axiosSignin.bind(this);
   }
 
   componentDidMount() {
@@ -96,13 +96,15 @@ class App extends React.Component {
       return category.name === categoryName;
     })[0].id;
     this.setState({currentCategory: currentCategoryId});
+    this.setState({currentCategoryName: categoryName});
     var thisCategoryItems = this.state.items.filter((item)=>{
       //console.log(typeof item.category_id, typeof currentCategoryId)
       return item.category_id === currentCategoryId;
     });
     this.setState({currentCategoryItems: thisCategoryItems});  
     console.log('currentCategory', this.state.currentCategory);
-    // console.log('thisCategoryItems ', currentCategoryId, this.state.currentCategoryItems)
+    console.log('currentCategoryName', this.state.currentCategoryName);
+
   }
 
   // logout() {

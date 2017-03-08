@@ -15,10 +15,10 @@ class ItemList extends React.Component {
     var itemsInColumn = Math.floor(this.props.items.length / 4);
     var columns = { 0: [], 1: [], 2: [], 3: []};
     for (var i = 0; i < this.props.items.length; i++) {
-      if (i < 3) {
-        columns[i + 1].push(this.props.items[i]);
-        continue;
-      }
+      // if (i < 3) {
+      //   columns[i + 1].push(this.props.items[i]);
+      //   continue;
+      // }
       var target = i % 4;
       columns[target].push(this.props.items[i]);
     }
@@ -26,7 +26,6 @@ class ItemList extends React.Component {
       <Grid relaxed>
         <Grid.Row columns={4} only='computer'>
           <Grid.Column>
-            <CategoriesNav state={this.props.state} currentCategoryHandler={this.props.currentCategoryHandler}/>
             {columns[0].map((item)=>
                 <Container className='ItemElement_Container' key={item.id} as={Link} to={'/i/' + item.id}>
                   <ItemElement key={item.id} item={item} />
@@ -57,7 +56,6 @@ class ItemList extends React.Component {
         </Grid.Row> 
         <Grid.Row columns={2} only='mobile tablet'>
           <Grid.Column>
-            <CategoriesNav state={this.props.state} currentCategoryHandler={this.props.currentCategoryHandler}/>
             {columns[0].map((item)=>
                 <Container className='ItemElement_Container' key={item.id} as={Link} to={'/i/' + item.id}>
                   <ItemElement key={item.id} item={item} />

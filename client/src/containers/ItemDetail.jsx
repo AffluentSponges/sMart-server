@@ -207,7 +207,7 @@ class ItemDetail extends React.Component {
       imgSrc = ''
     }
     return (
-      <Grid centered>
+      <Grid centered stackable>
         <Grid.Column width={10}>
           <Segment>
               <Image src={imgSrc} size='medium' centered/>
