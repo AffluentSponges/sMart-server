@@ -5,6 +5,15 @@ const Product = require('../server/models/product')
 const productId = process.argv[2]
 var deliveryId
 
+const wait = function(t) {
+  var time = t || 1000
+  return new Promise(function(resolve, reject) {
+    setTimeout(() => {resolve()}, time)
+  }) 
+}
+
+const waitTime = 5000
+
 Product.getWithAllRelated(productId)
 .then(product => {
   // console.log(product.relations.transaction)
@@ -12,13 +21,25 @@ Product.getWithAllRelated(productId)
   return changeUberStatus(deliveryId, 'en_route_to_pickup')
 })
 .then(() => {
+  return wait(waitTime)
+})
+.then(() => {
   return changeUberStatus(deliveryId, 'at_pickup')
+})
+.then(() => {
+  return wait(waitTime)
 })
 .then(() => {
   return changeUberStatus(deliveryId, 'en_route_to_dropoff')
 })
 .then(() => {
+  return wait(waitTime)
+})
+.then(() => {
   return changeUberStatus(deliveryId, 'at_dropoff')
+})
+.then(() => {
+  return wait(waitTime)
 })
 .then(() => {
   return changeUberStatus(deliveryId, 'completed')
