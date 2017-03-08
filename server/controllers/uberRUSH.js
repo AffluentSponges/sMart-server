@@ -120,44 +120,49 @@ const other = [
 ]
 
 module.exports.webhook = function(req, res) {
-  // console.log('received uber webhook', req.body)
-  var statusChange = req.body.event_type;
+
   var status = req.body.meta.status
   var delivery_id = req.body.meta.resource_id
-  // console.log(status)
+
   if(onTrack.includes(status)) {
-    console.log(delivery_id)
     Transaction.updateByDeliveryId(delivery_id, {status: status})
     .then(transaction => {
-      console.log(transaction)
-      // twilio.updateSeller(transaction)
-      // twilio.updateBuyer(transaction)
+      if(transaction) {
+        twilio.updateSeller(transaction)
+        twilio.updateBuyer(transaction)
+      }
+      else {
+        console.log('Uber updates sent out of order: ', status)
+      }
       res.sendStatus(200)
     })
   }
 
   if(status === 'completed') {
-    console.log('completed')
-
     Transaction.updateByDeliveryId(delivery_id, {status: status})
     .then(transaction => {
-      twilio.updateSeller(transaction)
-      twilio.updateBuyer(transaction)
+      if(transaction) {
+        twilio.updateSeller(transaction)
+        twilio.updateBuyer(transaction)
 
-      const t = transaction.serialize()
-      const idem = t.delivery_id
-      const sellerWallet = t.seller.wallet_address
-      const amount = t.sale_price_btc 
-      return coinbase.sendBTC(idem, sellerWallet, amount)
+        const t = transaction.serialize()
+        const idem = t.delivery_id
+        const sellerWallet = t.seller.wallet_address
+        const amount = t.sale_price_btc 
+        return coinbase.sendBTC(idem, sellerWallet, amount)
+      }
+      else {
+        console.log('Uber updates sent out of order: ', status)
+        return null
+      }
     })
     .then(response => {
-      console.log(response)
       res.sendStatus(200)
     })
   }
 
   if(problems.includes(status) || other.includes(status)) {
-    console.log('UberRUSH is ', status)
+    // console.log('UberRUSH status is: ', status)
     res.sendStatus(200)
   }
 

@@ -2,6 +2,15 @@ const knex = require('../db/knex')
 const bookshelf = require('bookshelf')(knex)
 const ModelBase = require('bookshelf-modelbase')(bookshelf)
 
+const statuses = [
+  'processing',
+  'en_route_to_pickup',
+  'at_pickup',
+  'en_route_to_dropoff',
+  'at_dropoff',
+  'completed'
+]
+
 module.exports = ModelBase.extend({
   tableName: 'transactions',
 
@@ -30,7 +39,7 @@ module.exports = ModelBase.extend({
       product_id: product.id,
       buyer_id: product.attributes.buyer_id,
       sale_price: product.attributes.asking_price,
-      status: 'received_payment',
+      status: 'processing',
       sale_time_and_date: date,
       coinbase_address_id: info.coinbase_address_id,
       currency: info.currency,
@@ -44,7 +53,20 @@ module.exports = ModelBase.extend({
   },
 
   updateByDeliveryId: function(delivery_id, attributesObj) {
-    return this.upsert({uber_delivery_id: delivery_id}, attributesObj, {withRelated: ['seller', 'buyer', 'product']})
+    var previousTransaction
+    return this.where({uber_delivery_id: delivery_id}).fetch({withRelated: ['seller', 'buyer', 'product']})
+    .then(transaction => {
+      if(!transaction) {return null}
+      previousTransaction = transaction.clone()
+      return transaction.set(attributesObj) //, {withRelated: ['seller', 'buyer', 'product']})
+    })
+    .then(transaction => {
+      if(!transaction) {return null}
+      const newStatus = transaction.attributes.status
+      const oldStatus = transaction._previousAttributes.status
+      const updated = (statuses.indexOf(newStatus) > statuses.indexOf(oldStatus))
+      return updated ? transaction.save() : null
+    })
   },
 
   getByDeliveryId: function(delivery_id) {

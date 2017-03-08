@@ -283,7 +283,7 @@ seedData.transactionArray = [
     buyer_id: 3,
     product_id: 4,
     sale_price: .1,
-    status: 'buyer_paid',
+    status: 'processing',
     uber_delivery_id: '295e895d-5bf7-4989-bd01-fdc7aaf9a3da'
   },
   {
@@ -291,7 +291,7 @@ seedData.transactionArray = [
     buyer_id: 4,
     product_id: 7,
     sale_price: .45,
-    status: 'buyer_paid',
+    status: 'at_dropoff',
     uber_delivery_id: 'fdc7aaf9a3da-5bf7-4989-bd01-295e895d'
   }
 ]
