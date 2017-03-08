@@ -37,7 +37,6 @@ module.exports.attemptPurchase = function(req, res) {
     return coinbase.convertCurrency(totalPrice)
   })
   .then(bitcoinAmount => {
-    //@TODO ADD THE ACTUAL PRICE TO THE BTC AMOUNT
     if(product.attributes.attempted_buyer_id !== attempted_buyer_id) {
       res.send({
         message: 'Someone already bought this item',
@@ -83,7 +82,6 @@ module.exports.quote = function(req, res) {
 
 module.exports.post = function(req, res) {
   var product;
-  //console.log('User wants to post this', req.body);
   Product.create(req.body)
   .then( p => {
     product = p
@@ -137,7 +135,6 @@ module.exports.isPaid = function(req, res) {
   Product.findById(req.query.id)
   .then(product => {
     var thisProduct = product.serialize();
-    console.log('these two has to be same ', thisProduct.buyer_id, parseInt(req.query.buyer_id));
     if (thisProduct.buyer_id === parseInt(req.query.buyer_id)) {
       res.json({paid: true});
     } else {
