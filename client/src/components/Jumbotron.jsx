@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { Segment, Divider } from 'semantic-ui-react'
+import { Segment, Divider, Grid } from 'semantic-ui-react'
 class Jumbotron extends React.Component {
   constructor(props) {
     super(props);
@@ -9,6 +9,11 @@ class Jumbotron extends React.Component {
   render() {
     return (
       <Segment className='jumbotron'>
+        <Grid centered>
+          <Grid.Column>
+          hahhoho
+          </Grid.Column>
+        </Grid>
       </Segment>
     );
   }

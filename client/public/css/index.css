@@ -45,6 +45,7 @@ a {
 
 .jumbotron {
   height: 270px !important;
+  margin: 0px 0px 1rem 0px !important;
   background-image: url("https://s3-us-west-1.amazonaws.com/affluentsponges/product_image/5673054113921228.jpg") !important;
   background-repeat: repeat !important;
   border-radius: 0 !important;
@@ -74,8 +75,18 @@ a {
   margin-top: 10px;
 }
 
+.CategoriesNav2 {
+  background-color: white !important;
+}
 
+.textCenter {
+  text-align: center !important;
+}
 
+.metaPrice {
+  font-size: 13px !important;
+  line-height: 18px !important;
+}
 
 
 
