@@ -1432,22 +1432,6 @@ seedData.productArray = [
     image_links: [
       'https://img.letgo.com/images/55/d5/2f/05/55d52f05f8e4604e8340ab6640bea979.jpeg'
     ]
-  },
-  {
-    id: 82,
-    seller_id: Math.ceil(Math.random() * 4),
-    buyer_id: Math.ceil(Math.random() * 4),
-    bitcoin_address: '',
-    category_id: 8,
-    title: 'Oleg - Neighborhood Tech Mentor',
-    description: 'Lorem ipsum dolor sit amet, an cum graecis concludaturque. Nam habeo dictas ex, harum officiis incorrupte in eum. Sint tacimates vis id, error ludus torquatos eam ne, populo oporteat voluptaria at duo. Mea antiopam neglegentur ei, in quo cibo nonumy, congue impetus suavitate quo ea. Ex mea primis numquam periculis, meis labitur fabulas no nec, est mediocrem pertinacia no.',
-    asking_price: 20,
-    address: '944 market st',
-    postal_code: '94117',
-    // preferred_time_and_date: 'February 28 9:30:30 2017 PST',
-    image_links: [
-      'https://media.licdn.com/mpr/mpr/shrink_100_100/p/1/000/074/152/2780704.jpg'
-    ]
   }
 ]
 
