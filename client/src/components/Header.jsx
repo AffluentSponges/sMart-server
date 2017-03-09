@@ -16,12 +16,10 @@ class Header extends React.Component {
   render() {
     const { activeItem } = this.state
     console.log('this.props.loggedIn', this.props.loggedIn);
-
     return (
       <Menu fixed='top'>
-        <Menu.Item as={Link} to='/'name='smart' active={activeItem === 'smart'} onClick={this.handleItemClick}>SMart</Menu.Item>
-        <Menu.Item>
-          <Search searchData={this.props.searchData}/>
+        <Menu.Item as={Link} to='/'name='smart' active={activeItem === 'smart'} onClick={this.handleItemClick}>
+          <img src='https://s3-us-west-1.amazonaws.com/affluentsponges/product_image/2159697316767985.jpg' />
         </Menu.Item>
         <Menu.Menu position='right'>
           {this.props.loggedIn ? (

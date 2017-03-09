@@ -51,6 +51,7 @@ export default class SearchExampleStandard extends Component {
             onSearchChange={this.handleSearchChange.bind(this)}
             results={results}
             value={value}
+            placeholder='What are you looking for?'
             onResultSelect={this.onResultSelect.bind(this)}
             {...this.props}
           />
