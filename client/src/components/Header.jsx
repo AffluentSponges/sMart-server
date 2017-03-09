@@ -21,9 +21,6 @@ class Header extends React.Component {
         <Menu.Item as={Link} to='/'name='smart' active={activeItem === 'smart'} onClick={this.handleItemClick}>
           <img src='https://s3-us-west-1.amazonaws.com/affluentsponges/product_image/2159697316767985.jpg' />
         </Menu.Item>
-        <Menu.Item>
-          <Search searchData={this.props.searchData}/>
-        </Menu.Item>
         <Menu.Menu position='right'>
           {this.props.loggedIn ? (
             <Dropdown item text={this.props.appState.user.first_name}>

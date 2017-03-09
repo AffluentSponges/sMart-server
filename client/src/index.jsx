@@ -55,7 +55,6 @@ class App extends React.Component {
           }); 
         }        
       }
-      // console.log('App.state = ', _this.state);
     })
     .catch((err) => {
       console.log('err', err);
@@ -84,6 +83,8 @@ class App extends React.Component {
           childKey: id
         };
       });
+      console.log();
+      console.log();
       _this.setState({searchData: searchData});
     })
     .catch(function (error) {
@@ -107,11 +108,6 @@ class App extends React.Component {
 
   }
 
-  // logout() {
-  //   auth.logout()
-  //   this.props.router.replace('/')
-  // }
-
   axiosSignin() {
     axios.get('/login')
     .then(function(res) {
@@ -127,6 +123,7 @@ class App extends React.Component {
         <div className='space'></div>
         {React.cloneElement(this.props.children, {
           items: this.state.items,
+          searchData: this.state.searchData,
           currentCategoryHandler: this.currentCategoryHandler,
           state: this.state
         })}
