@@ -18,7 +18,7 @@ class Category extends React.Component {
     return (
       <div>
         <CategoriesNav2 state={this.props.state} currentCategoryHandler={this.props.currentCategoryHandler}/>
-        <Jumbotron />
+        <Jumbotron searchData={this.props.searchData}/>
         <ItemList items={this.props.state.currentCategoryItems} state={this.props.state} currentCategoryHandler={this.props.currentCategoryHandler}/>
       </div>
     );
