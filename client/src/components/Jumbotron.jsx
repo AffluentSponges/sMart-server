@@ -12,7 +12,6 @@ class Jumbotron extends React.Component {
   render() {
     if (this.props.containerWidth < 1000) {
       return (
-        <div>
           <div className='jumbotron'>
             <Grid centered>
               <Grid.Column width='12'>
@@ -26,7 +25,6 @@ class Jumbotron extends React.Component {
               </Grid.Column>  
             </Grid> 
           </div>
-        </div>
       );
     }
     return (
@@ -47,6 +45,7 @@ class Jumbotron extends React.Component {
             </Grid.Column>
           </Grid.Row>
         </Grid>
+        <div className='space'></div>
       </div>
     );
   }
