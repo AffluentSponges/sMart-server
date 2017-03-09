@@ -120,7 +120,6 @@ class App extends React.Component {
     return (
       <div>
         <Header appState={this.state} searchData={this.state.searchData} loggedIn={this.state.loggedIn} logout={this.logout} axiosSignin={this.axiosSignin}/>
-        <div className='space'></div>
         {React.cloneElement(this.props.children, {
           items: this.state.items,
           searchData: this.state.searchData,
@@ -165,56 +164,3 @@ const authCheck = (nextState, replace, asynchronous) => {
     callback(error);
   })
 }
-
-
-// browserHistory.push(`/i/${response.data}`);
-//     axios.get('/users/auth')
-//     .then((res) => {
-//       // console.log(res.data.passport.user);
-//       if (res.data.passport) {
-//         if (res.data.passport.user.id) {
-//           _this.setState({
-//             user: {
-//               id: res.data.passport.user.id,
-//               first_name: res.data.passport.user.first_name
-//             },
-//             loggedIn: true
-//           }); 
-//         }        
-//       }
-//       console.log('App.state = ', _this.state);
-//     })
-//     .catch((err) => {
-//       console.log('err', err);
-//     });
-
-
-// var options = {
-//   enableHighAccuracy: true,
-//   timeout: 10000,
-//   maximumAge: 0
-// };
-// function success(pos) {
-//   var crd = pos.coords;
-//   axios.post('/api/v1/dev', {
-//       Latitude: crd.latitude,
-//       Longitude: crd.longitude,
-//       accuracy_meters: crd.accuracy
-//     })
-//     .then(function (response) {
-//       console.log(response);
-//     })
-//     .catch(function (error) {
-//       console.log(error);
-//     });
-//   console.log('Your current position is:');
-//   console.log(`Latitude : ${crd.latitude}`);
-//   console.log(`Longitude: ${crd.longitude}`);
-//   console.log(`More or less ${crd.accuracy} meters.`);
-// };
-// function error(err) {
-//   console.warn(`ERROR(${err.code}): ${err.message}`);
-// };
-// navigator.geolocation.getCurrentPosition(success, error, options);
-
-

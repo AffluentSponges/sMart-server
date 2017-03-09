@@ -45,7 +45,7 @@ ul {
 
 .jumbotron {
   height: 350px !important;
-/*  margin: 0px 0px 1rem 0px !important;*/
+  margin: 0px 0px 1rem 0px !important;
   background-image: url("http://wallpapercave.com/wp/MUUXx5p.jpg") !important;
   background-size: cover;
 /*  background-image: url("https://s3-us-west-1.amazonaws.com/affluentsponges/product_image/5673054113921228.jpg") !important;
