@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { Segment, Divider, Grid } from 'semantic-ui-react'
+import { Segment, Divider, Grid, Menu } from 'semantic-ui-react'
 import Search from './Search.jsx'
+import Dimensions from 'react-dimensions'
 
 class Jumbotron extends React.Component {
   constructor(props) {
@@ -9,7 +10,25 @@ class Jumbotron extends React.Component {
   }
 
   render() {
-
+    if (this.props.containerWidth < 1000) {
+      return (
+        <div>
+          <div className='jumbotron'>
+            <Grid centered>
+              <Grid.Column width='12'>
+                  <h1>FIND GREAT DEALS IN SF,</h1>
+                  <h1>AND HAVE IT <span>IN 30 MINS</span> IN YOUR HOME</h1>
+              </Grid.Column>         
+            </Grid>
+            <Grid centered columns={2}>
+              <Grid.Column>
+                <Search searchData={this.props.searchData} size='huge' className='search'/>
+              </Grid.Column>  
+            </Grid> 
+          </div>
+        </div>
+      );
+    }
     return (
       <div className='jumbotron'>
         <div className='space'></div>
@@ -34,4 +53,4 @@ class Jumbotron extends React.Component {
 }
 
 
-export default Jumbotron;
+export default Dimensions()(Jumbotron);
