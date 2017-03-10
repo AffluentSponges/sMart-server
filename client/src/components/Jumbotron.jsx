@@ -16,7 +16,7 @@ class Jumbotron extends React.Component {
           <div className='jumbotron'>
             <Grid centered>
               <Grid.Column width={16}>
-                <h1>BARGAIN DEALS IN SF,</h1>
+                <h1>BARGAIN DEALS IN SF</h1>
                 <h1><span style={{'color': '#DC2022'}}>DELIVERED</span> TO YOUR DOOR INSTANTLY</h1>
               </Grid.Column>         
             </Grid>
@@ -39,7 +39,7 @@ class Jumbotron extends React.Component {
         <div className='space'></div>
         <Grid centered>
           <Grid.Column width='12'>
-            <h1>BARGAIN DEALS IN SF,</h1>
+            <h1>BARGAIN DEALS IN SF</h1>
             <h1 style={{'color': '#DC2022'}}>DELIVERED</h1>
             <h1>TO YOUR DOOR INSTANTLY</h1>
           </Grid.Column>
