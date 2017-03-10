@@ -16,6 +16,7 @@ var changeUberStatus = function(delivery_id, status) {
     status: status
   })
   .then(response => {
+    console.log(response)
     return response
   })
 }
@@ -32,7 +33,7 @@ module.exports.simulateDelivery = function(req, res) {
   var deliveryId
   const productId = req.query.productId
   const waitTime = req.query.waitTime || 1000
-  
+ 
 
   Product.getWithAllRelated(productId)
   .then(product => {
