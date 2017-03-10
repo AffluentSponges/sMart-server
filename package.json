@@ -13,7 +13,8 @@
     "seed-db": "node ./server/db/script.js seed",
     "test-db": "node ./server/db/script.js all test",
     "report-coverage": "nyc report --reporter=lcov > coverage.lcov && codecov",
-    "standard": "standard index.js"
+    "standard": "standard index.js",
+    "heroku-postbuild": "webpack --config webpack.config.js"
   },
   "repository": {
     "type": "git",
