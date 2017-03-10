@@ -21,6 +21,13 @@ var changeUberStatus = function(delivery_id, status) {
   })
 }
 
+var getDeliveryInfo = function(delivery_id) {
+  return axiosUber.get(delivery_id)
+  .then(response => {
+    return response
+  })
+}
+
 const wait = function(t) {
   var time = t || 1000
   return new Promise(function(resolve, reject) {
@@ -33,7 +40,6 @@ module.exports.simulateDelivery = function(req, res) {
   var deliveryId
   const productId = req.query.productId
   const waitTime = req.query.waitTime || 1000
- 
 
   Product.getWithAllRelated(productId)
   .then(product => {
@@ -67,8 +73,17 @@ module.exports.simulateDelivery = function(req, res) {
   .then(() => {
     res.json({message: 'It should have worked. let us see...'})
   })
-
 }
 
+module.exports.deliveryInfo = function(req, res) {
+  const productId = req.query.productId
 
-
+  Product.getWithAllRelated(productId)
+  .then(product => {
+    const deliveryId = product.relations.transaction.attributes.uber_delivery_id
+    return getDeliveryInfo(deliveryId)
+  })
+  .then(response => {
+    res.send(response)
+  })
+}

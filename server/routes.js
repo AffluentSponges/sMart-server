@@ -60,8 +60,10 @@ router.post('/upload', upload, s3Handler)
 
 router.get('/api/v1/vision', vision.getImageTitleAndCategory)
 router.get('/api/v1/payment', productController.isPaid)
-router.get('/simulate_delivery', simulateDelivery.simulateDelivery)
 
+// For testing
+router.get('/simulate_delivery', simulateDelivery.simulateDelivery)
+router.get('/delivery_info', simulateDelivery.deliveryInfo)
 /* ## NOT IN MVP ## */
 // router.post('/api/v1/make_bid', /**/)
 //?product_id=3 & user_id=4 & offer_price = 100.50
