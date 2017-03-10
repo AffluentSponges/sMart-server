@@ -11,12 +11,12 @@ class DeliveryStatus extends React.Component {
         description: ''
       },
       steps: [
-        { active: false, completed: true, icon: 'credit card', title: 'buyer_paid', description: 'Blah Blah' },
-        { active: false, completed: false, icon: 'truck', title: 'en_route_to_pickup', description: 'Blah Blah' },
-        { active: false, completed: false, icon: 'truck', title: 'at_pickup', description: 'Blah Blah' },
-        { active: false, completed: false, icon: 'truck', title: 'en_route_to_dropoff', description: 'Blah Blah' },
-        { active: false, completed: false, icon: 'truck', title: 'at_dropoff', description: 'Blah Blah' },
-        { active: false, completed: false, icon: 'credit card', title: 'completed', description: 'Blah Blah' }
+        { active: false, completed: true, icon: 'credit card', title: 'Buyer paid', status: 'buyer_paid'},
+        { active: false, completed: false, icon: 'truck', title: 'En route to pickup', status: 'en_route_to_pickup'},
+        { active: false, completed: false, icon: 'truck', title: 'At pickup', status: 'at_pickup', description: 'Blah Blah'},
+        { active: false, completed: false, icon: 'truck', title: 'En route to dropoff', status: 'en_route_to_dropoff'},
+        { active: false, completed: false, icon: 'truck', title: 'At dropoff', status: 'at_dropoff'},
+        { active: false, completed: false, icon: 'credit card', title: 'Completed', status: 'completed'}
       ],
       intervalID: ''
     };
@@ -72,7 +72,7 @@ class DeliveryStatus extends React.Component {
   handleSteps(status) {
     var previous;
     var steps = this.state.steps.map((step) => {
-      if (step.title === status) {
+      if (step.status === status) {
         step.completed = true
       }
       return step;
@@ -86,8 +86,8 @@ class DeliveryStatus extends React.Component {
   render() {
 
     return (
-      <Grid centered>
-        <Grid.Column width={10}>
+      <Grid centered stackable  style={{'padding-top': '25px'}}>
+        <Grid.Column width={8}>
           <Segment>
               <Image src={this.state.item.image_links[0]} size='medium' centered/>
               <p className='description'>
@@ -96,8 +96,8 @@ class DeliveryStatus extends React.Component {
               </p>
           </Segment>
         </Grid.Column>
-        <Grid.Column width={6}>
-          <Step.Group vertical items={this.state.steps} />
+        <Grid.Column width={4}>
+          <Step.Group fluid vertical items={this.state.steps} />
         </Grid.Column>
       </Grid>
     );
