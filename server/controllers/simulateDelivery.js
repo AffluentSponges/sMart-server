@@ -16,12 +16,10 @@ var changeUberStatus = function(delivery_id, status) {
     status: status
   })
   .then(response => {
+    console.log(response)
     return response
   })
 }
-
-const productId = process.argv[2]
-var deliveryId
 
 const wait = function(t) {
   var time = t || 1000
@@ -32,12 +30,15 @@ const wait = function(t) {
 
 
 module.exports.simulateDelivery = function(req, res) {
+  var deliveryId
   const productId = req.query.productId
   const waitTime = req.query.waitTime || 1000
   
+  console.log('productId: ', productId)
+
   Product.getWithAllRelated(productId)
   .then(product => {
-    // console.log(product.relations.transaction)
+    console.log(product.serialize())
     deliveryId = product.relations.transaction.attributes.uber_delivery_id
     return changeUberStatus(deliveryId, 'en_route_to_pickup')
   })
