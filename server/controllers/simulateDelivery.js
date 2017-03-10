@@ -1,4 +1,4 @@
-const Product = require('../server/models/product')
+const Product = require('../models/product')
 const axios = require('axios')
 
 const axiosUber = axios.create({
