@@ -212,7 +212,7 @@ class ItemDetail extends React.Component {
           <Segment>
               <Image src={imgSrc} size='medium' centered/>
               <p className='description'>
-                <strong>Discription</strong><br/>
+                <strong>Description</strong><br/>
                 {this.state.thisProduct.description}
               </p>
           </Segment>
