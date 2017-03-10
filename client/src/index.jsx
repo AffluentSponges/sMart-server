@@ -45,7 +45,6 @@ class App extends React.Component {
       // console.log(res.data.passport.user);
       if (res.data.passport) {
         if (res.data.passport.user.id) {
-            console.log('res.data.passport.user', res.data.passport.user);
           _this.setState({
             user: {
               id: res.data.passport.user.id,
@@ -71,7 +70,6 @@ class App extends React.Component {
 
     axios.get('/api/v1/products')
     .then(function (response) {
-      console.log(response.data);
       _this.setState({items: response.data})
       var searchData = response.data.map(({title, asking_price, description, image_links, id}) => {
         return {
@@ -103,9 +101,6 @@ class App extends React.Component {
       return item.category_id === currentCategoryId;
     });
     this.setState({currentCategoryItems: thisCategoryItems});  
-    console.log('currentCategory', this.state.currentCategory);
-    console.log('currentCategoryName', this.state.currentCategoryName);
-
   }
 
   axiosSignin() {
