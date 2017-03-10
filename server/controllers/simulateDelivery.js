@@ -58,18 +58,18 @@ module.exports.simulateDelivery = function(req, res) {
   .then(() => {
     return changeUberStatus(deliveryId, 'en_route_to_dropoff')
   })
-  // .then(() => {
-  //   return wait(waitTime)
-  // })
-  // .then(() => {
-  //   return changeUberStatus(deliveryId, 'at_dropoff')
-  // })
-  // .then(() => {
-  //   return wait(waitTime)
-  // })
-  // .then(() => {
-  //   return changeUberStatus(deliveryId, 'completed')
-  // })
+  .then(() => {
+    return wait(waitTime)
+  })
+  .then(() => {
+    return changeUberStatus(deliveryId, 'at_dropoff')
+  })
+  .then(() => {
+    return wait(waitTime)
+  })
+  .then(() => {
+    return changeUberStatus(deliveryId, 'completed')
+  })
   .then(() => {
     res.json({message: 'It should have worked. let us see...'})
   })
