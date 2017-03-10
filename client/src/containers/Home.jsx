@@ -10,7 +10,6 @@ class Home extends React.Component {
   }
 
   render() {
-    console.log('Home', this.props.searchData)
     return (
       <div>
         <CategoriesNav2 state={this.props.state} currentCategoryHandler={this.props.currentCategoryHandler}/>

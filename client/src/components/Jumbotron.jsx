@@ -12,19 +12,22 @@ class Jumbotron extends React.Component {
   render() {
     if (this.props.containerWidth < 1000) {
       return (
+        <div>
           <div className='jumbotron'>
             <Grid centered>
-              <Grid.Column width='12'>
-                  <h1>FIND GREAT DEALS IN SF,</h1>
-                  <h1>AND HAVE IT <span>IN 30 MINS</span> IN YOUR HOME</h1>
+              <Grid.Column width='16'>
+                <h1>BARGAIN DEALS IN SF,</h1>
+                <h1><span style={{'color': '#DC2022'}}>DELIVERED</span> TO YOUR DOOR INSTANTLY</h1>
               </Grid.Column>         
             </Grid>
-            <Grid centered columns={2}>
+            <Grid centered columns={1}>
               <Grid.Column>
-                <Search searchData={this.props.searchData} size='huge' className='search'/>
+                <Search searchData={this.props.searchData} size='large' className='search'/>
               </Grid.Column>  
             </Grid> 
           </div>
+          <div className='space'></div>
+        </div>
       );
     }
     return (
@@ -32,8 +35,9 @@ class Jumbotron extends React.Component {
         <div className='space'></div>
         <Grid centered>
           <Grid.Column width='12'>
-              <h1>FIND GREAT DEALS IN SF,</h1>
-              <h1>AND HAVE IT <span>IN 30 MINS</span> IN YOUR HOME</h1>
+            <h1>BARGAIN DEALS IN SF,</h1>
+            <h1 style={{'color': '#DC2022'}}>DELIVERED</h1>
+            <h1>TO YOUR DOOR INSTANTLY</h1>
           </Grid.Column>
           <Grid.Row centered columns={3}>
             <Grid.Column> 

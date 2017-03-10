@@ -12,22 +12,17 @@ const HistoryItemElement = (props) => {
     <Card fluid>
       <Image fluid src={props.item.image_links[0]} />
       <Card.Content>
-        <Card.Header>{props.item.title}</Card.Header>
-        <Card.Meta>{'$' + props.item.asking_price}</Card.Meta>
+        <Card.Header className='textCenter'>{props.item.title}</Card.Header>
+        <Card.Meta className='textCenter'>{'$' + props.item.asking_price}</Card.Meta>
+        {props.item.sold ? (
+            <Button fluid color='instagram' as={Link} to={'/h/' + props.item.id} style={{'margin-top': '10px'}}>
+                See Delivery Status
+            </Button>
+          ) : (
+            null
+          )
+        }
       </Card.Content>
-      <Card.Content extra>
-        {props.item.created_at.split('T')[0]}
-      </Card.Content>
-      {props.item.sold ? (
-        <Card.Content>
-          <Button color='instagram' as={Link} to={'/h/' + props.item.id}>
-              See Delivery Status
-          </Button>
-        </Card.Content>
-        ) : (
-          null
-        )
-      }
     </Card>
   )
 }
