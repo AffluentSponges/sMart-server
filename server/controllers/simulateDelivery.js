@@ -33,7 +33,6 @@ module.exports.simulateDelivery = function(req, res) {
   var deliveryId
   const productId = req.query.productId
   const waitTime = req.query.waitTime || 1000
- 
 
   Product.getWithAllRelated(productId)
   .then(product => {
