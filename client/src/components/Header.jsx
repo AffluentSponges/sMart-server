@@ -18,12 +18,12 @@ class Header extends React.Component {
     const { activeItem } = this.state
     var size = 'large';
     if (this.props.containerWidth < 1000) {
-      size = 'massive';
+      size = 'large';
     }
     return (
       <Menu size={size}>
         <Menu.Item as={Link} to='/'name='smart' active={activeItem === 'smart'} onClick={this.handleItemClick}>
-          <img src='https://s3-us-west-1.amazonaws.com/affluentsponges/product_image/2159697316767985.jpg' />
+          <img src='https://s3-us-west-1.amazonaws.com/affluentsponges/product_image/4454399175149712.jpg' />
         </Menu.Item>
         <Menu.Menu position='right'>
           {this.props.loggedIn ? (

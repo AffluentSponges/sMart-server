@@ -140,7 +140,7 @@ class PostItem extends Component {
   render() {
     const { formData, value } = this.state
     let image = null;
-    let src = 'http://react.semantic-ui.com/assets/images/wireframe/image.png'
+    let src = 'https://s3-us-west-1.amazonaws.com/affluentsponges/product_image/9018483905938528.jpg'
     // if (this.state.image_links) {
     //   src = this.state.image_links;
     // }
