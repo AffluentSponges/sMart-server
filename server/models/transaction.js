@@ -3,7 +3,7 @@ const bookshelf = require('bookshelf')(knex)
 const ModelBase = require('bookshelf-modelbase')(bookshelf)
 
 const statuses = [
-  'processing',
+  'buyer_paid',
   'en_route_to_pickup',
   'at_pickup',
   'en_route_to_dropoff',
@@ -39,7 +39,7 @@ module.exports = ModelBase.extend({
       product_id: product.id,
       buyer_id: product.attributes.buyer_id,
       sale_price: product.attributes.asking_price,
-      status: 'processing',
+      status: 'buyer_paid',
       sale_time_and_date: date,
       coinbase_address_id: info.coinbase_address_id,
       currency: info.currency,
