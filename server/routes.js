@@ -6,6 +6,7 @@ var productController = require('./controllers/product')
 var uberRUSHController = require('./controllers/uberRUSH')
 var coinbaseController = require('./controllers/coinbase')
 var userController = require('./controllers/user');
+var simulateDelivery = require('./controllers/simulateDelivery')
 var upload = require('./s3/upload')
 var s3Handler = require('./s3/s3Handler')
 var vision = require('./controllers/vision')
@@ -59,6 +60,7 @@ router.post('/upload', upload, s3Handler)
 
 router.get('/api/v1/vision', vision.getImageTitleAndCategory)
 router.get('/api/v1/payment', productController.isPaid)
+router.get('/simulate_delivery', simulateDelivery.simulateDelivery)
 
 /* ## NOT IN MVP ## */
 // router.post('/api/v1/make_bid', /**/)

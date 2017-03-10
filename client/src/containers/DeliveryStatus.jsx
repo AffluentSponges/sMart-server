@@ -89,7 +89,7 @@ class DeliveryStatus extends React.Component {
           <Segment>
               <Image src={this.state.item.image_links[0]} size='medium' centered/>
               <p className='description'>
-                <strong>Discription</strong><br/>
+                <strong>Description</strong><br/>
                 {this.state.item.description}
               </p>
           </Segment>
