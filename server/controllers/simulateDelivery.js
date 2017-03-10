@@ -33,12 +33,10 @@ module.exports.simulateDelivery = function(req, res) {
   var deliveryId
   const productId = req.query.productId
   const waitTime = req.query.waitTime || 1000
-  
-  console.log('productId: ', productId)
+ 
 
   Product.getWithAllRelated(productId)
   .then(product => {
-    console.log(product.serialize())
     deliveryId = product.relations.transaction.attributes.uber_delivery_id
     return changeUberStatus(deliveryId, 'en_route_to_pickup')
   })

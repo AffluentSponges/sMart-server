@@ -116,11 +116,11 @@ module.exports = function(env) {
             t.integer('buyer_id').references('id').inTable('users').notNullable() //buyer
             t.integer('product_id').references('id').inTable('products').notNullable()
             t.decimal('sale_price')
-            t.string('coinbase_address_id')
+            t.string('coinbase_address_id').unique()
             t.string('coinbase_transaction_id')
             t.string('currency')
             t.decimal('sale_price_btc', 16, 8)
-            t.string('status') //buyer_paid, product_in_transit, seller_paid_out (should be enum but oh well)
+            t.string('status')
             t.string('uber_delivery_id').unique()
             // t.decimal('uber_delivery_quote')
             t.decimal('uber_delivery_price')
