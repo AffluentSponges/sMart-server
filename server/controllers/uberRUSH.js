@@ -120,7 +120,7 @@ const other = [
 ]
 
 module.exports.webhook = function(req, res) {
-
+  console.log(req.body)
   var status = req.body.meta.status
   var delivery_id = req.body.meta.resource_id
 
