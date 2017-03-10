@@ -15,15 +15,19 @@ class Jumbotron extends React.Component {
         <div>
           <div className='jumbotron'>
             <Grid centered>
-              <Grid.Column width='16'>
-                <h1>BARGAIN DEALS IN SF,</h1>
+              <Grid.Column width={16}>
+                <h1>BARGAIN DEALS IN SF</h1>
                 <h1><span style={{'color': '#DC2022'}}>DELIVERED</span> TO YOUR DOOR INSTANTLY</h1>
               </Grid.Column>         
             </Grid>
-            <Grid centered columns={1}>
-              <Grid.Column>
+            <Grid columns={3}>
+              <Grid.Column width={3}> 
+              </Grid.Column>
+              <Grid.Column width={10}>
                 <Search searchData={this.props.searchData} size='large' className='search'/>
               </Grid.Column>  
+              <Grid.Column width={3}> 
+              </Grid.Column>
             </Grid> 
           </div>
           <div className='space'></div>
@@ -35,7 +39,7 @@ class Jumbotron extends React.Component {
         <div className='space'></div>
         <Grid centered>
           <Grid.Column width='12'>
-            <h1>BARGAIN DEALS IN SF,</h1>
+            <h1>BARGAIN DEALS IN SF</h1>
             <h1 style={{'color': '#DC2022'}}>DELIVERED</h1>
             <h1>TO YOUR DOOR INSTANTLY</h1>
           </Grid.Column>

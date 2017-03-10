@@ -1,22 +1,37 @@
 import React from 'react';
-import { Header, Icon, Image, Button, Container, Menu, Segment, Item } from 'semantic-ui-react'
+import { Header, Icon, Image, Button, Container, Menu, Segment, Item, Grid } from 'semantic-ui-react'
 import { Link } from 'react-router';
 import axios from 'axios';
 import HistoryItemList from '../components/HistoryItemList.jsx';
 
+class Empty extends React.Component {
+  render() {
+    return (
+      <Grid centered columns={3}>
+        <Grid.Column width={4}>
+          <Image size='medium' src='https://s3-us-west-1.amazonaws.com/affluentsponges/product_image/1816288512803256.jpg' />
+          <h1 style={{'color': '#555555', 'margin-top': '0px'}}>Oh - Uh</h1>
+          <h1 style={{'color': '#555555'}}>You have nothing here</h1>
+        </Grid.Column>         
+      </Grid>
+    )
+  }
+}
 class MenuExampleSecondaryPointing extends React.Component {
 
   render() {
     return (
       <div>
-        <Menu pointing secondary>
+        <Menu pointing secondary color='red' size='huge' style={{'margin-bottom': '0px'}}>
           <Menu.Item name='selling' active={this.props.activeItem === 'selling'} onClick={this.props.handleItemClick} />
           <Menu.Item name='sold' active={this.props.activeItem === 'sold'} onClick={this.props.handleItemClick} />
           <Menu.Item name='bought' active={this.props.activeItem === 'bought'} onClick={this.props.handleItemClick} />
         </Menu>
 
-        <Segment>
-          <HistoryItemList items={this.props.items} activeItem={this.props.activeItem}/>
+        <Segment style={{'margin-top': '0px'}}>
+          {this.props.items.length === 0 ? <Empty />
+            : <HistoryItemList items={this.props.items} activeItem={this.props.activeItem}/>
+          }
         </Segment>
       </div>
     )
@@ -105,7 +120,7 @@ class Profile extends React.Component {
       <div>
         <Container textAlign='center'>
           <Header as='h2' icon textAlign='center'>
-            <Icon name='users' circular />
+            <Icon name='users' circular style={{'margin-top': '25px'}}/>
             <Header.Content>
               {this.props.state.user.first_name}
             </Header.Content>

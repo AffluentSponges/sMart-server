@@ -207,11 +207,11 @@ class ItemDetail extends React.Component {
       imgSrc = ''
     }
     return (
-      <Grid centered stackable  style={{'padding-top': '25px'}}>
+      <Grid centered stackable style={{'padding-top': '25px'}}>
         <Grid.Column width={8}>
           <Segment>
-              <Image src={imgSrc} size='medium' centered/>
-              <p className='description'>
+              <Image src={imgSrc} size='big' centered fluid/>
+              <p className='description' style={{'margin-top': '10px'}}>
                 <strong>Description</strong><br/>
                 {this.state.thisProduct.description}
               </p>
@@ -239,7 +239,7 @@ class ItemDetail extends React.Component {
               <h3>{this.state.seller.first_name + ' ' + this.state.seller.last_name}</h3>
             </Grid.Row>
             <Grid.Row>
-              <Button size='medium' className='buy' color='green'>
+              <Button size='medium' className='buy' color='green' style={{'margin-top': '10px'}}>
                 Chat with {this.state.seller.first_name}
               </Button> 
             </Grid.Row>

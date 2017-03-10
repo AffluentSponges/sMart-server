@@ -13,7 +13,7 @@ class DeliveryStatus extends React.Component {
       steps: [
         { active: false, completed: true, icon: 'credit card', title: 'Buyer paid', status: 'buyer_paid'},
         { active: false, completed: false, icon: 'truck', title: 'En route to pickup', status: 'en_route_to_pickup'},
-        { active: false, completed: false, icon: 'truck', title: 'At pickup', status: 'at_pickup', description: 'Blah Blah'},
+        { active: false, completed: false, icon: 'truck', title: 'At pickup', status: 'at_pickup'},
         { active: false, completed: false, icon: 'truck', title: 'En route to dropoff', status: 'en_route_to_dropoff'},
         { active: false, completed: false, icon: 'truck', title: 'At dropoff', status: 'at_dropoff'},
         { active: false, completed: false, icon: 'credit card', title: 'Completed', status: 'completed'}
@@ -36,6 +36,7 @@ class DeliveryStatus extends React.Component {
         var data = response.data.product;
         data.status = response.data.status;
         context.setState({item: data})
+        context.handleSteps(response.data.status);
         var intervalID = window.setInterval(context.pulling, 2000);
         context.setState({intervalID: intervalID})
       })
