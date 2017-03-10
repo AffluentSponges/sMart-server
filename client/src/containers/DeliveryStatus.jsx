@@ -70,13 +70,16 @@ class DeliveryStatus extends React.Component {
   }
 
   handleSteps(status) {
-    var previous;
-    var steps = this.state.steps.map((step) => {
-      if (step.status === status) {
-        step.completed = true
+    var index;
+    var steps = this.state.steps;
+    for (var i = 0; i < this.state.steps.length; i++) {
+      if (this.state.steps[i].status === status) {
+        index = i;
       }
-      return step;
-    });
+    }
+    for (var i = 0; i <= index; i++) {
+      steps[i].completed = true;
+    }
     this.setState({steps: steps})
 
   }
