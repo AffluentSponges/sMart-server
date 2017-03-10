@@ -68,7 +68,7 @@ router.get('/api/v1/payment', productController.isPaid)
 //to check random things during dev
 router.post('/api/v1/dev', (req, res) => {console.log(req.body); res.end('done')})
 router.get('*', (req, res, next) => {
-  if(req.path.split('/')[1] === 'static') return next();
+  // if(req.path.split('/')[1] === 'static') return next();
   res.sendFile(path.resolve(__dirname, '../client/public/index.html'));
 });
 
