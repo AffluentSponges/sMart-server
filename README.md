@@ -35,13 +35,19 @@ save and close the ```.env``` file
 
 ## API Keys
 
-You will need the API Keys from the following services: \n
-Google \n
-UberRUSH (including access token) \n
-Coinbase \n
-TWilio \n
-Microsoft vision \n
-AWS \n
+You will need the API Keys from the following services:
+
+Google
+
+UberRUSH (including access token)
+
+Coinbase
+
+TWilio
+
+Microsoft vision
+
+AWS
 
 ## Running & Testing
 
