@@ -26,19 +26,24 @@ into the .env file. replace ```USERNAME``` with the name that appears before the
 
 add these two lines too: 
 
-``` PORT=4040
+```
+PORT=4040
 SESSION_SECRET_KEY=ASDFQWERLKJ
 ```
 
 save and close the ```.env``` file
 
-You will need the API Keys from the following services:
-Google
-UberRUSH (including access token)
-Coinbase
-TWilio
-Microsoft vision
-AWS
+## API Keys
+
+You will need the API Keys from the following services: \n
+Google \n
+UberRUSH (including access token) \n
+Coinbase \n
+TWilio \n
+Microsoft vision \n
+AWS \n
+
+## Running & Testing
 
 ```npm install```
 
