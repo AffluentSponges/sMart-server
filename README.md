@@ -1,6 +1,6 @@
 ## Intro
 
-DeliveredSF (formerly s-Mart) is a marketplace like LetGo (or craigslist) with integrated payments, pick-up, & delivery. When posting an item for sale, the seller includes a pick-up address and bitcoin wallet address. When purchasing an item, the Buyer scans the unique btc address QR code and sends the listed amount of btc. Once the transaction has posted (which is near-instant, thanks to Coinbase) an uberRUSH is dispatched to pick up the item from the seller and drop it off at the buyer's location. Once Uber has completed the dropoff, the btc (minus the uberRUSH fee) is sent to the seller's wallet.
+DeliveredSF (formerly s-Mart) is a marketplace like LetGo (or Craigslist) with integrated payments, pick-up, & delivery. When posting an item for sale, the seller includes a pick-up address and bitcoin wallet address. When purchasing an item, the Buyer scans the unique btc address QR code and sends the listed amount of btc. Once the transaction has posted (which is near-instant, thanks to Coinbase) an uberRUSH is dispatched to pick up the item from the seller and drop it off at the buyer's location. Once Uber has completed the dropoff, the btc (minus the uberRUSH fee) is sent to the seller's wallet. Updates regarding the status of pick-up and dropoff are sent to both the buyer and seller via Twilio throughout the process.
 
 ## To run this locally:
 
@@ -43,9 +43,9 @@ UberRUSH (including access token)
 
 Coinbase
 
-TWilio
+Twilio
 
-Microsoft vision
+Microsoft Vision
 
 AWS
 
