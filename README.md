@@ -2,7 +2,7 @@
 
 DeliveredSF (formerly s-Mart) is a marketplace like LetGo (or craigslist) with integrated payments, pick-up, & delivery. When posting an item for sale, the seller includes a pick-up address and bitcoin wallet address. When purchasing an item, the Buyer scans the unique btc address QR code and sends the listed amount of btc. Once the transaction has posted (which is near-instant, thanks to Coinbase) an uberRUSH is dispatched to pick up the item from the seller and drop it off at the buyer's location. Once Uber has completed the dropoff, the btc (minus the uberRUSH fee) is sent to the seller's wallet.
 
-##To run this locally:
+## To run this locally:
 
 Add a .env file:
 ```touch .env```
@@ -50,7 +50,7 @@ AWS
 
 For testing: 
 
-```npm run test-db``` - it might throw an error if it does. for now, just rerun it until it works lol
+```npm run test-db``` - it mightg throw an error if it does. for now, just rerun it until it works lol
 
 To test run ```npm test```
 
