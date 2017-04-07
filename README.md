@@ -26,6 +26,22 @@ into the .env file. replace ```USERNAME``` with the name that appears before the
 
 save and close the ```.env``` file
 
+
+## ngrok
+
+We used ngrok so we could pass some external API's requirements that we are on https
+
+```
+npm install ngrok -g
+ngrok http 3000
+````
+
+Set your ```HOST_URL``` in your .env file to your ngrok url. it will look something like:
+```
+https://954fdb5b.ngrok.io
+```
+
+
 ## API Keys
 
 You will need the API Keys from the following services:
@@ -41,6 +57,29 @@ Twilio
 Microsoft Vision
 
 AWS
+
+Your .env file should like this:
+
+```
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GOOGLE_CB_URL=
+DATABASE_URL=
+TEST_DATABASE_URL=
+UBER_RUSH_ID=
+UBER_RUSH_SECRET=
+COINBASE_KEY=
+COINBASE_SECRET=
+COINBASE_BTC_ACCOUNT=
+TWILIO_ACCOUNT_SID=
+TWILIO_AUTH_TOKEN=
+TWILIO_NUMBER=
+MS_VISION=
+AWS_Access_Key_ID=
+AWS_Secret_Access_Key=
+HOST_URL=
+UBER_RUSH_ACCESS_TOKEN=
+```
 
 ## Running & Testing
 
