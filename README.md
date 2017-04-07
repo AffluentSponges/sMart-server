@@ -132,15 +132,3 @@ Request body:
 ### POST /deliveries/quote
 
 ### GET /deliveries/{delivery_id}
-
-### GET /deliveries/{delivery_id}/receipt
-
-### GET /deliveries/{delivery_id}/ratings
-
-### POST /deliveries/{delivery_id}/ratings
-
-### GET /deliveries/{delivery_id}/rating_tags
-
-### POST /deliveries/{delivery_id}/cancel
-
-### GET /deliveries/regions
