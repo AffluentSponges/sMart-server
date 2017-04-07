@@ -24,13 +24,6 @@ copy&paste this -> ```TEST_DATABASE_URL=postgres://USERNAME:@localhost:5432/smar
 
 into the .env file. replace ```USERNAME``` with the name that appears before the ```=#``` when you do ```psql```
 
-add these two lines too: 
-
-```
-PORT=4040
-SESSION_SECRET_KEY=ASDFQWERLKJ
-```
-
 save and close the ```.env``` file
 
 ## API Keys
